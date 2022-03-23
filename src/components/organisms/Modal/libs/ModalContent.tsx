@@ -5,6 +5,7 @@ import { WithChildren } from 'types';
 import { ReactPortal } from 'components/organisms/ReactPortal';
 import { CrossIcon } from 'components/icons';
 import FocusTrap from 'focus-trap-react';
+import { UnstyledButton } from '@mantine/core';
 import { useModalState } from '../context';
 
 type Props = {
@@ -51,9 +52,9 @@ export function ModalContent({ children, title, className, ...rest }: Props) {
           <div className={cn('modal-content', className, { 'translate-y-0': show })} {...rest}>
             <div className="flex justify-between mb-4">
               <h3>{title}</h3>
-              <button type="button" onClick={closeModal}>
+              <UnstyledButton type="button" onClick={closeModal}>
                 <CrossIcon />
-              </button>
+              </UnstyledButton>
             </div>
             <div>{children}</div>
           </div>
