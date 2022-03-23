@@ -370,6 +370,15 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
+@layer components {
+  .modal {
+    @apply w-screen h-screen fixed inset-0 bg-indigo-800 bg-opacity-30 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300;
+  }
+  .modal-content {
+    @apply bg-white p-4 rounded w-[95%] max-w-xl -translate-y-full transition-transform duration-300;
+  }
+}
+
 
 @layer utilities {
   .container {

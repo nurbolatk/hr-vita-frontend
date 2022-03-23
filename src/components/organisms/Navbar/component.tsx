@@ -1,5 +1,7 @@
+import { Button } from '@mantine/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Modal } from 'components/organisms/Modal';
 
 export function Navbar(): JSX.Element {
   return (
@@ -16,12 +18,20 @@ export function Navbar(): JSX.Element {
         </li>
       </ul>
       <ul className="md:w-0 md:flex-1 flex justify-end gap-x-4">
-        <li>
-          <Link to="/login">Войти</Link>
-        </li>
-        <li>
-          <Link to="/register">Регистрация</Link>
-        </li>
+        <Modal>
+          <li>
+            <Modal.OpenButton>
+              <Button variant="outline" size="sm">
+                Войти
+              </Button>
+            </Modal.OpenButton>
+          </li>
+          <Modal.Content title="Log in" className="max-w-md">
+            <form>
+              <input type="text" />
+            </form>
+          </Modal.Content>
+        </Modal>
       </ul>
     </header>
   );
