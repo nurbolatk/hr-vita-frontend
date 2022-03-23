@@ -26,6 +26,9 @@
     "rules": {
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        // default props are deprecated in functional components typed as regular JS functions
+        "react/require-default-props": "off",
+        "react/jsx-props-no-spreading": "off"
     }
 }
