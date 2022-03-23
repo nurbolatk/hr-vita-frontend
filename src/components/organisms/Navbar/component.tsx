@@ -7,9 +7,12 @@ export function Navbar(): JSX.Element {
       <div className="text-3xl font-bold underline md:w-0 md:flex-1">
         <Link to="/">HR Vita</Link>
       </div>
-      <ul>
+      <ul className="flex items-center gap-x-4">
         <li>
           <Link to="/applications">Заявки</Link>
+        </li>
+        <li>
+          <Link to="/cabinet">Мой кабинет</Link>
         </li>
       </ul>
       <ul className="md:w-0 md:flex-1 flex justify-end gap-x-4">

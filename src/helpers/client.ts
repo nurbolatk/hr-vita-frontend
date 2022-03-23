@@ -1,4 +1,4 @@
-type GeneralError = Record<string, any>;
+import { GeneralError } from 'types/GeneralError';
 
 const api = process.env.REACT_APP_BACKEND_URL;
 
@@ -33,9 +33,9 @@ export const client = async <T>(endpoint: string, options?: ClientOptions): Prom
     headers: {
       Authorization: token ? `Bearer ${token}` : '',
       'Content-Type': data ? 'application/json' : '',
-      ...customHeaders
+      ...customHeaders,
     },
-    ...customConfig
+    ...customConfig,
   };
 
   const query = queryParams ? `?&${queryParams?.toString()}` : '';
