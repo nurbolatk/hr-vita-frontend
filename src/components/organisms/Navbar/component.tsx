@@ -3,16 +3,21 @@ import { Link } from 'react-router-dom';
 
 export function Navbar(): JSX.Element {
   return (
-    <header className="">
-      <div className="text-3xl font-bold underline">
+    <header className="container flex justify-between md:justify-start items-center">
+      <div className="text-3xl font-bold underline md:w-0 md:flex-1">
         <Link to="/">HR Vita</Link>
       </div>
       <ul>
         <li>
-          <Link to="/login">Sign in</Link>
+          <Link to="/applications">Заявки</Link>
+        </li>
+      </ul>
+      <ul className="md:w-0 md:flex-1 flex justify-end gap-x-4">
+        <li>
+          <Link to="/login">Войти</Link>
         </li>
         <li>
-          <Link to="/register">Sign up</Link>
+          <Link to="/register">Регистрация</Link>
         </li>
       </ul>
     </header>
