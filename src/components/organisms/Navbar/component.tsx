@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export function Navbar(): JSX.Element {
   return (
     <header className="">
-      <div className="">
+      <div className="text-3xl font-bold underline">
         <Link to="/">HR Vita</Link>
       </div>
       <ul>
