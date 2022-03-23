@@ -1,8 +1,9 @@
-import { Anchor, Button, Input, PasswordInput, Text } from '@mantine/core';
+import { Anchor, Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Modal } from 'components/organisms/Modal';
 import { EyeOffIcon, EyeOpenIcon } from 'components/icons';
+import { useForm } from 'react-hook-form';
 
 function VisibilityToggleIcon({ reveal, size }: { reveal: boolean; size: number }) {
   if (reveal) {
@@ -11,7 +12,22 @@ function VisibilityToggleIcon({ reveal, size }: { reveal: boolean; size: number 
   return <EyeOffIcon width={size} height={size} />;
 }
 
+type LoginFormInputs = {
+  email: string;
+  password: string;
+};
+
 export function Navbar(): JSX.Element {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>();
+
+  const onSubmit = (data: LoginFormInputs) => {
+    console.log(data);
+  };
+
   return (
     <header className="container flex justify-between md:justify-start items-center">
       <div className="text-3xl font-bold underline md:w-0 md:flex-1">
@@ -35,13 +51,15 @@ export function Navbar(): JSX.Element {
             </Modal.OpenButton>
           </li>
           <Modal.Content title="Log in" className="max-w-md">
-            <form className="space-y-4">
-              <div>
-                <Text component="label" htmlFor="email" size="sm" className="mb-1 font-medium block">
-                  Email
-                </Text>
-                <Input type="email" placeholder="Email" id="email" />
-              </div>
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+              <TextInput
+                label="Email"
+                placeholder="Email"
+                className="mb-1 font-medium block"
+                type="email"
+                {...register('email', { required: 'Необходимо заполнить' })}
+                error={errors.email?.message}
+              />
               <div>
                 <div className="flex justify-between mb-1">
                   <Text component="label" htmlFor="your-password" size="sm" weight={500}>
@@ -63,8 +81,13 @@ export function Navbar(): JSX.Element {
                   placeholder="Your password"
                   id="your-password"
                   visibilityToggleIcon={VisibilityToggleIcon}
+                  {...register('password', { required: 'Необходимо заполнить' })}
+                  error={errors.password?.message}
                 />
               </div>
+              <Button type="submit" className="ml-auto block">
+                Log in
+              </Button>
             </form>
           </Modal.Content>
         </Modal>
