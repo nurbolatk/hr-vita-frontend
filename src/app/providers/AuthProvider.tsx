@@ -1,19 +1,20 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import * as React from 'react';
-import { GeneralError, LoginArguments, Session, WithChildren } from 'types';
+import { GeneralError, LoginArguments, Session, User, WithChildren } from 'types';
 import { useAsync } from 'hooks';
 // import { useEffect } from 'react';
 import * as auth from 'helpers/auth-manager';
 
 type AuthState = {
-  user: Session | null;
+  user: User | null;
+  token: string | null;
   login: (form: LoginArguments) => Promise<Session | null>;
   // register: (form: RegisterArguments) => Promise<User | null>;
   logout: () => void;
   // isAuthIdle: boolean;
   isAuthLoading: boolean;
   // isAuthError: boolean;
-  // isAuthSuccess: boolean;
+  isAuthSuccess: boolean;
   authError: GeneralError | null;
 };
 
@@ -27,11 +28,36 @@ function AuthProvider({ children }: WithChildren) {
     // isIdle: isAuthIdle,
     isLoading: isAuthLoading,
     // isError: isAuthError,
-    // isSuccess: isAuthSuccess,
+    isSuccess: isAuthSuccess,
     error: authError,
+    dispatch,
   } = useAsync<Session>({
-    status: 'idle',
+    status: 'pending',
   });
+
+  React.useEffect(() => {
+    const token = auth.getToken();
+    if (!token) {
+      dispatch({
+        status: 'idle',
+        data: null,
+        error: null,
+      });
+    } else {
+      auth
+        .getUserByToken(token)
+        .then((session: Session) => {
+          setData(session);
+        })
+        .catch(() => {
+          dispatch({
+            status: 'idle',
+            data: null,
+            error: null,
+          });
+        });
+    }
+  }, [dispatch, setData]);
 
   // useEffect(() => {
   //   run(userModel.getUserByToken());
@@ -56,14 +82,15 @@ function AuthProvider({ children }: WithChildren) {
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <AuthContext.Provider
       value={{
-        user,
+        user: user?.user ?? null,
+        token: user?.token ?? null,
         login,
         // register,
         logout,
         // isAuthIdle,
         isAuthLoading,
         // isAuthError,
-        // isAuthSuccess,
+        isAuthSuccess,
         authError,
       }}>
       {children}

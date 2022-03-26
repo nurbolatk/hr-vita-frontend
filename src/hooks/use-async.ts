@@ -78,8 +78,6 @@ export function useAsync<T>(initialState?: Partial<State<T>>) {
           return Promise.resolve(result);
         })
         .catch((e) => {
-          console.dir('async error?', e);
-
           setError(e);
           return Promise.reject(e);
         });
@@ -92,6 +90,7 @@ export function useAsync<T>(initialState?: Partial<State<T>>) {
     isLoading: status === 'pending',
     isError: status === 'rejected',
     isSuccess: status === 'resolved',
+    dispatch,
     setData,
     setError,
     error,

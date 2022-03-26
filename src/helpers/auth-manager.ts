@@ -1,5 +1,5 @@
 import { client } from 'helpers';
-import { LoginArguments, RegisterArguments, Session } from 'types';
+import { LoginArguments, RegisterArguments, Session, User } from 'types';
 
 const localStorageKey = '__auth_provider_token__';
 
@@ -23,8 +23,16 @@ async function register(credentials: RegisterArguments): Promise<Session> {
   return session;
 }
 
+async function getUserByToken(token: string) {
+  const user = await client<User>('users/me', { token });
+  return {
+    token,
+    user,
+  };
+}
+
 async function logout() {
   await window.localStorage.removeItem(localStorageKey);
 }
 
-export { login, register, logout, getToken };
+export { login, register, logout, getToken, getUserByToken };
