@@ -61,6 +61,7 @@ export function LoginForm(): JSX.Element {
         <PasswordInput
           placeholder="Your password"
           id="your-password"
+          type="password"
           visibilityToggleIcon={VisibilityToggleIcon}
           {...register('password', { required: 'Необходимо заполнить' })}
           error={errors.password?.message}

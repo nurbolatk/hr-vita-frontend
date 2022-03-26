@@ -1,7 +1,5 @@
 export * from './GeneralError.type';
 export * from './WithChildren';
-export * from './User.type';
-export * from './Session.type';
 
 export type LoginArguments = {
   email: string;

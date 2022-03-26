@@ -1,4 +1,4 @@
-import { User } from 'shared/types';
+import { User } from './User.type';
 
 export type Session = {
   token: string;

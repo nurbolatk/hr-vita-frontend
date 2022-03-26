@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import * as React from 'react';
-import { GeneralError, LoginArguments, Session, User, WithChildren } from 'shared/types';
+import { GeneralError, LoginArguments, WithChildren } from 'shared/types';
 import { useAsync } from 'shared/hooks';
-// import { useEffect } from 'react';
-import * as auth from 'shared/helpers/auth-manager';
+import { auth } from 'entities/Session';
+import type { Session, User } from 'entities/Session';
 
 type AuthState = {
   user: User | null;
@@ -59,11 +59,6 @@ function AuthProvider({ children }: WithChildren) {
     }
   }, [dispatch, setData]);
 
-  // useEffect(() => {
-  //   run(userModel.getUserByToken());
-  // }, [run]);
-
-  // const login = React.useCallback((form: LoginArguments) => run(userModel.login(form)), [run]);
   // const register = React.useCallback((form: RegisterArguments) => run(userModel.register(form)), [run]);
   const logout = React.useCallback(() => {
     auth.logout();

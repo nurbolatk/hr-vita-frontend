@@ -2,8 +2,8 @@ import React from 'react';
 import { Navbar } from 'shared/components/organisms';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './styles/index.css';
-import { CabinateRoute } from 'shared/components/pages/cabinet';
-import { NewCandidateRoute } from 'shared/components/pages/candidates/new';
+import { CabinateRoute } from 'pages/cabinet';
+import { NewCandidateRoute } from 'pages/candidates/new';
 import { AuthProvider } from './providers';
 
 function App() {
