@@ -1,8 +1,10 @@
-export * from './GeneralError';
+export * from './GeneralErrorType';
 export * from './WithChildren';
+export * from './User.type';
+export * from './Session.type';
 
 export type LoginArguments = {
-  identifier: string;
+  email: string;
   password: string;
 };
 export type RegisterArguments = {
@@ -10,8 +12,4 @@ export type RegisterArguments = {
   email: string;
   password: string;
   confirmPassword: string;
-};
-
-export type User = {
-  email: string;
 };

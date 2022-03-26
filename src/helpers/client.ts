@@ -1,4 +1,4 @@
-import { GeneralError } from 'types/GeneralError';
+import { GeneralError } from 'types/GeneralErrorType';
 
 const api = process.env.REACT_APP_BACKEND_URL;
 
@@ -40,7 +40,7 @@ export const client = async <T>(endpoint: string, options?: ClientOptions): Prom
 
   const query = queryParams ? `?&${queryParams?.toString()}` : '';
 
-  return window.fetch(`${api}/api/${endpoint}${query}`, config).then(async (response) => {
+  return window.fetch(`${api}/${endpoint}${query}`, config).then(async (response) => {
     if (response.status === 401) {
       return handleAuthError();
     }

@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import * as React from 'react';
-import { LoginArguments, RegisterArguments, GeneralError, User, WithChildren } from 'types';
+import { LoginArguments, Session, WithChildren } from 'types';
 import { useAsync } from 'hooks';
 // import { useEffect } from 'react';
 import * as auth from 'helpers/auth-manager';
 
 type AuthState = {
-  user: User | null;
-  // login: (form: LoginArguments) => Promise<User | null>;
+  user: Session | null;
+  login: (form: LoginArguments) => Promise<Session | null>;
   // register: (form: RegisterArguments) => Promise<User | null>;
-  // logout: () => void;
+  logout: () => void;
   // isAuthIdle: boolean;
   // isAuthLoading: boolean;
   // isAuthError: boolean;
@@ -22,14 +22,14 @@ const AuthContext = React.createContext<AuthState | undefined>(undefined);
 function AuthProvider({ children }: WithChildren) {
   const {
     data: user,
-    run,
     setData,
-    isIdle: isAuthIdle,
-    isLoading: isAuthLoading,
-    isError: isAuthError,
-    isSuccess: isAuthSuccess,
-    error: authError,
-  } = useAsync<User>({
+    run,
+    // isIdle: isAuthIdle,
+    // isLoading: isAuthLoading,
+    // isError: isAuthError,
+    // isSuccess: isAuthSuccess,
+    // error: authError,
+  } = useAsync<Session>({
     status: 'pending',
   });
 
@@ -44,15 +44,22 @@ function AuthProvider({ children }: WithChildren) {
     setData(null);
   }, [setData]);
 
+  const login = React.useCallback(
+    async (form: LoginArguments) => {
+      return run(auth.login(form));
+    },
+    [run]
+  );
+
   return (
     // already memoized
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <AuthContext.Provider
       value={{
         user,
-        // login,
+        login,
         // register,
-        // logout,
+        logout,
         // isAuthIdle,
         // isAuthLoading,
         // isAuthError,

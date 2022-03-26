@@ -1,33 +1,9 @@
-import { Anchor, Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Modal } from 'components/organisms/Modal';
-import { EyeOffIcon, EyeOpenIcon } from 'components/icons';
-import { useForm } from 'react-hook-form';
-
-function VisibilityToggleIcon({ reveal, size }: { reveal: boolean; size: number }) {
-  if (reveal) {
-    return <EyeOpenIcon width={size} height={size} />;
-  }
-  return <EyeOffIcon width={size} height={size} />;
-}
-
-type LoginFormInputs = {
-  email: string;
-  password: string;
-};
+import { Modal, LoginForm } from 'components/organisms';
+import { Button } from '@mantine/core';
 
 export function Navbar(): JSX.Element {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormInputs>();
-
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
-  };
-
   return (
     <header className="container flex justify-between md:justify-start items-center">
       <div className="text-3xl font-bold underline md:w-0 md:flex-1">
@@ -51,44 +27,7 @@ export function Navbar(): JSX.Element {
             </Modal.OpenButton>
           </li>
           <Modal.Content title="Log in" className="max-w-md">
-            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-              <TextInput
-                label="Email"
-                placeholder="Email"
-                className="mb-1 font-medium block"
-                type="email"
-                {...register('email', { required: 'Необходимо заполнить' })}
-                error={errors.email?.message}
-              />
-              <div>
-                <div className="flex justify-between mb-1">
-                  <Text component="label" htmlFor="your-password" size="sm" weight={500}>
-                    Your password
-                  </Text>
-                  <Anchor<typeof Link>
-                    component={Link}
-                    to="/restore-password"
-                    sx={(theme) => ({
-                      paddingTop: 2,
-                      color: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
-                      fontWeight: 500,
-                      fontSize: theme.fontSizes.xs,
-                    })}>
-                    Forgot your password?
-                  </Anchor>
-                </div>
-                <PasswordInput
-                  placeholder="Your password"
-                  id="your-password"
-                  visibilityToggleIcon={VisibilityToggleIcon}
-                  {...register('password', { required: 'Необходимо заполнить' })}
-                  error={errors.password?.message}
-                />
-              </div>
-              <Button type="submit" className="ml-auto block">
-                Log in
-              </Button>
-            </form>
+            <LoginForm />
           </Modal.Content>
         </Modal>
       </ul>
