@@ -1,4 +1,4 @@
-export * from './GeneralErrorType';
+export * from './GeneralError.type';
 export * from './WithChildren';
 export * from './User.type';
 export * from './Session.type';

@@ -1,1 +1,1 @@
-export * from './useAsync';
+export * from './use-async';

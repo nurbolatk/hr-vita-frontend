@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import * as React from 'react';
-import { LoginArguments, Session, WithChildren } from 'types';
+import { GeneralError, LoginArguments, Session, WithChildren } from 'types';
 import { useAsync } from 'hooks';
 // import { useEffect } from 'react';
 import * as auth from 'helpers/auth-manager';
@@ -14,7 +14,7 @@ type AuthState = {
   // isAuthLoading: boolean;
   // isAuthError: boolean;
   // isAuthSuccess: boolean;
-  // authError: GeneralError | null;
+  authError: GeneralError | null;
 };
 
 const AuthContext = React.createContext<AuthState | undefined>(undefined);
@@ -28,7 +28,7 @@ function AuthProvider({ children }: WithChildren) {
     // isLoading: isAuthLoading,
     // isError: isAuthError,
     // isSuccess: isAuthSuccess,
-    // error: authError,
+    error: authError,
   } = useAsync<Session>({
     status: 'pending',
   });
@@ -64,7 +64,7 @@ function AuthProvider({ children }: WithChildren) {
         // isAuthLoading,
         // isAuthError,
         // isAuthSuccess,
-        // authError,
+        authError,
       }}>
       {children}
     </AuthContext.Provider>

@@ -18,7 +18,9 @@ export function LoginForm(): JSX.Element {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const { login } = useAuth();
+  const { login, authError } = useAuth();
+
+  console.log(authError);
 
   const onSubmit = (data: LoginFormInputs) => {
     console.dir(data);

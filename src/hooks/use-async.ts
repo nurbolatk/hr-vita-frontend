@@ -78,6 +78,8 @@ export function useAsync<T>(initialState?: Partial<State<T>>) {
           return Promise.resolve(result);
         })
         .catch((e) => {
+          console.dir('async error?', e);
+
           setError(e);
           return Promise.reject(e);
         });

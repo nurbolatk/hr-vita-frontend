@@ -1,4 +1,4 @@
-import { GeneralError } from 'types/GeneralErrorType';
+import { GeneralError } from 'types/GeneralError.type';
 
 const api = process.env.REACT_APP_BACKEND_URL;
 
@@ -12,7 +12,7 @@ type ClientOptions = Partial<
 
 function transformError(error: GeneralError | string): GeneralError {
   if (typeof error === 'string') {
-    return { error };
+    return { message: error };
   }
   return error;
 }
@@ -20,7 +20,7 @@ function transformError(error: GeneralError | string): GeneralError {
 function handleAuthError(error?: GeneralError | string): Promise<GeneralError> {
   // auth.logout();
   window.location.assign('/');
-  return Promise.reject(error ? transformError(error) : { token: 'Token expired' });
+  return Promise.reject(error ? transformError(error) : { message: 'Token expired' });
 }
 
 export const client = async <T>(endpoint: string, options?: ClientOptions): Promise<T> => {
@@ -49,6 +49,7 @@ export const client = async <T>(endpoint: string, options?: ClientOptions): Prom
     if (response.ok) {
       return responseData;
     }
-    return Promise.reject(responseData.error ?? { message: `Error fetching ${endpoint}` });
+
+    return Promise.reject(transformError(responseData ?? { message: `Error fetching ${endpoint}` }));
   });
 };
