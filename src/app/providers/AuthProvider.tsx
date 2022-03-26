@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import * as React from 'react';
-import { GeneralError, LoginArguments, Session, User, WithChildren } from 'types';
-import { useAsync } from 'hooks';
+import { GeneralError, LoginArguments, Session, User, WithChildren } from 'shared/types';
+import { useAsync } from 'shared/hooks';
 // import { useEffect } from 'react';
-import * as auth from 'helpers/auth-manager';
+import * as auth from 'shared/helpers/auth-manager';
 
 type AuthState = {
   user: User | null;

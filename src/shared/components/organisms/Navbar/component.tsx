@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Modal, LoginForm } from 'components/organisms';
+import { Modal, LoginForm } from 'shared/components/organisms';
 import { Button, Skeleton } from '@mantine/core';
 import { useAuth } from 'app/providers';
-import { iff } from 'utils';
+import { iff } from 'shared/utils';
 
 export function Navbar(): JSX.Element {
   const { user, isAuthLoading, logout, isAuthSuccess } = useAuth();

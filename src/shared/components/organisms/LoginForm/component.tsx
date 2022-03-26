@@ -4,7 +4,7 @@ import { Alert, Anchor, Button, LoadingOverlay, PasswordInput, Text, TextInput }
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'app/providers';
-import { AlertCircleIcon } from 'components/icons';
+import { AlertCircleIcon } from 'shared/components/icons';
 import { VisibilityToggleIcon } from './VisibilityToggleIcon';
 
 type LoginFormInputs = {

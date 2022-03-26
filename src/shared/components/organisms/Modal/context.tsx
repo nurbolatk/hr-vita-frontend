@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WithChildren } from 'types/WithChildren';
+import { WithChildren } from 'shared/types';
 
 type ModalState = {
   show: boolean;

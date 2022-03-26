@@ -1,5 +1,5 @@
 import { useLayoutEffect, Dispatch, useCallback, useReducer, useRef } from 'react';
-import { GeneralError } from 'types';
+import { GeneralError } from 'shared/types';
 
 type RequestStatus = 'idle' | 'pending' | 'resolved' | 'rejected';
 

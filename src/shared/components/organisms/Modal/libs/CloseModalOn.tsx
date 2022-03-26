@@ -1,4 +1,4 @@
-import { callAll } from 'utils';
+import { callAll } from 'shared/utils';
 import { useEffect } from 'react';
 import { useModalState } from '../context';
 

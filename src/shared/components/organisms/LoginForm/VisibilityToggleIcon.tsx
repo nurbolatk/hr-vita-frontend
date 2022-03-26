@@ -1,5 +1,5 @@
 import React from 'react';
-import { EyeOffIcon, EyeOpenIcon } from 'components/icons';
+import { EyeOffIcon, EyeOpenIcon } from 'shared/components/icons';
 
 export function VisibilityToggleIcon({ reveal, size }: { reveal: boolean; size: number }) {
   if (reveal) {

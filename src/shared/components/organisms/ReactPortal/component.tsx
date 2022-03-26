@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { createWrapperAndAppendToBody } from 'utils';
+import { createWrapperAndAppendToBody } from 'shared/utils';
 import { Props } from './props';
 
 export function ReactPortal({ children, wrapperId }: Props): JSX.Element | null {

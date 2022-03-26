@@ -1,4 +1,4 @@
-import { GeneralError } from 'types/GeneralError.type';
+import { GeneralError } from 'shared/types';
 
 const api = process.env.REACT_APP_BACKEND_URL;
 

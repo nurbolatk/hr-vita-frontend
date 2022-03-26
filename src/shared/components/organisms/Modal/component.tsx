@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WithChildren } from 'types';
+import { WithChildren } from 'shared/types';
 import { ModalProvider } from './context';
 import { ModalContent } from './libs/ModalContent';
 import { ModalOpenButton } from './libs/ModalOpenButton';
