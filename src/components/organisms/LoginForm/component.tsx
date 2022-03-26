@@ -1,9 +1,10 @@
 import React from 'react';
-import { Anchor, Button, PasswordInput, Text, TextInput } from '@mantine/core';
+import { Alert, Anchor, Button, LoadingOverlay, PasswordInput, Text, TextInput } from '@mantine/core';
 
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'app/providers';
+import { AlertCircleIcon } from 'components/icons';
 import { VisibilityToggleIcon } from './VisibilityToggleIcon';
 
 type LoginFormInputs = {
@@ -18,17 +19,20 @@ export function LoginForm(): JSX.Element {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const { login, authError } = useAuth();
-
-  console.log(authError);
+  const { login, authError, isAuthLoading } = useAuth();
 
   const onSubmit = (data: LoginFormInputs) => {
-    console.dir(data);
     login(data);
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-4 relative" onSubmit={handleSubmit(onSubmit)}>
+      {authError && (
+        <Alert icon={<AlertCircleIcon />} color="red">
+          {authError.message}
+        </Alert>
+      )}
+      <LoadingOverlay visible={isAuthLoading} />
       <TextInput
         label="Email"
         placeholder="Email"

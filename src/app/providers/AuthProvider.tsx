@@ -11,7 +11,7 @@ type AuthState = {
   // register: (form: RegisterArguments) => Promise<User | null>;
   logout: () => void;
   // isAuthIdle: boolean;
-  // isAuthLoading: boolean;
+  isAuthLoading: boolean;
   // isAuthError: boolean;
   // isAuthSuccess: boolean;
   authError: GeneralError | null;
@@ -25,12 +25,12 @@ function AuthProvider({ children }: WithChildren) {
     setData,
     run,
     // isIdle: isAuthIdle,
-    // isLoading: isAuthLoading,
+    isLoading: isAuthLoading,
     // isError: isAuthError,
     // isSuccess: isAuthSuccess,
     error: authError,
   } = useAsync<Session>({
-    status: 'pending',
+    status: 'idle',
   });
 
   // useEffect(() => {
@@ -61,7 +61,7 @@ function AuthProvider({ children }: WithChildren) {
         // register,
         logout,
         // isAuthIdle,
-        // isAuthLoading,
+        isAuthLoading,
         // isAuthError,
         // isAuthSuccess,
         authError,
