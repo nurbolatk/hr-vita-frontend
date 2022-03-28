@@ -1,4 +1,4 @@
-export type Entity = {
+export type Department = {
   id: number;
   createdAt: Date;
   updatedAt: Date;

@@ -6,4 +6,5 @@ export type NewCandidateFields = {
   salary?: number;
   location?: string;
   position?: string;
+  department?: string;
 };

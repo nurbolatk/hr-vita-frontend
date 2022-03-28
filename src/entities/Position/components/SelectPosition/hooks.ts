@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useAuth } from 'app/providers';
 import type { GeneralError } from 'shared/types';
-import { createEntity } from './api';
-import type { Entity } from './types';
+import { api } from 'shared/helpers';
+import type { CreatePositionDto, Position } from 'entities/Position/types';
 
-export function useCreateElement<TData extends Entity>(endpoint: string, queryKey: string, resetField?: () => void) {
+export function useCreateElement(endpoint: string, queryKey: string, resetField?: () => void) {
   const { token } = useAuth();
   const queryClient = useQueryClient();
 
-  return useMutation<TData, GeneralError, string>(
+  return useMutation<Position, GeneralError, string>(
     (name: string) => {
-      return createEntity(endpoint, { name }, token);
+      return api.createEntity<Position, CreatePositionDto>(endpoint, { name }, token);
     },
     {
       onMutate(newPositionName: string) {
-        const previousItems = queryClient.getQueryData<TData[]>(queryKey);
-        queryClient.setQueryData<TData[]>(queryKey, (old) => {
+        const previousItems = queryClient.getQueryData<Position[]>(queryKey);
+        queryClient.setQueryData<Position[]>(queryKey, (old) => {
           if (!old) return [];
           return [
             ...old,
@@ -24,7 +24,7 @@ export function useCreateElement<TData extends Entity>(endpoint: string, queryKe
               createdAt: new Date(),
               updatedAt: new Date(),
               name: newPositionName,
-            } as TData,
+            } as Position,
           ];
         });
         return () => queryClient.setQueriesData(queryKey, previousItems);

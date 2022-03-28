@@ -1,2 +1,2 @@
-export * from '../../entities/Session/api/auth.api';
 export * from './client';
+export * as api from './api';

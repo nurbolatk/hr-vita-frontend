@@ -1,1 +1,1 @@
-export * from './PositionsSelect';
+export * from './SelectPosition';
