@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Card, TextInput } from '@mantine/core';
 import { useForm } from 'react-hook-form';
+import { api } from 'entities/Candidate';
 import { NewCandidateFields } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
@@ -11,7 +12,7 @@ export function CreateCandidateForm(): JSX.Element {
   } = useForm<NewCandidateFields>();
 
   const onSubmit = (form: NewCandidateFields) => {
-    console.log(form);
+    api.createEntity(form);
   };
 
   return (
