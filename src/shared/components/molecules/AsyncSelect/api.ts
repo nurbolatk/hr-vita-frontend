@@ -1,5 +1,5 @@
 import { client } from 'shared/helpers';
-import { CreateEntityDto } from './types';
+import type { CreateEntityDto } from './types';
 
 export const createEntity = async <TData>(endpoint: string, dto: CreateEntityDto, token: string) => {
   return client<TData>(endpoint, { data: dto, token });

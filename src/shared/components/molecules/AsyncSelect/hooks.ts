@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useAuth } from 'app/providers';
-import { GeneralError } from 'shared/types';
+import type { GeneralError } from 'shared/types';
 import { createEntity } from './api';
-import { Entity } from './types';
+import type { Entity } from './types';
 
-export function useCreatePosition<TData extends Entity>(endpoint: string, queryKey: string, resetField?: () => void) {
+export function useCreateElement<TData extends Entity>(endpoint: string, queryKey: string, resetField?: () => void) {
   const { token } = useAuth();
   const queryClient = useQueryClient();
 

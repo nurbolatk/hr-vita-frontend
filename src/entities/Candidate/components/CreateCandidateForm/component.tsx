@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, TextInput } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
 // import { api } from 'entities/Candidate';
-import { PositionsSelect } from 'entities/Position/components';
+import { PositionsSelect } from 'entities/Position';
 import { NewCandidateFields } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
@@ -83,11 +83,7 @@ export function CreateCandidateForm(): JSX.Element {
               name="position"
               rules={{ required: 'Надо выбрать' }}
               render={({ field: { value, onChange }, fieldState: { error } }) => {
-                return (
-                  <div>
-                    <PositionsSelect setValue={setValue} value={value} onChange={onChange} error={error?.message} />
-                  </div>
-                );
+                return <PositionsSelect setValue={setValue} value={value} onChange={onChange} error={error?.message} />;
               }}
             />
           </div>

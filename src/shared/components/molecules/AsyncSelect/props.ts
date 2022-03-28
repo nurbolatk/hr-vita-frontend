@@ -1,10 +1,11 @@
-import { SelectProps } from '@mantine/core';
 import React from 'react';
-import { UseFormSetValue } from 'react-hook-form';
-import { NewCandidateFields } from 'entities/Candidate';
+import type { SelectProps } from '@mantine/core';
+import type { UseFormSetValue } from 'react-hook-form';
 
-export type AsyncSelectProps = Partial<SelectProps & React.RefAttributes<HTMLInputElement>> & {
-  setValue: UseFormSetValue<NewCandidateFields>;
+export type AsyncSelectProps<FormFields extends Record<string, any>> = Partial<
+  SelectProps & React.RefAttributes<HTMLInputElement>
+> & {
+  setValue: UseFormSetValue<FormFields>;
   queryKey: string;
   endpoint?: string; // defaults to queryKey
 };

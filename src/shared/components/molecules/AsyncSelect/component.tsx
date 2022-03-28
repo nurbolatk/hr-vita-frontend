@@ -1,10 +1,10 @@
 import { Select } from '@mantine/core';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { useCreatePosition } from './hooks';
+import { useCreateElement } from './hooks';
 import * as api from './api';
-import { Entity } from './types/Entity.type';
-import { AsyncSelectProps } from './props';
+import type { Entity } from './types/Entity.type';
+import type { AsyncSelectProps } from './props';
 
 export function AsyncSelect<TData extends Entity>({
   error,
@@ -12,10 +12,10 @@ export function AsyncSelect<TData extends Entity>({
   queryKey,
   endpoint = queryKey,
   ...props
-}: AsyncSelectProps): JSX.Element {
+}: AsyncSelectProps<Record<string, any>>): JSX.Element {
   const { data } = useQuery<TData[]>(queryKey, api.getEntities<TData>(endpoint));
 
-  const mutation = useCreatePosition(endpoint, queryKey, () => setValue?.('position', ''));
+  const mutation = useCreateElement(endpoint, queryKey, () => setValue?.('position', ''));
 
   return (
     <Select

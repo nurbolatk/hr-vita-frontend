@@ -1,2 +1,1 @@
-export * from './PositionsSelect';
-export * from '../../types/Entity.type';
+export * from './component';
