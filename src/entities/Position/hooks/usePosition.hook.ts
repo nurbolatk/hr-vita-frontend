@@ -2,12 +2,13 @@ import { useAuth } from 'app/providers';
 import { api } from 'entities/Position/api';
 import { Position } from 'entities/Position/types';
 import { useMutation, useQueryClient } from 'react-query';
+import { GeneralError } from 'shared/types';
 
-export function useCreatePosition() {
+export function useCreatePosition(resetField?: () => void) {
   const { token } = useAuth();
   const queryClient = useQueryClient();
 
-  const mutation = useMutation(
+  const mutation = useMutation<Position, GeneralError, string>(
     (name: string) => {
       return api.createEntity({ name }, token);
     },
@@ -32,6 +33,7 @@ export function useCreatePosition() {
         queryClient.invalidateQueries('positions');
       },
       onError(err, variables, recover) {
+        resetField?.();
         return typeof recover === 'function' ? recover() : null;
       },
     }

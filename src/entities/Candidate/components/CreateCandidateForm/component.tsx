@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, TextInput } from '@mantine/core';
-import { useForm } from 'react-hook-form';
-import { api } from 'entities/Candidate';
+import { Controller, useForm } from 'react-hook-form';
+// import { api } from 'entities/Candidate';
 import { PositionsSelect } from 'entities/Position/components';
 import { NewCandidateFields } from '../../types';
 
@@ -9,11 +9,14 @@ export function CreateCandidateForm(): JSX.Element {
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
     formState: { errors },
   } = useForm<NewCandidateFields>();
 
   const onSubmit = (form: NewCandidateFields) => {
-    api.createEntity(form);
+    console.log(form);
+    // api.createEntity(form);
   };
 
   return (
@@ -75,7 +78,18 @@ export function CreateCandidateForm(): JSX.Element {
           </div>
 
           <div className="sm:grid gap-x-4 grid-cols-2">
-            <PositionsSelect />
+            <Controller
+              control={control}
+              name="position"
+              rules={{ required: 'Надо выбрать' }}
+              render={({ field: { value, onChange }, fieldState: { error } }) => {
+                return (
+                  <div>
+                    <PositionsSelect setValue={setValue} value={value} onChange={onChange} error={error?.message} />
+                  </div>
+                );
+              }}
+            />
           </div>
           <Button type="submit">Create</Button>
         </form>
