@@ -1,5 +1,5 @@
 import { GeneralError } from 'shared/types';
-import { auth } from 'entities/Session';
+// import { auth } from 'entities/Session';
 
 const api = process.env.REACT_APP_BACKEND_URL;
 
@@ -19,8 +19,8 @@ function transformError(error: GeneralError | string): GeneralError {
 }
 
 function handleAuthError(error?: GeneralError | string): Promise<GeneralError> {
-  auth.logout();
-  window.location.assign('/');
+  // auth.logout();
+  // window.location.assign('/');
   return Promise.reject(error ? transformError(error) : { message: 'Token expired' });
 }
 

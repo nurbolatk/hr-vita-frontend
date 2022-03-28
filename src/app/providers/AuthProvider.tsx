@@ -7,7 +7,7 @@ import type { Session, User } from 'entities/Session';
 
 type AuthState = {
   user: User | null;
-  token: string | null;
+  token: string;
   login: (form: LoginArguments) => Promise<Session | null>;
   // register: (form: RegisterArguments) => Promise<User | null>;
   logout: () => void;
@@ -78,7 +78,7 @@ function AuthProvider({ children }: WithChildren) {
     <AuthContext.Provider
       value={{
         user: user?.user ?? null,
-        token: user?.token ?? null,
+        token: user?.token ?? '',
         login,
         // register,
         logout,

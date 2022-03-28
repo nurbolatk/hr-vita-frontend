@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card, TextInput } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { api } from 'entities/Candidate';
+import { PositionsSelect } from 'entities/Position/components';
 import { NewCandidateFields } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
@@ -18,7 +19,7 @@ export function CreateCandidateForm(): JSX.Element {
   return (
     <section className="max-w-xl mx-auto">
       <Card withBorder shadow="md" p="lg">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="sm:grid gap-x-4 grid-cols-2">
             <TextInput
               label="Имя"
@@ -71,6 +72,10 @@ export function CreateCandidateForm(): JSX.Element {
               {...register('location')}
               error={errors.location?.message}
             />
+          </div>
+
+          <div className="sm:grid gap-x-4 grid-cols-2">
+            <PositionsSelect />
           </div>
           <Button type="submit">Create</Button>
         </form>
