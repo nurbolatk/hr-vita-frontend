@@ -1,2 +1,1 @@
-export * from './Position.type';
-export * from './CreateEntity.dto';
+export * from './Entity.type';
