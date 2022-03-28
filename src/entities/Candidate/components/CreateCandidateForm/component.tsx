@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button, Card, TextInput } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
-// import { api } from 'entities/Candidate';
+import { api } from 'entities/Candidate';
 import { SelectPosition } from 'entities/Position';
 import { SelectDepartment } from 'entities/Department';
+import { useAuth } from 'app/providers';
 import { NewCandidateFields } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
@@ -15,15 +16,16 @@ export function CreateCandidateForm(): JSX.Element {
     formState: { errors },
   } = useForm<NewCandidateFields>();
 
+  const { token } = useAuth();
   const onSubmit = (form: NewCandidateFields) => {
-    console.log(form);
-    // api.createEntity(form);
+    api.createEntity(form, token);
   };
 
   return (
     <section className="max-w-xl mx-auto">
-      <Card withBorder shadow="md" p="lg">
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card withBorder shadow="md" p="lg">
+          <h3 className="mb-3 text-xl">Profile</h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput
               label="Имя"
@@ -66,7 +68,9 @@ export function CreateCandidateForm(): JSX.Element {
               label="Зарплата"
               className="mb-1 font-medium block"
               type="number"
-              {...register('salary')}
+              {...register('salary', {
+                valueAsNumber: true,
+              })}
               error={errors.salary?.message}
             />
             <TextInput
@@ -98,9 +102,11 @@ export function CreateCandidateForm(): JSX.Element {
               }}
             />
           </div>
-          <Button type="submit">Create</Button>
-        </form>
-      </Card>
+          <Button className="mt-4" type="submit">
+            Create
+          </Button>
+        </Card>
+      </form>
     </section>
   );
 }
