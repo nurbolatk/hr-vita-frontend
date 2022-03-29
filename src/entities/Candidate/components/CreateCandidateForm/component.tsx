@@ -11,7 +11,8 @@ import { NewCandidateFields } from '../../types';
 export type InterviewDto = {
   id: number;
   interviewerId: number | null;
-  datetime: Date | null;
+  date: Date | null;
+  time: Date | null;
 };
 
 type Action =
@@ -20,32 +21,27 @@ type Action =
     }
   | {
       type: 'REMOVE';
-      payload: {
-        id: number;
-      };
+      payload: number;
     }
   | {
       type: 'CHANGE';
-      payload: {
-        id: number;
-        interview: InterviewDto;
-      };
+      payload: InterviewDto;
     };
 
 const reducer = (state: InterviewDto[], action: Action): InterviewDto[] => {
   switch (action.type) {
     case 'ADD':
       return state.length < 5
-        ? [...state, { id: Date.now() * Math.random(), interviewerId: null, datetime: null }]
+        ? [...state, { id: Date.now() * Math.random(), interviewerId: null, date: null, time: null }]
         : state;
     case 'REMOVE':
       return state.filter((inteview) => {
-        return inteview.id !== action.payload.id;
+        return inteview.id !== action.payload;
       });
     case 'CHANGE':
       return state.map((item) => {
         if (item.id === action.payload.id) {
-          return action.payload.interview;
+          return action.payload;
         }
         return item;
       });
@@ -55,10 +51,21 @@ const reducer = (state: InterviewDto[], action: Action): InterviewDto[] => {
 };
 
 const addNewInterview = (dispatch: React.Dispatch<Action>) => dispatch({ type: 'ADD' });
-const removeInterview = (dispatch: React.Dispatch<Action>, id: number) => dispatch({ type: 'REMOVE', payload: { id } });
+const removeInterview = (dispatch: React.Dispatch<Action>, id: number) => dispatch({ type: 'REMOVE', payload: id });
+const changeInterview = (dispatch: React.Dispatch<Action>, interview: InterviewDto) =>
+  dispatch({
+    type: 'CHANGE',
+    payload: interview,
+  });
 
 const CreateInterviewContext = createContext<
-  { state: InterviewDto[]; dispatch: React.Dispatch<Action>; removeInterview: typeof removeInterview } | undefined
+  | {
+      state: InterviewDto[];
+      dispatch: React.Dispatch<Action>;
+      removeInterview: typeof removeInterview;
+      changeInterview: typeof changeInterview;
+    }
+  | undefined
 >(undefined);
 CreateInterviewContext.displayName = 'CreateInterviewContext';
 
@@ -184,7 +191,7 @@ export function CreateCandidateForm(): JSX.Element {
             </Button>
           </div>
 
-          <CreateInterviewContext.Provider value={{ state, dispatch, removeInterview }}>
+          <CreateInterviewContext.Provider value={{ state, dispatch, removeInterview, changeInterview }}>
             {state.map((interview) => (
               <CreateInterview key={interview.id} interview={interview} />
             ))}

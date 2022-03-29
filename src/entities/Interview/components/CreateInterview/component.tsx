@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, UnstyledButton } from '@mantine/core';
 
 import { SelectEmployee } from 'entities/Employee';
@@ -7,11 +7,14 @@ import { CrossIcon } from 'shared/components/icons';
 import { InterviewDto, useCreateInterview } from 'entities/Candidate';
 
 export function CreateInterview({ interview }: { interview: InterviewDto }): JSX.Element {
-  const { removeInterview, dispatch } = useCreateInterview();
+  const { removeInterview, dispatch, changeInterview } = useCreateInterview();
 
-  const [date, onChangeDate] = useState<Date | null>(new Date());
-
-  const [time, setTime] = useState<Date | null>(new Date());
+  const handleChange: (type: 'time' | 'date') => (value: Date | null) => void = (type) => (value) => {
+    if (type === 'time') {
+      return changeInterview(dispatch, { ...interview, time: value });
+    }
+    return changeInterview(dispatch, { ...interview, date: value });
+  };
 
   return (
     <div className="grid grid-cols-[2fr_1fr_auto_auto] gap-x-4 items-baseline">
@@ -19,8 +22,8 @@ export function CreateInterview({ interview }: { interview: InterviewDto }): JSX
         <span className="block mb-1">Interviewer</span>
         <SelectEmployee />
       </Text>
-      <DatePicker value={date} onChange={onChangeDate} label="Date" />
-      <TimeInput value={time} onChange={setTime} label="Time" />
+      <DatePicker value={interview.date} onChange={handleChange('date')} label="Date" />
+      <TimeInput value={interview.time} onChange={handleChange('time')} label="Time" />
       <UnstyledButton className="place-self-stretch mt-5" onClick={() => removeInterview(dispatch, interview.id)}>
         <CrossIcon />
       </UnstyledButton>
