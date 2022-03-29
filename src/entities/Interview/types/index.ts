@@ -1,2 +1,2 @@
-export * from './Entity.type';
+export * from './Interview.type';
 export * from './CreateEntity.dto';
