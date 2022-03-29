@@ -22,8 +22,8 @@ export function CreateCandidateForm(): JSX.Element {
   };
 
   return (
-    <section className="max-w-xl mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <section className=" mx-auto">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg">
           <h3 className="mb-3 text-xl">Profile</h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
@@ -102,9 +102,20 @@ export function CreateCandidateForm(): JSX.Element {
               }}
             />
           </div>
-          <Button className="mt-4" type="submit">
-            Create
-          </Button>
+        </Card>
+        <Card
+          withBorder
+          shadow="sm"
+          p="lg"
+          style={{
+            overflow: 'visible',
+          }}>
+          <div className="flex mb-3 items-center gap-x-4">
+            <h3 className="text-xl">Interviews</h3>
+            <Button size="xs" type="button">
+              Add
+            </Button>
+          </div>
         </Card>
       </form>
     </section>

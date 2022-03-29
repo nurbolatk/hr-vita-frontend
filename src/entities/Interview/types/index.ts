@@ -1,2 +1,2 @@
-export * from './Employee.type';
+export * from './Entity.type';
 export * from './CreateEntity.dto';
