@@ -6,6 +6,7 @@ import { SelectPosition } from 'entities/Position';
 import { SelectDepartment } from 'entities/Department';
 import { useAuth } from 'app/providers';
 import { CreateInterview } from 'entities/Interview';
+import dayjs from 'dayjs';
 import { NewCandidateFields } from '../../types';
 
 export type InterviewDto = {
@@ -93,6 +94,22 @@ export function CreateCandidateForm(): JSX.Element {
 
   const onSubmit = (form: NewCandidateFields) => {
     api.createEntity(form, token);
+  };
+
+  const parseInterviews = () => {
+    // const fullyFilled = state.every((interview) => interview.interviewerId && interview.date && interview.time);
+    // if (fullyFilled) {
+    state.map((interview) => {
+      const date = dayjs(interview.date);
+      const time = dayjs(interview.time);
+      let datetime = date.add(time.hour(), 'hour');
+      datetime = datetime.add(time.minute(), 'minute');
+      return {
+        interviewerId: interview.interviewerId,
+        datetime: datetime.toDate(),
+      };
+    });
+    // }
   };
 
   return (
@@ -196,6 +213,17 @@ export function CreateCandidateForm(): JSX.Element {
               <CreateInterview key={interview.id} interview={interview} />
             ))}
           </CreateInterviewContext.Provider>
+
+          <Button
+            type="button"
+            variant="filled"
+            className="mt-4"
+            onClick={() => {
+              console.log(state);
+              parseInterviews();
+            }}>
+            Submit
+          </Button>
         </Card>
       </form>
     </section>

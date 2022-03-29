@@ -22,7 +22,7 @@ const options: Employee[] = [
 //   return true;
 // };
 
-export function SelectEmployee(): JSX.Element {
+export function SelectEmployee({ onChange }: { onChange: (value: Employee | null) => void }): JSX.Element {
   const { isLoading } = useQuery<Employee[]>('employees', api.getAll);
 
   const [value, setValue] = useState<Employee | null | undefined>();
@@ -33,10 +33,11 @@ export function SelectEmployee(): JSX.Element {
     console.log(`action: ${actionMeta.action}`);
     console.groupEnd();
     setValue(newValue);
+    onChange(newValue);
   };
 
   return (
-    <Select
+    <Select<Employee, false>
       className="w-full"
       isClearable
       isDisabled={isLoading}
