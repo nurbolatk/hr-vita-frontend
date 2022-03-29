@@ -1,3 +1,5 @@
+import { CreateInterviewDto } from 'entities/Interview';
+
 export type NewCandidateFields = {
   firstName: string;
   lastName: string;
@@ -7,4 +9,5 @@ export type NewCandidateFields = {
   location?: string;
   position?: string;
   department?: string;
+  interviews?: CreateInterviewDto[];
 };

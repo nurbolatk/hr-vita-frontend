@@ -1,7 +1,7 @@
 import { client } from 'shared/helpers';
-import { CreateEntityDto, Interview } from '../types';
+import { CreateInterviewDto, Interview } from '../types';
 
-export const createEntity = async (dto: CreateEntityDto) => {
+export const createEntity = async (dto: CreateInterviewDto) => {
   return client<Interview>('entities', { data: dto });
 };
 

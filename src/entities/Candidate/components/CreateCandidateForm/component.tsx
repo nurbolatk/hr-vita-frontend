@@ -5,11 +5,11 @@ import { api } from 'entities/Candidate';
 import { SelectPosition } from 'entities/Position';
 import { SelectDepartment } from 'entities/Department';
 import { useAuth } from 'app/providers';
-import { CreateInterview } from 'entities/Interview';
+import { CreateInterview, CreateInterviewDto } from 'entities/Interview';
 import dayjs from 'dayjs';
 import { NewCandidateFields } from '../../types';
 
-export type InterviewDto = {
+export type InterviewState = {
   id: number;
   interviewerId: number | null;
   date: Date | null;
@@ -26,10 +26,10 @@ type Action =
     }
   | {
       type: 'CHANGE';
-      payload: InterviewDto;
+      payload: InterviewState;
     };
 
-const reducer = (state: InterviewDto[], action: Action): InterviewDto[] => {
+const reducer = (state: InterviewState[], action: Action): InterviewState[] => {
   switch (action.type) {
     case 'ADD':
       return state.length < 5
@@ -53,7 +53,7 @@ const reducer = (state: InterviewDto[], action: Action): InterviewDto[] => {
 
 const addNewInterview = (dispatch: React.Dispatch<Action>) => dispatch({ type: 'ADD' });
 const removeInterview = (dispatch: React.Dispatch<Action>, id: number) => dispatch({ type: 'REMOVE', payload: id });
-const changeInterview = (dispatch: React.Dispatch<Action>, interview: InterviewDto) =>
+const changeInterview = (dispatch: React.Dispatch<Action>, interview: InterviewState) =>
   dispatch({
     type: 'CHANGE',
     payload: interview,
@@ -61,7 +61,7 @@ const changeInterview = (dispatch: React.Dispatch<Action>, interview: InterviewD
 
 const CreateInterviewContext = createContext<
   | {
-      state: InterviewDto[];
+      state: InterviewState[];
       dispatch: React.Dispatch<Action>;
       removeInterview: typeof removeInterview;
       changeInterview: typeof changeInterview;
@@ -87,29 +87,28 @@ export function CreateCandidateForm(): JSX.Element {
     setValue,
     formState: { errors },
   } = useForm<NewCandidateFields>();
+  const { token } = useAuth();
 
   const [state, dispatch] = useReducer(reducer, []);
 
-  const { token } = useAuth();
-
-  const onSubmit = (form: NewCandidateFields) => {
-    api.createEntity(form, token);
-  };
-
-  const parseInterviews = () => {
-    // const fullyFilled = state.every((interview) => interview.interviewerId && interview.date && interview.time);
-    // if (fullyFilled) {
-    state.map((interview) => {
+  const parseInterviews = (): CreateInterviewDto[] => {
+    return state.map((interview) => {
       const date = dayjs(interview.date);
       const time = dayjs(interview.time);
       let datetime = date.add(time.hour(), 'hour');
       datetime = datetime.add(time.minute(), 'minute');
       return {
-        interviewerId: interview.interviewerId,
+        interviewerId: interview.interviewerId as number,
         datetime: datetime.toDate(),
       };
     });
-    // }
+  };
+  const onSubmit = (form: NewCandidateFields) => {
+    const fullyFilled = state.every((interview) => interview.interviewerId && interview.date && interview.time);
+    if (fullyFilled) {
+      const interviews = parseInterviews();
+      api.createEntity({ ...form, interviews: interviews.length > 0 ? interviews : undefined }, token);
+    }
   };
 
   return (
@@ -122,16 +121,22 @@ export function CreateCandidateForm(): JSX.Element {
               label="Имя"
               className="font-medium block"
               type="text"
-              required
-              {...register('firstName', { required: 'Необходимо заполнить' })}
+              // required
+              {...register(
+                'firstName'
+                // { required: 'Необходимо заполнить' }
+              )}
               error={errors.firstName?.message}
             />
             <TextInput
               label="Фамилия"
               className="font-medium block"
               type="text"
-              required
-              {...register('lastName', { required: 'Необходимо заполнить' })}
+              // required
+              {...register(
+                'lastName'
+                // { required: 'Необходимо заполнить' }
+              )}
               error={errors.lastName?.message}
             />
           </div>
@@ -141,8 +146,11 @@ export function CreateCandidateForm(): JSX.Element {
               label="Эл. почта"
               className="font-medium block"
               type="email"
-              required
-              {...register('email', { required: 'Необходимо заполнить' })}
+              // required
+              {...register(
+                'email'
+                // { required: 'Необходимо заполнить' }
+              )}
               error={errors.email?.message}
             />
             <TextInput
@@ -177,7 +185,7 @@ export function CreateCandidateForm(): JSX.Element {
             <Controller
               control={control}
               name="position"
-              rules={{ required: 'Надо выбрать' }}
+              // rules={{ required: 'Надо выбрать' }}
               render={({ field: { value, onChange }, fieldState: { error } }) => {
                 return <SelectPosition setValue={setValue} value={value} onChange={onChange} error={error?.message} />;
               }}
@@ -185,7 +193,7 @@ export function CreateCandidateForm(): JSX.Element {
             <Controller
               control={control}
               name="department"
-              rules={{ required: 'Надо выбрать' }}
+              // rules={{ required: 'Надо выбрать' }}
               render={({ field: { value, onChange }, fieldState: { error } }) => {
                 return (
                   <SelectDepartment setValue={setValue} value={value} onChange={onChange} error={error?.message} />
