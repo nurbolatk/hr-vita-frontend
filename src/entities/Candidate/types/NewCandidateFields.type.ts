@@ -10,4 +10,5 @@ export type NewCandidateFields = {
   position?: string;
   department?: string;
   interviews?: CreateInterviewDto[];
+  documentId?: number;
 };

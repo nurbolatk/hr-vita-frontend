@@ -45,11 +45,15 @@ export function CreateCandidateForm(): JSX.Element {
       };
     });
   };
+
   const onSubmit = (form: NewCandidateFields) => {
     const fullyFilled = newInterviews.every((interview) => interview.interviewerId && interview.date && interview.time);
     if (fullyFilled) {
       const interviews = parseInterviews();
-      api.createEntity({ ...form, interviews: interviews.length > 0 ? interviews : undefined }, token);
+      api.createEntity(
+        { ...form, interviews: interviews.length > 0 ? interviews : undefined, documentId: uploaded?.id },
+        token
+      );
     }
   };
 
