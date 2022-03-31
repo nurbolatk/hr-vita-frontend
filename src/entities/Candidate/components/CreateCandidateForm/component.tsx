@@ -4,7 +4,7 @@ import { useAuth } from 'app/providers';
 import dayjs from 'dayjs';
 import { api } from 'entities/Candidate';
 import { SelectDepartment } from 'entities/Department';
-import { UploadFile } from 'entities/Files';
+import { UploadFile, UserDocument } from 'entities/Files';
 import {
   addNewInterview,
   changeInterview,
@@ -15,7 +15,7 @@ import {
   removeInterview,
 } from 'entities/Interview';
 import { SelectPosition } from 'entities/Position';
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { NewCandidateFields } from '../../types';
 
@@ -30,6 +30,8 @@ export function CreateCandidateForm(): JSX.Element {
   const { token } = useAuth();
 
   const [newInterviews, dispatch] = useReducer(newInterviewsReducer, []);
+
+  const [uploaded, setUploaded] = useState<UserDocument | null>(null);
 
   const parseInterviews = (): CreateInterviewDto[] => {
     return newInterviews.map((interview) => {
@@ -179,7 +181,7 @@ export function CreateCandidateForm(): JSX.Element {
           <div className="flex mb-3 items-center gap-x-4">
             <h3 className="text-xl">Documents</h3>
           </div>
-          <UploadFile />
+          <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
         </Card>
 
         <Button type="submit" variant="filled" className="mt-4">

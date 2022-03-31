@@ -2,10 +2,10 @@ import { Alert, Group, MantineTheme, Text, useMantineTheme } from '@mantine/core
 import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useAuth } from 'app/providers';
 import { api } from 'entities/Files/api';
-import React, { SVGAttributes, useState } from 'react';
+import React, { SVGAttributes } from 'react';
 import { useMutation } from 'react-query';
 import { CheckCircleIcon, CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
-import type { UserDocument } from '../../types';
+import { Props } from './props';
 
 function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
   return status.accepted
@@ -44,10 +44,9 @@ export const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) =>
   </Group>
 );
 
-function UploadFile() {
+function UploadFile({ uploaded, setUploaded }: Props) {
   const theme = useMantineTheme();
   const { token } = useAuth();
-  const [uploaded, setFile] = useState<UserDocument | null>(null);
 
   const mutation = useMutation(
     (file: File) => {
@@ -57,7 +56,7 @@ function UploadFile() {
     },
     {
       onSuccess(result) {
-        setFile(result);
+        setUploaded(result);
       },
     }
   );
