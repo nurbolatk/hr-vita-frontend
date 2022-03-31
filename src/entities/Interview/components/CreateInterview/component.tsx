@@ -4,7 +4,7 @@ import { Text, UnstyledButton } from '@mantine/core';
 import { Employee, SelectEmployee } from 'entities/Employee';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { CrossIcon } from 'shared/components/icons';
-import { InterviewState, useCreateInterview } from 'entities/Candidate';
+import { InterviewState, useCreateInterview } from 'entities/Interview';
 
 export function CreateInterview({ interview }: { interview: InterviewState }): JSX.Element {
   const { removeInterview, dispatch, changeInterview } = useCreateInterview();

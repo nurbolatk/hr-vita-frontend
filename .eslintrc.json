@@ -30,6 +30,7 @@
         // default props are deprecated in functional components typed as regular JS functions
         "react/require-default-props": "off",
         "react/jsx-props-no-spreading": "off",
-        "react/jsx-no-constructed-context-values": "off"
+        "react/jsx-no-constructed-context-values": "off",
+        "no-nested-ternary": "off"
     }
 }
