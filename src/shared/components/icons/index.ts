@@ -5,3 +5,5 @@ export { ReactComponent as CheckIcon } from './CheckIcon.svg';
 export { ReactComponent as StarIcon } from './StarIcon.svg';
 export { ReactComponent as EyeOpenIcon } from './EyeOpenIcon.svg';
 export { ReactComponent as EyeOffIcon } from './EyeOffIcon.svg';
+export { ReactComponent as UploadIcon } from './UploadIcon.svg';
+export { ReactComponent as ImageIcon } from './ImageIcon.svg';

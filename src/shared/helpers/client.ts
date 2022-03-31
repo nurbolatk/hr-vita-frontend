@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { GeneralError } from 'shared/types';
 // import { auth } from 'entities/Session';
 
