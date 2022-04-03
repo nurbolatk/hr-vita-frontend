@@ -8,24 +8,18 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 export function HomeRoute(): JSX.Element {
   return (
     <div>
-      <Swiper
-        modules={[Autoplay]}
-        spaceBetween={50}
-        slidesPerView={1}
-        autoplay
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}>
+      <Swiper modules={[Autoplay]} spaceBetween={50} slidesPerView={1} autoplay>
         <SwiperSlide>
-          <div className="h-72 w-full bg-purple-300 rounded-lg">news! 1</div>
+          <div className="h-72 w-full bg-emerald-500 p-4 text-emerald-50 rounded-lg">news! 1</div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="h-72 w-full bg-purple-300 rounded-lg">news! 2</div>
+          <div className="h-72 w-full bg-emerald-500 p-4 text-emerald-50 rounded-lg">news! 2</div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="h-72 w-full bg-purple-300 rounded-lg">news! 3</div>
+          <div className="h-72 w-full bg-emerald-500 p-4 text-emerald-50 rounded-lg">news! 3</div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="h-72 w-full bg-purple-300 rounded-lg">news! 4</div>
+          <div className="h-72 w-full bg-emerald-500 p-4 text-emerald-50 rounded-lg">news! 4</div>
         </SwiperSlide>
       </Swiper>
 

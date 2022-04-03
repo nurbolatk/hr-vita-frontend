@@ -2,6 +2,7 @@ import { MantineProvider } from '@mantine/core';
 import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
 import { HomeRoute } from 'pages/home';
+import { RecruitingIndexRoute } from 'pages/recruiting';
 import { ChangePasswordRoute } from 'pages/users/change-password';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -28,6 +29,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomeRoute />} />
                 <Route path="cabinet" element={<CabinateRoute />} />
+                <Route path="recruiting" element={<RecruitingIndexRoute />} />
                 <Route path="candidates">
                   <Route path="new" element={<NewCandidateRoute />} />
                 </Route>

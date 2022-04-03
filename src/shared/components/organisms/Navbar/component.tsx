@@ -18,10 +18,18 @@ export function Navbar(): JSX.Element {
         </Text>
       </div>
       <ul className="flex items-center gap-x-4">
+        <li>
+          <Link to="/">Главная</Link>
+        </li>
         {isHr && (
-          <li>
-            <Link to="/applications">Заявки</Link>
-          </li>
+          <>
+            <li>
+              <Link to="/recruiting">Recruiting</Link>
+            </li>
+            <li>
+              <Link to="/employees">Employees</Link>
+            </li>
+          </>
         )}
       </ul>
       <ul className="md:w-0 md:flex-1 flex justify-end gap-x-4 items-center">
