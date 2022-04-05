@@ -1,11 +1,11 @@
+import { UnstyledButton } from '@mantine/core';
+import cn from 'classnames';
+import FocusTrap from 'focus-trap-react';
 import * as React from 'react';
 import { HTMLAttributes, KeyboardEventHandler, MouseEventHandler, useCallback } from 'react';
-import cn from 'classnames';
-import { WithChildren } from 'shared/types';
-import { ReactPortal } from 'shared/components/organisms/ReactPortal';
 import { CrossIcon } from 'shared/components/icons';
-import FocusTrap from 'focus-trap-react';
-import { UnstyledButton } from '@mantine/core';
+import { ReactPortal } from 'shared/components/organisms/ReactPortal';
+import { WithChildren } from 'shared/types';
 import { useModalState } from '../context';
 
 type Props = {
@@ -38,7 +38,7 @@ export function ModalContent({ children, title, className, ...rest }: Props) {
   );
 
   return (
-    <ReactPortal wrapperId="modal-portal">
+    <ReactPortal wrapperId="modal-portal" className="relative z-10">
       <FocusTrap active={show}>
         {/* we have to use div */}
         {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}

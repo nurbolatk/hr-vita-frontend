@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createWrapperAndAppendToBody } from 'shared/utils';
 import { Props } from './props';
 
-export function ReactPortal({ children, wrapperId }: Props): JSX.Element | null {
+export function ReactPortal({ children, wrapperId, className }: Props): JSX.Element | null {
   const [container, setContainer] = React.useState<HTMLElement | null>(null);
 
   React.useLayoutEffect(() => {
@@ -24,6 +24,9 @@ export function ReactPortal({ children, wrapperId }: Props): JSX.Element | null 
   }, [wrapperId]);
 
   if (container === null) return null;
+  const classes = className?.split(' ') ?? [];
+
+  container.classList.add(...classes);
 
   return ReactDOM.createPortal(children, container);
 }
