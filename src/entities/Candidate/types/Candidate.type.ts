@@ -1,4 +1,6 @@
 import { Department } from 'entities/Department/types';
+import { UserDocument } from 'entities/Files';
+import { Interview } from 'entities/Interview';
 import { Position } from 'entities/Position/types';
 
 export type Candidate = {
@@ -14,6 +16,8 @@ export type Candidate = {
   status: CandidateStatus;
   department: Department;
   position: Position;
+  interviews: Interview[];
+  document?: UserDocument;
 };
 
 export enum CandidateStatus {

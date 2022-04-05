@@ -11,22 +11,45 @@ export function RecruitingIndexRoute() {
   const rows = candidates?.map((candidate: Candidate) => {
     return (
       <tr key={candidate.id}>
-        <td>{candidate.firstName}</td>
-        <td>{candidate.lastName}</td>
-        <td>{candidate.position.name}</td>
-        <td>{candidate.department.name}</td>
-        <td>{candidate.salary}</td>
-        <td>{parseCandidateStatus(candidate)}</td>
         <td>
+          <Link className="block" to={`/recruiting/${candidate.id}`}>
+            {candidate.firstName}
+          </Link>
+        </td>
+        <td>
+          <Link className="block" to={`/recruiting/${candidate.id}`}>
+            {candidate.lastName}
+          </Link>
+        </td>
+        <td>
+          <Link className="block" to={`/recruiting/${candidate.id}`}>
+            {candidate.position.name}
+          </Link>
+        </td>
+        <td>
+          <Link className="block" to={`/recruiting/${candidate.id}`}>
+            {candidate.department.name}
+          </Link>
+        </td>
+        <td>
+          <Link className="block" to={`/recruiting/${candidate.id}`}>
+            {candidate.salary}
+          </Link>
+        </td>
+
+        <td>
+          <Link className="block" to={`/recruiting/${candidate.id}`}>
+            {parseCandidateStatus(candidate)}
+          </Link>
+        </td>
+        {/* <td>
           <Button compact size="xs" color="red">
             Approve
           </Button>
-        </td>
+        </td> */}
       </tr>
     );
   });
-
-  console.log(rows);
 
   return (
     <div>
@@ -47,7 +70,7 @@ export function RecruitingIndexRoute() {
               <th>Department</th>
               <th>Salary</th>
               <th>Status</th>
-              <th>Action</th>
+              {/* <th>Action</th> */}
             </tr>
           </thead>
 

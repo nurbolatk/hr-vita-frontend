@@ -2,6 +2,7 @@
 import { Alert, Button, Card, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import dayjs from 'dayjs';
+import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';
 import { SelectDepartment } from 'entities/Department';
 import { UploadFile, UserDocument } from 'entities/Files';
@@ -17,16 +18,27 @@ import {
 import { SelectPosition } from 'entities/Position';
 import React, { useReducer, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import type { NewCandidateFields } from '../../types';
+import type { DefaultCandidateFields, NewCandidateFields } from '../../types';
 
-export function CreateCandidateForm(): JSX.Element {
+export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandidateFields }): JSX.Element {
   const {
     register,
     handleSubmit,
     control,
     setValue,
-    formState: { errors },
-  } = useForm<NewCandidateFields>();
+    formState: { isDirty, errors },
+    getValues,
+  } = useForm<NewCandidateFields>({
+    defaultValues: defaultValue,
+  });
+
+  const values = getValues();
+
+  const isChanged = !dequal(defaultValue, values);
+  console.log(defaultValue, values);
+
+  console.log({ isDirty, isChanged });
+
   const { token } = useAuth();
 
   const [newInterviews, dispatch] = useReducer(newInterviewsReducer, []);
@@ -66,7 +78,10 @@ export function CreateCandidateForm(): JSX.Element {
     <section className=" mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg">
-          <h3 className="mb-3 text-xl">Profile</h3>
+          <h3 className="mb-3 text-xl">
+            Profile
+            {isChanged && <Button>Save</Button>}
+          </h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput
               label="Имя"
@@ -117,10 +132,8 @@ export function CreateCandidateForm(): JSX.Element {
             <TextInput
               label="Зарплата"
               className="mb-1 font-medium block"
-              type="number"
-              {...register('salary', {
-                valueAsNumber: true,
-              })}
+              type="tel"
+              {...register('salary')}
               error={errors.salary?.message}
             />
             <TextInput

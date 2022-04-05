@@ -1,2 +1,2 @@
-export * from './Entity.type';
+export * from './Candidate.type';
 export * from './NewCandidateFields.type';
