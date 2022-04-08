@@ -1,11 +1,8 @@
 import dayjs from 'dayjs';
-import { dequal } from 'dequal';
 import { Interview, InterviewState } from '..';
 
 export function interviewToInterviewState(interviews: Interview[]): InterviewState[] {
   return interviews.map((interview) => {
-    console.log('are they equal?', dequal(new Date(interview.datetime), new Date(interview.datetime)));
-
     return {
       id: interview.id,
       date: new Date(interview.datetime),

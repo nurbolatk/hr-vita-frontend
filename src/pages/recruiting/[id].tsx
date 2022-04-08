@@ -10,7 +10,6 @@ export function RecruitingDetailsRoute() {
   const id = parseInt(params.id as string, 10);
 
   const { data: candidate, isLoading } = useQuery<Candidate>(['candidate', id], api.getOneById(id));
-  console.log({ id, candidate });
   return (
     <div>
       <LoadingOverlay visible={isLoading} />

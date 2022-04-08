@@ -16,7 +16,7 @@ import {
 } from 'entities/Interview';
 import { combineDateAndTime } from 'entities/Interview/helper';
 import { SelectPosition } from 'entities/Position';
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { DefaultCandidateFields, NewCandidateFields } from '../../types';
 
@@ -66,14 +66,18 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
 
   // edit form
   const formValues = getValues();
-  const values = {
-    ...formValues,
-    interviews: newInterviews,
-  };
-  console.log(values);
+  const values = useMemo(
+    () => ({
+      ...formValues,
+      interviews: newInterviews,
+      documents: uploaded ? [uploaded] : [],
+    }),
+    [formValues, newInterviews, uploaded]
+  );
+  console.log({ values });
 
-  const isChanged = !dequal(defaultValue, values);
-  console.log(defaultValue);
+  const isChanged = useMemo(() => !dequal(defaultValue, values), [defaultValue, values]);
+  console.log({ defaultValue });
 
   console.log({ isDirty, isChanged });
 
@@ -81,9 +85,9 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     <section className=" mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg">
-          <h3 className="mb-3 text-xl">
+          <h3 className="mb-3 text-xl flex items-baseline justify-between">
             Profile
-            {isChanged && <Button>Save</Button>}
+            {isChanged && <Button size="sm">Save</Button>}
           </h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput
@@ -209,8 +213,8 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
           <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
         </Card>
 
-        <Button type="submit" variant="filled" className="mt-4">
-          Submit
+        <Button type="submit" variant="filled" className="mt-4" disabled={!isChanged}>
+          Update changes
         </Button>
       </form>
     </section>
