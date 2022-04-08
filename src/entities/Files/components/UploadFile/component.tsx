@@ -5,6 +5,7 @@ import { api } from 'entities/Files/api';
 import React, { SVGAttributes } from 'react';
 import { useMutation } from 'react-query';
 import { CheckCircleIcon, CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
+import { formatBytes } from 'shared/helpers';
 import { Props } from './props';
 
 function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
@@ -61,21 +62,43 @@ function UploadFile({ uploaded, setUploaded }: Props) {
     }
   );
 
-  return uploaded ? (
-    <Alert color="green" title="Success!" icon={<CheckCircleIcon />}>
-      <strong>{uploaded.originalname}</strong> was uploaded successfully
-    </Alert>
-  ) : (
-    <Dropzone
-      onDrop={(files) => {
-        mutation.mutate(files[0]);
-      }}
-      onReject={(files) => console.log('rejected files', files)}
-      maxSize={3 * 1024 ** 2}
-      accept={IMAGE_MIME_TYPE}
-      loading={mutation.isLoading}>
-      {(status) => dropzoneChildren(status, theme)}
-    </Dropzone>
+  return (
+    <div>
+      {mutation.isSuccess && (
+        <Alert color="green" title="Success!" className="mb-4" icon={<CheckCircleIcon />}>
+          File <strong>{uploaded?.originalname}</strong> was uploaded successfully
+        </Alert>
+      )}
+      {uploaded && (
+        <Alert
+          variant="light"
+          color="gray"
+          className="mb-4"
+          withCloseButton
+          closeButtonLabel="Delete"
+          onClose={() => {
+            setUploaded(null);
+            mutation.reset();
+          }}
+          title={
+            <p>
+              <strong>{uploaded?.originalname}</strong>
+            </p>
+          }>
+          File size {formatBytes(uploaded.size)}
+        </Alert>
+      )}
+      <Dropzone
+        onDrop={(files) => {
+          mutation.mutate(files[0]);
+        }}
+        onReject={(files) => console.log('rejected files', files)}
+        maxSize={3 * 1024 ** 2}
+        accept={IMAGE_MIME_TYPE}
+        loading={mutation.isLoading}>
+        {(status) => dropzoneChildren(status, theme)}
+      </Dropzone>
+    </div>
   );
 }
 

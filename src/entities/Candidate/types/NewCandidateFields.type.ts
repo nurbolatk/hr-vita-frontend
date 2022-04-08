@@ -35,5 +35,5 @@ export type DefaultCandidateFields = {
   position: string;
   department: string;
   interviews: InterviewState[];
-  document?: UserDocument;
+  documents?: UserDocument[];
 };

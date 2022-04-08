@@ -36,7 +36,7 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
 
   const [newInterviews, dispatch] = useReducer(newInterviewsReducer, defaultValue.interviews);
 
-  const [uploaded, setUploaded] = useState<UserDocument | null>(null);
+  const [uploaded, setUploaded] = useState<UserDocument | null | undefined>(defaultValue.documents?.[0]);
 
   const parseInterviews = (): CreateInterviewDto[] => {
     return newInterviews.map((interview) => {
@@ -72,9 +72,8 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
   };
   console.log(values);
 
-  const isChanged = !dequal(defaultValue.interviews, newInterviews);
-  // const isChanged = !dequal(defaultValue, values);
-  console.log(defaultValue.interviews, newInterviews);
+  const isChanged = !dequal(defaultValue, values);
+  console.log(defaultValue);
 
   console.log({ isDirty, isChanged });
 
