@@ -1,13 +1,25 @@
 import { api } from 'entities/Employee/api';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import Select, { OnChangeValue } from 'react-select';
 import type { Employee } from '../../types';
 
-export function SelectEmployee({ onChange }: { onChange: (value: Employee | null) => void }): JSX.Element {
+export function SelectEmployee({
+  onChange,
+  defaultValue,
+}: {
+  onChange: (value: Employee | null) => void;
+  defaultValue?: number | null;
+}): JSX.Element {
   const { data, isLoading } = useQuery<Employee[]>('employees', api.getAll);
 
   const [value, setValue] = useState<Employee | null | undefined>();
+
+  useEffect(() => {
+    if (defaultValue !== null && defaultValue !== undefined && !!data) {
+      setValue(data.find((employee) => employee.id === defaultValue));
+    }
+  }, [data, defaultValue]);
 
   const handleChange = (newValue: OnChangeValue<Employee, false>) => {
     setValue(newValue);

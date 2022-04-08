@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { Alert, Button, Card, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
-import dayjs from 'dayjs';
 import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';
 import { SelectDepartment } from 'entities/Department';
@@ -15,6 +14,7 @@ import {
   newInterviewsReducer,
   removeInterview,
 } from 'entities/Interview';
+import { combineDateAndTime } from 'entities/Interview/helper';
 import { SelectPosition } from 'entities/Position';
 import React, { useReducer, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -32,28 +32,18 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     defaultValues: defaultValue,
   });
 
-  const values = getValues();
-
-  const isChanged = !dequal(defaultValue, values);
-  console.log(defaultValue, values);
-
-  console.log({ isDirty, isChanged });
-
   const { token } = useAuth();
 
-  const [newInterviews, dispatch] = useReducer(newInterviewsReducer, []);
+  const [newInterviews, dispatch] = useReducer(newInterviewsReducer, defaultValue.interviews);
 
   const [uploaded, setUploaded] = useState<UserDocument | null>(null);
 
   const parseInterviews = (): CreateInterviewDto[] => {
     return newInterviews.map((interview) => {
-      const date = dayjs(interview.date);
-      const time = dayjs(interview.time);
-      let datetime = date.add(time.hour(), 'hour');
-      datetime = datetime.add(time.minute(), 'minute');
+      const datetime = combineDateAndTime(interview.date!, interview.time!);
       return {
         interviewerId: interview.interviewerId as number,
-        datetime: datetime.toDate(),
+        datetime,
       };
     });
   };
@@ -73,6 +63,20 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
       );
     }
   };
+
+  // edit form
+  const formValues = getValues();
+  const values = {
+    ...formValues,
+    interviews: newInterviews,
+  };
+  console.log(values);
+
+  const isChanged = !dequal(defaultValue.interviews, newInterviews);
+  // const isChanged = !dequal(defaultValue, values);
+  console.log(defaultValue.interviews, newInterviews);
+
+  console.log({ isDirty, isChanged });
 
   return (
     <section className=" mx-auto">
@@ -132,7 +136,7 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
             <TextInput
               label="Зарплата"
               className="mb-1 font-medium block"
-              type="tel"
+              type="number"
               {...register('salary')}
               error={errors.salary?.message}
             />

@@ -24,7 +24,7 @@ export function CreateInterview({ interview }: { interview: InterviewState }): J
     <div className="grid grid-cols-[2fr_1fr_auto_auto] gap-x-4 items-baseline">
       <Text component="label" size="sm" weight={500}>
         <span className="block mb-1">Interviewer</span>
-        <SelectEmployee onChange={handleInterviewerChange} />
+        <SelectEmployee onChange={handleInterviewerChange} defaultValue={interview.interviewerId} />
       </Text>
       <DatePicker value={interview.date} onChange={handleChange('date')} label="Date" />
       <TimeInput value={interview.time} onChange={handleChange('time')} label="Time" />

@@ -1,5 +1,6 @@
 import { LoadingOverlay } from '@mantine/core';
 import { api, Candidate, EditCandidateForm } from 'entities/Candidate';
+import { interviewToInterviewState } from 'entities/Interview/helper';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -22,6 +23,7 @@ export function RecruitingDetailsRoute() {
             phone: candidate.phone ?? '',
             salary: String(candidate.salary ?? ''),
             location: candidate.location ?? '',
+            interviews: interviewToInterviewState(candidate.interviews),
           }}
         />
       )}

@@ -1,5 +1,5 @@
 import { UserDocument } from 'entities/Files';
-import { CreateInterviewDto, Interview } from 'entities/Interview';
+import { CreateInterviewDto, InterviewState } from 'entities/Interview';
 
 export type NewCandidateFields = {
   firstName: string;
@@ -34,6 +34,6 @@ export type DefaultCandidateFields = {
   location: string;
   position: string;
   department: string;
-  interviews: Interview[];
+  interviews: InterviewState[];
   document?: UserDocument;
 };
