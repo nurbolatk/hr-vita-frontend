@@ -1,1 +1,1 @@
-export * as api from './entity.api';
+export * as api from './interviews.api';

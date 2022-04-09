@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Text, TextInput } from '@mantine/core';
 
 import { Employee, SelectEmployee } from 'entities/Employee';
 import { DatePicker, TimeInput } from '@mantine/dates';
-import { InterviewState, api, CreateInterviewNOO } from 'entities/Interview';
+import { api, CreateInterviewNOO, Interview, UpdateInterviewNOO } from 'entities/Interview';
 import { useForm } from 'react-hook-form';
 import { Modal } from 'shared/components/organisms';
 import { useIdParam } from 'shared/hooks';
-import { useMutation } from 'react-query';
+import { QueryClient, useMutation, useQueryClient } from 'react-query';
+import { useModalState } from 'shared/components/organisms/Modal/context';
 
 type InterviewFormFields = {
   name: string;
@@ -21,9 +22,17 @@ type InterviewStateFields = {
   interviewer: Employee | null;
 };
 
-export function InterviewDetailsModal({ defaultValue }: { defaultValue?: InterviewState }): JSX.Element {
-  const { register, handleSubmit } = useForm<InterviewFormFields>();
+const onSuccessHandler = (client: QueryClient, candidateId: number, cb: () => void) => {
+  client.invalidateQueries(['interviews', candidateId]);
+  cb();
+};
+
+export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Interview | null }): JSX.Element {
   const intervieweeId = useIdParam();
+  const { closeModal } = useModalState();
+  const queryClient = useQueryClient();
+
+  const { register, handleSubmit, setValue } = useForm<InterviewFormFields>();
   const [state, setState] = useState<InterviewStateFields>({
     date: null,
     start: null,
@@ -32,7 +41,29 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
   });
   const [error, setError] = useState<Boolean>(false);
 
-  const mutation = useMutation((data: CreateInterviewNOO) => api.createInterview(data));
+  useEffect(() => {
+    if (defaultValue) {
+      setState({
+        date: defaultValue?.date ?? null,
+        start: defaultValue?.start ?? null,
+        end: defaultValue?.end ?? null,
+        interviewer: defaultValue?.interviewer ?? null,
+      });
+      setValue('name', defaultValue?.name ?? '');
+      setValue('location', defaultValue?.location ?? '');
+    }
+  }, [defaultValue, setValue]);
+
+  const creation = useMutation((data: CreateInterviewNOO) => api.createInterview(data), {
+    onSuccess: () => {
+      onSuccessHandler(queryClient, intervieweeId, closeModal);
+    },
+  });
+  const updating = useMutation((data: UpdateInterviewNOO) => api.updateInterview(data), {
+    onSuccess: () => {
+      onSuccessHandler(queryClient, intervieweeId, closeModal);
+    },
+  });
 
   const handleChange: (type: 'start' | 'end' | 'date') => (value: Date | null) => void = (type) => (value) => {
     if (type === 'start') {
@@ -43,7 +74,6 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
     }
     return setState({ ...state, date: value });
   };
-  console.log(state);
 
   const handleInterviewerChange = (interviewer: Employee | null) => {
     setState({
@@ -56,15 +86,30 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
     if (state.date && state.start && state.end && state.interviewer) {
       const { name, location } = form;
       const { date, start, end, interviewer } = state;
-      mutation.mutate({
-        intervieweeId,
-        interviewerId: interviewer.id,
-        date,
-        start,
-        end,
-        name,
-        location,
-      });
+      if (defaultValue) {
+        // update
+        updating.mutate({
+          id: defaultValue.id,
+          intervieweeId,
+          interviewerId: interviewer.id,
+          date,
+          start,
+          end,
+          name,
+          location,
+        });
+      } else {
+        // create
+        creation.mutate({
+          intervieweeId,
+          interviewerId: interviewer.id,
+          date,
+          start,
+          end,
+          name,
+          location,
+        });
+      }
     } else {
       setError(true);
     }
@@ -119,7 +164,6 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
           </Button>
         </div>
       </form>
-      <Modal.CloseOn condition={mutation.isSuccess} />
     </Modal.Content>
   );
 }

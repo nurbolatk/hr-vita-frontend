@@ -1,9 +1,14 @@
 import { client } from 'shared/helpers';
 import { parseInterviewNIOs } from 'entities/Interview/helper';
-import { CreateInterviewNOO, Interview, InterviewNIO } from '../types';
+import { CreateInterviewNOO, Interview, InterviewNIO, UpdateInterviewNOO } from '../types';
 
 export const createInterview = async (data: CreateInterviewNOO) => {
-  return client<Interview>('interview', { data });
+  return client<Interview>('interviews', { data });
+};
+
+export const updateInterview = async (data: UpdateInterviewNOO) => {
+  const { id, ...rest } = data;
+  return client<Interview>(`interviews/${id}`, { data: rest, method: 'PUT' });
 };
 
 export const getAll = async (candidateId: number) => {

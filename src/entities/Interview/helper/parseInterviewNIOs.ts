@@ -11,6 +11,9 @@ export function parseInterviewNIOs(interviews: InterviewNIO[]): Interview[] {
     return {
       ...interview,
       datetime,
+      date: new Date(interview.date),
+      start: new Date(interview.start),
+      end: new Date(interview.end),
     };
   });
 }
