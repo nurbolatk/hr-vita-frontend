@@ -1,27 +1,17 @@
 /* eslint-disable no-nested-ternary */
-import { Alert, Button, Card, Kbd, LoadingOverlay, TextInput } from '@mantine/core';
+import { Button, Card, LoadingOverlay, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';
 import { SelectDepartment } from 'entities/Department';
 import { UploadFile, UserDocument } from 'entities/Files';
-import {
-  addNewInterview,
-  changeInterview,
-  CreateInterview,
-  CreateInterviewContext,
-  CreateInterviewDto,
-  InterviewsTimeline,
-  newInterviewsReducer,
-  removeInterview,
-} from 'entities/Interview';
-import { combineDateAndTime } from 'entities/Interview/helper';
+import { InterviewsTimeline } from 'entities/Interview';
 import { SelectPosition } from 'entities/Position';
-import React, { useReducer, useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
-import type { DefaultCandidateFields, CandidateFormFields, UpdateCandidateData } from '../../types';
+import type { CandidateFormFields, DefaultCandidateFields, UpdateCandidateData } from '../../types';
 
 export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandidateFields }): JSX.Element {
   const {
@@ -30,6 +20,7 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     control,
     setValue,
     formState: { isDirty, errors },
+    reset,
     getValues,
   } = useForm<CandidateFormFields>({
     defaultValues: defaultValue,
@@ -37,8 +28,6 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
 
   const id = useIdParam();
   const { token } = useAuth();
-
-  const [newInterviews, dispatch] = useReducer(newInterviewsReducer, defaultValue.interviews);
 
   const [uploaded, setUploaded] = useState<UserDocument | null>(defaultValue.documents?.[0] ?? null);
   const queryClient = useQueryClient();
@@ -58,64 +47,46 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     [formValues]
   );
 
-  const areInterviewsChanged = useMemo(
-    () => !dequal(defaultValue.interviews, newInterviews),
-    [defaultValue.interviews, newInterviews]
-  );
   const areDocumentsChanged = useMemo(
     () => !dequal(defaultValue.documents, uploaded ? [uploaded] : undefined),
     [defaultValue.documents, uploaded]
   );
   const isFormChanged = useMemo(() => !dequal(defaultValue, values), [defaultValue, values]);
 
-  const isChanged = isFormChanged || areInterviewsChanged || areDocumentsChanged;
-
-  const parseInterviews = (): CreateInterviewDto[] => {
-    return newInterviews.map((interview) => {
-      const datetime = combineDateAndTime(interview.date!, interview.time!);
-      return {
-        interviewerId: interview.interviewerId as number,
-        datetime,
-      };
-    });
-  };
+  const isChanged = isFormChanged || areDocumentsChanged;
 
   const onSubmit = (form: CandidateFormFields) => {
     if (isChanged) {
-      const fullyFilled = newInterviews.every(
-        (interview) => interview.interviewerId && interview.date && interview.time
-      );
-      if (fullyFilled) {
-        const data: UpdateCandidateData = {};
-        if (isFormChanged || areDocumentsChanged) {
-          data.form = {
-            ...form,
-            salary: form.salary ? parseInt(form.salary, 10) : null,
-            location: form.location || null,
-            phone: form.phone || null,
-            documentId: uploaded?.id ?? null,
-          };
-        }
-        if (areInterviewsChanged) {
-          const interviews = parseInterviews();
-          data.interviews = interviews;
-        }
-        mutation.mutate(data);
+      const data: UpdateCandidateData = {};
+      if (isFormChanged || areDocumentsChanged) {
+        data.form = {
+          ...form,
+          salary: form.salary ? parseInt(form.salary, 10) : null,
+          location: form.location || null,
+          phone: form.phone || null,
+          documentId: uploaded?.id ?? null,
+        };
       }
+      mutation.mutate(data);
     }
   };
 
   return (
-    <section className="mx-auto grid grid-cols-2 gap-4 items-start">
-      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 relative">
+    <section className="mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 relative col-span-3">
         <LoadingOverlay visible={mutation.isLoading} />
         <Card withBorder shadow="md" p="lg">
           <h3 className="mb-3 text-xl flex items-baseline justify-between">
             Profile
             {isChanged && (
-              <Button type="submit" compact>
-                Save
-              </Button>
+              <div>
+                <Button type="button" className="mr-2" variant="default" compact onClick={() => reset()}>
+                  Cancel
+                </Button>
+                <Button type="submit" compact>
+                  Save
+                </Button>
+              </div>
             )}
           </h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
@@ -210,33 +181,6 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
             overflow: 'visible',
           }}>
           <div className="flex mb-3 items-center gap-x-4">
-            <h3 className="text-xl">Interviews</h3>
-            <Button
-              size="xs"
-              type="button"
-              compact
-              onClick={() => addNewInterview(dispatch)}
-              disabled={newInterviews.length > 4}>
-              Add
-            </Button>
-          </div>
-
-          <CreateInterviewContext.Provider
-            value={{ newInterviews, dispatch, addNewInterview, removeInterview, changeInterview }}>
-            {newInterviews.length === 0 && <Alert color="gray">No interviews are appointed</Alert>}
-            {newInterviews.map((interview) => (
-              <CreateInterview key={interview.id} interview={interview} />
-            ))}
-          </CreateInterviewContext.Provider>
-        </Card>
-        <Card
-          withBorder
-          shadow="sm"
-          p="lg"
-          style={{
-            overflow: 'visible',
-          }}>
-          <div className="flex mb-3 items-center gap-x-4">
             <h3 className="text-xl">Documents</h3>
           </div>
           <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
@@ -247,7 +191,7 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
         </Button>
       </form>
 
-      <InterviewsTimeline />
+      <InterviewsTimeline className="col-span-2" />
     </section>
   );
 }

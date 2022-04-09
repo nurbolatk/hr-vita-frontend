@@ -20,6 +20,7 @@ export function SelectDepartment({ error, setValue, ...props }: Props): JSX.Elem
       nothingFound="Ничего не найдено"
       searchable
       creatable
+      clearable
       getCreateLabel={(query) => `+ Create ${query}`}
       onCreate={(query) => mutation.mutate(query)}
       error={error ?? mutation.error?.message}

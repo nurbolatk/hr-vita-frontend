@@ -20,6 +20,7 @@ export function SelectPosition({ error, setValue, ...props }: Props): JSX.Elemen
       nothingFound="Nothing found"
       searchable
       creatable
+      clearable
       getCreateLabel={(query) => `+ Create ${query}`}
       onCreate={(query) => mutation.mutate(query)}
       error={error ?? mutation.error?.message}

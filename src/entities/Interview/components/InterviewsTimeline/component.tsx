@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Timeline, Text, ActionIcon, LoadingOverlay } from '@mantine/core';
+import { Alert, Button, Card, Timeline, Text, ActionIcon, LoadingOverlay, CardProps } from '@mantine/core';
 import React, { useState } from 'react';
 
 import { api, Interview } from 'entities/Interview';
@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 import { InterviewDetailsModal } from '../InterviewDetailsModal';
 
-export function InterviewsTimeline(): JSX.Element {
+export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'children'>): JSX.Element {
   const id = useIdParam();
   const queryKey = ['interviews', id];
   const { data: interviews, isLoading } = useQuery<Interview[]>(queryKey, () => api.getAll(id));
@@ -30,7 +30,8 @@ export function InterviewsTimeline(): JSX.Element {
       sx={{
         overflow: 'visible',
         position: 'relative',
-      }}>
+      }}
+      {...props}>
       <div className="flex mb-3 items-center gap-x-4">
         <h3 className="text-xl">Interviews</h3>
       </div>
