@@ -18,7 +18,8 @@ import { combineDateAndTime } from 'entities/Interview/helper';
 import { SelectPosition } from 'entities/Position';
 import React, { useReducer, useState, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import type { DefaultCandidateFields, NewCandidateFields } from '../../types';
+import { useIdParam } from 'shared/hooks';
+import type { DefaultCandidateFields, CandidateFormFields, UpdateCandidateData } from '../../types';
 
 export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandidateFields }): JSX.Element {
   const {
@@ -28,15 +29,39 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     setValue,
     formState: { isDirty, errors },
     getValues,
-  } = useForm<NewCandidateFields>({
+  } = useForm<CandidateFormFields>({
     defaultValues: defaultValue,
   });
 
+  const id = useIdParam();
   const { token } = useAuth();
 
   const [newInterviews, dispatch] = useReducer(newInterviewsReducer, defaultValue.interviews);
 
   const [uploaded, setUploaded] = useState<UserDocument | null | undefined>(defaultValue.documents?.[0]);
+
+  // edit form
+  const formValues = getValues();
+  const values = useMemo(
+    () => ({
+      ...formValues,
+    }),
+    [formValues]
+  );
+
+  const areInterviewsChanged = useMemo(
+    () => !dequal(defaultValue.interviews, newInterviews),
+    [defaultValue.interviews, newInterviews]
+  );
+  const areDocumentsChanged = useMemo(
+    () => !dequal(defaultValue.documents, uploaded ? [uploaded] : undefined),
+    [defaultValue.documents, uploaded]
+  );
+  const isFormChanged = useMemo(() => !dequal(defaultValue, values), [defaultValue, values]);
+
+  const isChanged = isFormChanged || areInterviewsChanged || areDocumentsChanged;
+
+  console.log({ isDirty, isFormChanged, areDocumentsChanged, areInterviewsChanged });
 
   const parseInterviews = (): CreateInterviewDto[] => {
     return newInterviews.map((interview) => {
@@ -48,38 +73,37 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     });
   };
 
-  const onSubmit = (form: NewCandidateFields) => {
+  const onSubmit = (form: CandidateFormFields) => {
+    console.log({ form });
     const fullyFilled = newInterviews.every((interview) => interview.interviewerId && interview.date && interview.time);
     if (fullyFilled) {
-      const interviews = parseInterviews();
-      api.createEntity(
-        {
+      const data: UpdateCandidateData = {};
+      if (isFormChanged) {
+        data.form = {
           ...form,
-          salary: parseInt(form.salary ?? '', 10),
-          interviews: interviews.length > 0 ? interviews : undefined,
-          documentId: uploaded?.id,
-        },
-        token
-      );
+          salary: form.salary ? parseInt(form.salary, 10) : null,
+          location: form.location || null,
+          phone: form.phone || null,
+        };
+      }
+      if (areInterviewsChanged) {
+        const interviews = parseInterviews();
+        data.interviews = interviews;
+      }
+      api.updateCandidateForm(id, data, token);
     }
+
+    // if (isChanged) {
+    //   const updates: Promise<any>[] = [];
+    //   if (isFormChanged) {
+    //     updates.push(1);
+    //   }
+    //   if (areInterviewsChanged) updates.push(1);
+    //   if (areDocumentsChanged) updates.push(1);
+    //   Promise.all(updates);
+    //   const interviews = parseInterviews();
+    // }
   };
-
-  // edit form
-  const formValues = getValues();
-  const values = useMemo(
-    () => ({
-      ...formValues,
-      interviews: newInterviews,
-      documents: uploaded ? [uploaded] : [],
-    }),
-    [formValues, newInterviews, uploaded]
-  );
-  console.log({ values });
-
-  const isChanged = useMemo(() => !dequal(defaultValue, values), [defaultValue, values]);
-  console.log({ defaultValue });
-
-  console.log({ isDirty, isChanged });
 
   return (
     <section className=" mx-auto">
@@ -87,7 +111,11 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
         <Card withBorder shadow="md" p="lg">
           <h3 className="mb-3 text-xl flex items-baseline justify-between">
             Profile
-            {isChanged && <Button size="sm">Save</Button>}
+            {isChanged && (
+              <Button type="submit" size="sm">
+                Save
+              </Button>
+            )}
           </h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput

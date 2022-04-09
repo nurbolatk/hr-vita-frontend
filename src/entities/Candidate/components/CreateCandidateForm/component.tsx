@@ -17,7 +17,7 @@ import {
 import { SelectPosition } from 'entities/Position';
 import React, { useReducer, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import type { NewCandidateFields } from '../../types';
+import type { CandidateFormFields } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
   const {
@@ -26,7 +26,7 @@ export function CreateCandidateForm(): JSX.Element {
     control,
     setValue,
     formState: { errors },
-  } = useForm<NewCandidateFields>();
+  } = useForm<CandidateFormFields>();
   const { token } = useAuth();
 
   const [newInterviews, dispatch] = useReducer(newInterviewsReducer, []);
@@ -46,11 +46,11 @@ export function CreateCandidateForm(): JSX.Element {
     });
   };
 
-  const onSubmit = (form: NewCandidateFields) => {
+  const onSubmit = (form: CandidateFormFields) => {
     const fullyFilled = newInterviews.every((interview) => interview.interviewerId && interview.date && interview.time);
     if (fullyFilled) {
       const interviews = parseInterviews();
-      api.createEntity(
+      api.createCandidate(
         {
           ...form,
           salary: parseInt(form.salary ?? '', 10),

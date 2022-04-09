@@ -17,7 +17,7 @@ export type Candidate = {
   department: Department;
   position: Position;
   interviews: Interview[];
-  documents?: UserDocument[];
+  documents: UserDocument[];
 };
 
 export enum CandidateStatus {

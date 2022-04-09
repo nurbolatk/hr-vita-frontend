@@ -1,15 +1,15 @@
 import { UserDocument } from 'entities/Files';
 import { CreateInterviewDto, InterviewState } from 'entities/Interview';
 
-export type NewCandidateFields = {
+export type CandidateFormFields = {
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string;
-  salary?: string;
-  location?: string;
-  position?: string;
-  department?: string;
+  phone: string;
+  salary: string;
+  location: string;
+  position: string;
+  department: string;
 };
 
 export type NewCandidateDTO = {
@@ -35,5 +35,22 @@ export type DefaultCandidateFields = {
   position: string;
   department: string;
   interviews: InterviewState[];
-  documents?: UserDocument[];
+  documents: UserDocument[];
+};
+
+export type UpdateCandidateDTO = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  salary?: number | null;
+  location?: string | null;
+  position?: string | null;
+  department?: string | null;
+};
+
+export type UpdateCandidateData = {
+  form?: UpdateCandidateDTO;
+  interviews?: CreateInterviewDto[] | null;
+  documentId?: number | null;
 };
