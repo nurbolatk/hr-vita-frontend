@@ -8,3 +8,4 @@ export { ReactComponent as EyeOffIcon } from './EyeOffIcon.svg';
 export { ReactComponent as UploadIcon } from './UploadIcon.svg';
 export { ReactComponent as ImageIcon } from './ImageIcon.svg';
 export { ReactComponent as DatabaseIcon } from './DatabaseIcon.svg';
+export { ReactComponent as EditIcon } from './EditIcon.svg';

@@ -8,7 +8,7 @@ export function SelectEmployee({
   onChange,
   defaultValue,
 }: {
-  onChange: (value: Employee | null) => void;
+  onChange?: (value: Employee | null) => void;
   defaultValue?: number | null;
 }): JSX.Element {
   const { data, isLoading } = useQuery<Employee[]>('employees', api.getAll);
@@ -23,7 +23,7 @@ export function SelectEmployee({
 
   const handleChange = (newValue: OnChangeValue<Employee, false>) => {
     setValue(newValue);
-    onChange(newValue);
+    onChange?.(newValue);
   };
 
   return (

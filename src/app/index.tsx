@@ -1,6 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
+import { EventsRoute } from 'pages/events';
 import { HomeRoute } from 'pages/home';
 import { RecruitingIndexRoute } from 'pages/recruiting';
 import { RecruitingDetailsRoute } from 'pages/recruiting/[id]';
@@ -39,6 +40,9 @@ function App() {
                 </Route>
                 <Route path="users">
                   <Route path="generate-hash" element={<ChangePasswordRoute />} />
+                </Route>
+                <Route path="events">
+                  <Route index element={<EventsRoute />} />
                 </Route>
               </Routes>
             </main>

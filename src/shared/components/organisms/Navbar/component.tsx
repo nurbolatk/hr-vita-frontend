@@ -39,8 +39,12 @@ export function Navbar(): JSX.Element {
               <li>
                 <Link to="/cabinet">Мой кабинет</Link>
               </li>
+
               <li>
-                <Button variant="outline" onClick={logout}>
+                <Link to="events">Events</Link>
+              </li>
+              <li>
+                <Button variant="outline" compact onClick={logout}>
                   Выйти
                 </Button>
               </li>
@@ -53,7 +57,7 @@ export function Navbar(): JSX.Element {
               </li>,
               <li>
                 <Modal.OpenButton>
-                  <Button variant="filled" size="sm">
+                  <Button compact variant="filled" size="sm">
                     Войти
                   </Button>
                 </Modal.OpenButton>

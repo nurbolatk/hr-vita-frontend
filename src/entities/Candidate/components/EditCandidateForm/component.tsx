@@ -11,6 +11,7 @@ import {
   CreateInterview,
   CreateInterviewContext,
   CreateInterviewDto,
+  InterviewsTimeline,
   newInterviewsReducer,
   removeInterview,
 } from 'entities/Interview';
@@ -105,7 +106,7 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
   };
 
   return (
-    <section className=" mx-auto">
+    <section className="mx-auto grid grid-cols-2 gap-4 items-start">
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 relative">
         <LoadingOverlay visible={mutation.isLoading} />
         <Card withBorder shadow="md" p="lg">
@@ -245,6 +246,8 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
           Update changes
         </Button>
       </form>
+
+      <InterviewsTimeline />
     </section>
   );
 }
