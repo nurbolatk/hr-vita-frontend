@@ -2,10 +2,10 @@ import { Alert, Button, Card, Timeline, Text, ActionIcon, LoadingOverlay } from 
 import React, { useState } from 'react';
 
 import { api, Interview } from 'entities/Interview';
-import { CheckIcon, EditIcon } from 'shared/components/icons';
+import { AlertCircleIcon, CheckIcon, CrossIcon, EditIcon } from 'shared/components/icons';
 import { Modal } from 'shared/components/organisms';
 import { ModalOpenButton } from 'shared/components/organisms/Modal/libs/ModalOpenButton';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 import { InterviewDetailsModal } from '../InterviewDetailsModal';
 
@@ -13,6 +13,7 @@ export function InterviewsTimeline(): JSX.Element {
   const id = useIdParam();
   const { data: interviews, isLoading } = useQuery<Interview[]>(['interviews', id], () => api.getAll(id));
   const [editing, setEditing] = useState<Interview | null>(null);
+  const deletion = useMutation((interviewId: number) => api.deleteInterview(interviewId));
 
   return (
     <Card
@@ -51,11 +52,41 @@ export function InterviewsTimeline(): JSX.Element {
                         {interview.datetime}
                       </Text>
                     </div>
-                    <ModalOpenButton>
-                      <ActionIcon size={20} onClick={() => setEditing(interview)}>
-                        <EditIcon />
-                      </ActionIcon>
-                    </ModalOpenButton>
+                    <div className="flex gap-x-2">
+                      <ModalOpenButton>
+                        <ActionIcon size={20} onClick={() => setEditing(interview)}>
+                          <EditIcon />
+                        </ActionIcon>
+                      </ModalOpenButton>
+                      <Modal>
+                        <Modal.OpenButton>
+                          <ActionIcon size={20} color="red">
+                            <CrossIcon />
+                          </ActionIcon>
+                        </Modal.OpenButton>
+                        <Modal.Content title="Confirm action">
+                          <Alert icon={<AlertCircleIcon />} color="red">
+                            Are you sure you want to delete this interview?
+                          </Alert>
+                          <Modal.Actions>
+                            <Modal.CloseButton>
+                              <Button
+                                size="sm"
+                                sx={{
+                                  opacity: 0.6,
+                                }}
+                                variant="default"
+                                color="gray">
+                                Cancel
+                              </Button>
+                            </Modal.CloseButton>
+                            <Button size="sm" color="red" onClick={() => deletion.mutate(interview.id)}>
+                              Delete
+                            </Button>
+                          </Modal.Actions>
+                        </Modal.Content>
+                      </Modal>
+                    </div>
                   </div>
                 </Timeline.Item>
               ))}

@@ -147,7 +147,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
           {...register('location')}
         />
 
-        <div className="flex gap-x-4 justify-end mt-4">
+        <Modal.Actions>
           <Modal.CloseButton>
             <Button
               size="sm"
@@ -162,7 +162,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
           <Button size="sm" type="submit">
             Save
           </Button>
-        </div>
+        </Modal.Actions>
       </form>
     </Modal.Content>
   );

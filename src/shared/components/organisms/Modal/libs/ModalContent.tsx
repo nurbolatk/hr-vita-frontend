@@ -1,18 +1,19 @@
 import { Modal, useMantineTheme } from '@mantine/core';
 import * as React from 'react';
 import type { ModalProps } from '@mantine/core';
+import { callAll, Optional } from 'shared/utils';
 import { useModalState } from '../context';
 
-type Props = Omit<ModalProps, 'onClose' | 'opened'>;
+type Props = Optional<Omit<ModalProps, 'opened'>, 'onClose'>;
 
-export function ModalContent({ children, title, className, ...rest }: Props) {
+export function ModalContent({ children, title, className, onClose, ...rest }: Props) {
   const { show, closeModal } = useModalState();
   const theme = useMantineTheme();
 
   return (
     <Modal
       title={title}
-      onClose={closeModal}
+      onClose={callAll(onClose, closeModal)}
       opened={show}
       size="lg"
       centered
