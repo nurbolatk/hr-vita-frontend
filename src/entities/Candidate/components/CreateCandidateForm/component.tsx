@@ -1,23 +1,14 @@
-/* eslint-disable no-nested-ternary */
-import { Alert, Button, Card, TextInput } from '@mantine/core';
+import { Button, Card, LoadingOverlay, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
-import dayjs from 'dayjs';
 import { api } from 'entities/Candidate';
 import { SelectDepartment } from 'entities/Department';
 import { UploadFile, UserDocument } from 'entities/Files';
-import {
-  addNewInterview,
-  changeInterview,
-  CreateInterview,
-  CreateInterviewContext,
-  CreateInterviewDto,
-  newInterviewsReducer,
-  removeInterview,
-} from 'entities/Interview';
 import { SelectPosition } from 'entities/Position';
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import type { CandidateFormFields } from '../../types';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import type { Candidate, CandidateFormFields, NewCandidateDTO } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
   const {
@@ -28,42 +19,26 @@ export function CreateCandidateForm(): JSX.Element {
     formState: { errors },
   } = useForm<CandidateFormFields>();
   const { token } = useAuth();
-
-  const [newInterviews, dispatch] = useReducer(newInterviewsReducer, []);
-
+  const navigate = useNavigate();
   const [uploaded, setUploaded] = useState<UserDocument | null>(null);
 
-  const parseInterviews = (): CreateInterviewDto[] => {
-    return newInterviews.map((interview) => {
-      const date = dayjs(interview.date);
-      const time = dayjs(interview.time);
-      let datetime = date.add(time.hour(), 'hour');
-      datetime = datetime.add(time.minute(), 'minute');
-      return {
-        interviewerId: interview.interviewerId as number,
-        datetime: datetime.toDate(),
-      };
+  const creation = useMutation((data: NewCandidateDTO) => api.createCandidate(data, token), {
+    onSuccess: (candidate: Candidate) => {
+      navigate(`/recruiting/${candidate.id}`);
+    },
+  });
+
+  const onSubmit = async (form: CandidateFormFields) => {
+    creation.mutate({
+      ...form,
+      salary: parseInt(form.salary ?? '', 10),
+      documentId: uploaded?.id,
     });
   };
 
-  const onSubmit = (form: CandidateFormFields) => {
-    const fullyFilled = newInterviews.every((interview) => interview.interviewerId && interview.date && interview.time);
-    if (fullyFilled) {
-      const interviews = parseInterviews();
-      api.createCandidate(
-        {
-          ...form,
-          salary: parseInt(form.salary ?? '', 10),
-          interviews: interviews.length > 0 ? interviews : undefined,
-          documentId: uploaded?.id,
-        },
-        token
-      );
-    }
-  };
-
   return (
-    <section className=" mx-auto">
+    <section className="relative mx-auto">
+      <LoadingOverlay visible={creation.isLoading} />
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg">
           <h3 className="mb-3 text-xl">Profile</h3>
@@ -153,33 +128,7 @@ export function CreateCandidateForm(): JSX.Element {
             />
           </div>
         </Card>
-        <Card
-          withBorder
-          shadow="sm"
-          p="lg"
-          style={{
-            overflow: 'visible',
-          }}>
-          <div className="flex mb-3 items-center gap-x-4">
-            <h3 className="text-xl">Interviews</h3>
-            <Button
-              size="xs"
-              type="button"
-              compact
-              onClick={() => addNewInterview(dispatch)}
-              disabled={newInterviews.length > 4}>
-              Add
-            </Button>
-          </div>
 
-          <CreateInterviewContext.Provider
-            value={{ newInterviews, dispatch, addNewInterview, removeInterview, changeInterview }}>
-            {newInterviews.length === 0 && <Alert color="gray">No interviews are appointed</Alert>}
-            {newInterviews.map((interview) => (
-              <CreateInterview key={interview.id} interview={interview} />
-            ))}
-          </CreateInterviewContext.Provider>
-        </Card>
         <Card
           withBorder
           shadow="sm"

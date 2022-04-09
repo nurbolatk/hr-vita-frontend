@@ -21,7 +21,6 @@ export type NewCandidateDTO = {
   location?: string | null;
   position?: string | null;
   department?: string | null;
-  interviews?: CreateInterviewDto[] | null;
   documentId?: number | null;
 };
 
