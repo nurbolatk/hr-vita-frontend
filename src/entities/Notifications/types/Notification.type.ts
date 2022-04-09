@@ -10,4 +10,8 @@ export type Notification = {
   unread: boolean;
 
   receiver: User;
+  linkAction?: {
+    to: string;
+    label: string;
+  };
 };

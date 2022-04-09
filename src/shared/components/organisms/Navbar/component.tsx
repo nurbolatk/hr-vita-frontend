@@ -49,15 +49,14 @@ export function Navbar(): JSX.Element {
               <li>
                 <Link to="/cabinet">Мой кабинет</Link>
               </li>
-
               <li>
                 <Link to="events" className="flex items-center gap-x-1">
                   <span>Events</span>
-                  {unreadCount && (
+                  {unreadCount ? (
                     <Badge variant="filled" color="red" size="xs" radius="xl">
                       {unreadCount}
                     </Badge>
-                  )}
+                  ) : null}
                 </Link>
               </li>
               <li>
