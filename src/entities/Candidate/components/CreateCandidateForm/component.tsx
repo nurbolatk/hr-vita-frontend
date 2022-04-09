@@ -21,6 +21,7 @@ export function CreateCandidateForm(): JSX.Element {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [uploaded, setUploaded] = useState<UserDocument | null>(null);
+  console.log(uploaded);
 
   const creation = useMutation((data: NewCandidateDTO) => api.createCandidate(data, token), {
     onSuccess: (candidate: Candidate) => {

@@ -1,14 +1,24 @@
-import { Button, Skeleton, Text } from '@mantine/core';
+import { Badge, Button, Skeleton, Text } from '@mantine/core';
 import { useAuth } from 'app/providers';
+import { api, Notification } from 'entities/Notifications';
 import { LoginForm } from 'entities/Session';
 import React from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { Modal } from 'shared/components/organisms';
 import { iff } from 'shared/utils';
 
 export function Navbar(): JSX.Element {
-  const { user, isAuthLoading, logout, isAuthSuccess } = useAuth();
+  const { user, token, isAuthLoading, logout, isAuthSuccess } = useAuth();
   const isHr = user?.role === 'HR';
+
+  const notifications = useQuery<Notification[]>(['notifications', user?.id], () => api.getAll(token), {
+    enabled: !!user?.id && !!token,
+  });
+
+  const unreadCount = notifications.data?.reduce((acc, cur) => {
+    return cur.unread ? acc + 1 : acc;
+  }, 0);
 
   return (
     <header className="container flex justify-between md:justify-start items-center">
@@ -41,7 +51,14 @@ export function Navbar(): JSX.Element {
               </li>
 
               <li>
-                <Link to="events">Events</Link>
+                <Link to="events" className="flex items-center gap-x-1">
+                  <span>Events</span>
+                  {unreadCount && (
+                    <Badge variant="filled" color="red" size="xs" radius="xl">
+                      {unreadCount}
+                    </Badge>
+                  )}
+                </Link>
               </li>
               <li>
                 <Button variant="outline" compact onClick={logout}>
