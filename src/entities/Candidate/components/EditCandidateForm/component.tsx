@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { Alert, Button, Card, Kbd, TextInput } from '@mantine/core';
+import { Alert, Button, Card, Kbd, LoadingOverlay, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';
@@ -18,6 +18,7 @@ import { combineDateAndTime } from 'entities/Interview/helper';
 import { SelectPosition } from 'entities/Position';
 import React, { useReducer, useState, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 import type { DefaultCandidateFields, CandidateFormFields, UpdateCandidateData } from '../../types';
 
@@ -39,6 +40,13 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
   const [newInterviews, dispatch] = useReducer(newInterviewsReducer, defaultValue.interviews);
 
   const [uploaded, setUploaded] = useState<UserDocument | null>(defaultValue.documents?.[0] ?? null);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation((data: UpdateCandidateData) => api.updateCandidateForm(id, data, token), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['candidate', id]);
+    },
+  });
 
   // edit form
   const formValues = getValues();
@@ -61,8 +69,6 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
 
   const isChanged = isFormChanged || areInterviewsChanged || areDocumentsChanged;
 
-  console.log({ isDirty, isFormChanged, areDocumentsChanged, areInterviewsChanged });
-
   const parseInterviews = (): CreateInterviewDto[] => {
     return newInterviews.map((interview) => {
       const datetime = combineDateAndTime(interview.date!, interview.time!);
@@ -74,46 +80,39 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
   };
 
   const onSubmit = (form: CandidateFormFields) => {
-    console.log({ form });
-    const fullyFilled = newInterviews.every((interview) => interview.interviewerId && interview.date && interview.time);
-    if (fullyFilled) {
-      const data: UpdateCandidateData = {};
-      if (isFormChanged || areDocumentsChanged) {
-        data.form = {
-          ...form,
-          salary: form.salary ? parseInt(form.salary, 10) : null,
-          location: form.location || null,
-          phone: form.phone || null,
-          documentId: uploaded?.id ?? null,
-        };
+    if (isChanged) {
+      const fullyFilled = newInterviews.every(
+        (interview) => interview.interviewerId && interview.date && interview.time
+      );
+      if (fullyFilled) {
+        const data: UpdateCandidateData = {};
+        if (isFormChanged || areDocumentsChanged) {
+          data.form = {
+            ...form,
+            salary: form.salary ? parseInt(form.salary, 10) : null,
+            location: form.location || null,
+            phone: form.phone || null,
+            documentId: uploaded?.id ?? null,
+          };
+        }
+        if (areInterviewsChanged) {
+          const interviews = parseInterviews();
+          data.interviews = interviews;
+        }
+        mutation.mutate(data);
       }
-      if (areInterviewsChanged) {
-        const interviews = parseInterviews();
-        data.interviews = interviews;
-      }
-      api.updateCandidateForm(id, data, token);
     }
-
-    // if (isChanged) {
-    //   const updates: Promise<any>[] = [];
-    //   if (isFormChanged) {
-    //     updates.push(1);
-    //   }
-    //   if (areInterviewsChanged) updates.push(1);
-    //   if (areDocumentsChanged) updates.push(1);
-    //   Promise.all(updates);
-    //   const interviews = parseInterviews();
-    // }
   };
 
   return (
     <section className=" mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 relative">
+        <LoadingOverlay visible={mutation.isLoading} />
         <Card withBorder shadow="md" p="lg">
           <h3 className="mb-3 text-xl flex items-baseline justify-between">
             Profile
             {isChanged && (
-              <Button type="submit" size="sm">
+              <Button type="submit" compact>
                 Save
               </Button>
             )}
