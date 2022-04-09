@@ -42,15 +42,15 @@ export type UpdateCandidateDTO = {
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string | null;
-  salary?: number | null;
-  location?: string | null;
-  position?: string | null;
-  department?: string | null;
+  phone: string | null;
+  salary: number | null;
+  location: string | null;
+  position: string | null;
+  department: string | null;
+  documentId: number | null;
 };
 
 export type UpdateCandidateData = {
   form?: UpdateCandidateDTO;
   interviews?: CreateInterviewDto[] | null;
-  documentId?: number | null;
 };
