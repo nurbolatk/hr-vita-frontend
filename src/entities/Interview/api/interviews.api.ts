@@ -7,6 +7,11 @@ export const getAll = async (candidateId: number) => {
   return parseInterviewNIOs(interviews);
 };
 
+export const getOneById = async (id: number): Promise<Interview> => {
+  const interview = await client<InterviewNIO>(`interviews/${id}`);
+  return parseInterviewNIOs([interview])[0];
+};
+
 export const createInterview = async (data: CreateInterviewNOO) => {
   return client<Interview>('interviews', { data });
 };

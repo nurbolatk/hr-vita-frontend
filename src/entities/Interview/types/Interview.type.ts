@@ -13,6 +13,7 @@ export type Interview = {
   interviewer: Employee;
   name: string;
   status: InterivewStatus;
+  statusText: string;
   datetime: string;
 };
 

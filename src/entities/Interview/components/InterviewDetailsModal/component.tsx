@@ -78,6 +78,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
           end,
           name,
           location,
+          status: defaultValue.status,
         });
       } else {
         // create

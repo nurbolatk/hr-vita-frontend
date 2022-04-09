@@ -1,6 +1,16 @@
 import dayjs from 'dayjs';
-import type { Interview, InterviewNIO } from 'entities/Interview';
+import { InterivewStatus, Interview, InterviewNIO } from 'entities/Interview';
 
+export function parseInterviewStatus(status: InterivewStatus): string {
+  switch (status) {
+    case InterivewStatus.FAILED:
+      return 'Failed';
+    case InterivewStatus.PASSED:
+      return 'Passed';
+    default:
+      return 'Not started';
+  }
+}
 export function parseInterviewNIOs(interviews: InterviewNIO[]): Interview[] {
   return interviews.map((interview) => {
     const date = dayjs(interview.date);
@@ -14,6 +24,7 @@ export function parseInterviewNIOs(interviews: InterviewNIO[]): Interview[] {
       date: new Date(interview.date),
       start: new Date(interview.start),
       end: new Date(interview.end),
+      statusText: parseInterviewStatus(interview.status),
     };
   });
 }

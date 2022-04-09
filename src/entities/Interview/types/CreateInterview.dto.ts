@@ -1,3 +1,5 @@
+import { InterivewStatus } from 'entities/Interview';
+
 export type CreateInterviewDto = {
   interviewerId: number;
   datetime: Date;
@@ -22,4 +24,5 @@ export type UpdateInterviewNOO = {
   end: Date;
   location: string;
   name: string;
+  status: InterivewStatus;
 };

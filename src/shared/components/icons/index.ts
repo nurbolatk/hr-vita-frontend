@@ -11,3 +11,4 @@ export { ReactComponent as DatabaseIcon } from './DatabaseIcon.svg';
 export { ReactComponent as EditIcon } from './EditIcon.svg';
 export { ReactComponent as UserIcon } from './UserIcon.svg';
 export { ReactComponent as MapPinIcon } from './MapPinIcon.svg';
+export { ReactComponent as CircleIcon } from './CircleIcon.svg';

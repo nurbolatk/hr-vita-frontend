@@ -1,8 +1,8 @@
 import { Alert, Button, Card, Timeline, Text, ActionIcon, LoadingOverlay, CardProps } from '@mantine/core';
 import React, { useState } from 'react';
 
-import { api, Interview } from 'entities/Interview';
-import { AlertCircleIcon, CheckIcon, CrossIcon, EditIcon } from 'shared/components/icons';
+import { api, InterivewStatus, Interview } from 'entities/Interview';
+import { AlertCircleIcon, CheckIcon, CircleIcon, CrossIcon, EditIcon } from 'shared/components/icons';
 import { Modal } from 'shared/components/organisms';
 import { ModalOpenButton } from 'shared/components/organisms/Modal/libs/ModalOpenButton';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -41,12 +41,28 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
         <>
           {interviews.length === 0 && <Alert color="gray">No interviews are appointed</Alert>}
           <Modal>
-            <Timeline active={0} bulletSize={24} lineWidth={2} className="mb-4">
+            <Timeline bulletSize={24} lineWidth={2} className="mb-4">
               {interviews.map((interview) => (
                 <Timeline.Item
                   key={interview.id}
-                  bullet={<CheckIcon width={14} height={14} />}
+                  bullet={
+                    interview.status === InterivewStatus.NOT_STARTED ? (
+                      <CircleIcon width={14} height={14} />
+                    ) : interview.status === InterivewStatus.FAILED ? (
+                      <CrossIcon width={14} height={14} />
+                    ) : (
+                      <CheckIcon width={14} height={14} />
+                    )
+                  }
+                  color={
+                    interview.status === InterivewStatus.NOT_STARTED
+                      ? 'gray'
+                      : interview.status === InterivewStatus.FAILED
+                      ? 'red'
+                      : 'teal'
+                  }
                   title={interview.name}
+                  active={interview.status !== InterivewStatus.NOT_STARTED}
                   lineVariant="dashed">
                   <div className="flex justify-between">
                     <div>
