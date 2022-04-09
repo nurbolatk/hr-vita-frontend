@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Text, TextInput, UnstyledButton } from '@mantine/core';
+import { Alert, Button, Text, TextInput } from '@mantine/core';
 
 import { Employee, SelectEmployee } from 'entities/Employee';
 import { DatePicker, TimeInput } from '@mantine/dates';
-import { InterviewState, useCreateInterview } from 'entities/Interview';
+import { InterviewState, api, CreateInterviewNOO } from 'entities/Interview';
 import { useForm } from 'react-hook-form';
 import { Modal } from 'shared/components/organisms';
+import { useIdParam } from 'shared/hooks';
+import { useMutation } from 'react-query';
 
 type InterviewFormFields = {
   name: string;
@@ -21,17 +23,18 @@ type InterviewStateFields = {
 
 export function InterviewDetailsModal({ defaultValue }: { defaultValue?: InterviewState }): JSX.Element {
   const { register, handleSubmit } = useForm<InterviewFormFields>();
-
+  const intervieweeId = useIdParam();
   const [state, setState] = useState<InterviewStateFields>({
     date: null,
     start: null,
     end: null,
     interviewer: null,
   });
+  const [error, setError] = useState<Boolean>(false);
+
+  const mutation = useMutation((data: CreateInterviewNOO) => api.createInterview(data));
 
   const handleChange: (type: 'start' | 'end' | 'date') => (value: Date | null) => void = (type) => (value) => {
-    console.log('type', value);
-
     if (type === 'start') {
       return setState({ ...state, start: value });
     }
@@ -50,12 +53,27 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
   };
 
   function sendInterview(form: InterviewFormFields) {
-    console.log(form);
+    if (state.date && state.start && state.end && state.interviewer) {
+      const { name, location } = form;
+      const { date, start, end, interviewer } = state;
+      mutation.mutate({
+        intervieweeId,
+        interviewerId: interviewer.id,
+        date,
+        start,
+        end,
+        name,
+        location,
+      });
+    } else {
+      setError(true);
+    }
   }
 
   return (
     <Modal.Content title="Interview details">
       <form className="space-y-3 relative" onSubmit={handleSubmit(sendInterview)}>
+        {error && <Alert color="red">Please, fill all the values</Alert>}
         <TextInput
           label="Interview name"
           placeholder="E.g. First techincal interview"
@@ -91,7 +109,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
               sx={{
                 opacity: 0.6,
               }}
-              variant="outline"
+              variant="default"
               color="gray">
               Cancel
             </Button>
@@ -101,6 +119,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
           </Button>
         </div>
       </form>
+      <Modal.CloseOn condition={mutation.isSuccess} />
     </Modal.Content>
   );
 }

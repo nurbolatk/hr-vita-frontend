@@ -1,10 +1,12 @@
 import { client } from 'shared/helpers';
-import { CreateInterviewDto, Interview } from '../types';
+import { parseInterviewNIOs } from 'entities/Interview/helper';
+import { CreateInterviewNOO, Interview, InterviewNIO } from '../types';
 
-export const createEntity = async (dto: CreateInterviewDto) => {
-  return client<Interview>('entities', { data: dto });
+export const createInterview = async (data: CreateInterviewNOO) => {
+  return client<Interview>('interview', { data });
 };
 
-export const getAll = async () => {
-  return client<Interview[]>('entities');
+export const getAll = async (candidateId: number) => {
+  const interviews = await client<InterviewNIO[]>(`interviews/interviewee/${candidateId}`);
+  return parseInterviewNIOs(interviews);
 };
