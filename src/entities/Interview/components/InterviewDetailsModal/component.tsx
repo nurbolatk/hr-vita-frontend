@@ -3,12 +3,11 @@ import { Alert, Button, Text, TextInput } from '@mantine/core';
 
 import { Employee, SelectEmployee } from 'entities/Employee';
 import { DatePicker, TimeInput } from '@mantine/dates';
-import { api, CreateInterviewNOO, Interview, UpdateInterviewNOO } from 'entities/Interview';
+import { Interview } from 'entities/Interview';
 import { useForm } from 'react-hook-form';
 import { Modal } from 'shared/components/organisms';
 import { useIdParam } from 'shared/hooks';
-import { QueryClient, useMutation, useQueryClient } from 'react-query';
-import { useModalState } from 'shared/components/organisms/Modal/context';
+import { useInterviewQueries } from 'entities/Interview/hooks';
 
 type InterviewFormFields = {
   name: string;
@@ -21,17 +20,8 @@ type InterviewStateFields = {
   end: Date | null;
   interviewer: Employee | null;
 };
-
-const onSuccessHandler = (client: QueryClient, candidateId: number, cb: () => void) => {
-  client.invalidateQueries(['interviews', candidateId]);
-  cb();
-};
-
 export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Interview | null }): JSX.Element {
   const intervieweeId = useIdParam();
-  const { closeModal } = useModalState();
-  const queryClient = useQueryClient();
-
   const { register, handleSubmit, setValue } = useForm<InterviewFormFields>();
   const [state, setState] = useState<InterviewStateFields>({
     date: null,
@@ -54,16 +44,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
     }
   }, [defaultValue, setValue]);
 
-  const creation = useMutation((data: CreateInterviewNOO) => api.createInterview(data), {
-    onSuccess: () => {
-      onSuccessHandler(queryClient, intervieweeId, closeModal);
-    },
-  });
-  const updating = useMutation((data: UpdateInterviewNOO) => api.updateInterview(data), {
-    onSuccess: () => {
-      onSuccessHandler(queryClient, intervieweeId, closeModal);
-    },
-  });
+  const { creation, updating } = useInterviewQueries();
 
   const handleChange: (type: 'start' | 'end' | 'date') => (value: Date | null) => void = (type) => (value) => {
     if (type === 'start') {

@@ -5,15 +5,22 @@ import { api, Interview } from 'entities/Interview';
 import { AlertCircleIcon, CheckIcon, CrossIcon, EditIcon } from 'shared/components/icons';
 import { Modal } from 'shared/components/organisms';
 import { ModalOpenButton } from 'shared/components/organisms/Modal/libs/ModalOpenButton';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 import { InterviewDetailsModal } from '../InterviewDetailsModal';
 
 export function InterviewsTimeline(): JSX.Element {
   const id = useIdParam();
-  const { data: interviews, isLoading } = useQuery<Interview[]>(['interviews', id], () => api.getAll(id));
+  const queryKey = ['interviews', id];
+  const { data: interviews, isLoading } = useQuery<Interview[]>(queryKey, () => api.getAll(id));
   const [editing, setEditing] = useState<Interview | null>(null);
-  const deletion = useMutation((interviewId: number) => api.deleteInterview(interviewId));
+  const queryClient = useQueryClient();
+
+  const deletion = useMutation((interviewId: number) => api.deleteInterview(interviewId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey);
+    },
+  });
 
   return (
     <Card
