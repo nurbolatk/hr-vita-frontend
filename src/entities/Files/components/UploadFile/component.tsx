@@ -1,10 +1,12 @@
-import { Alert, Group, MantineTheme, Text, useMantineTheme } from '@mantine/core';
+import { Alert, Button, Group, MantineTheme, Modal, Text, TextInput, useMantineTheme } from '@mantine/core';
 import { Dropzone, DropzoneStatus } from '@mantine/dropzone';
 import { useAuth } from 'app/providers';
 import { api } from 'entities/Files/api';
-import React, { SVGAttributes } from 'react';
+import React, { SVGAttributes, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { CheckCircleIcon, CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
+import { ModalActions } from 'shared/components/organisms/Modal/libs/ModalActions';
 import { formatBytes } from 'shared/helpers';
 import { Props } from './props';
 
@@ -47,20 +49,33 @@ export const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) =>
 
 function UploadFile({ uploaded, setUploaded }: Props) {
   const theme = useMantineTheme();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [file, setFile] = useState<File | null>(null);
   const { token } = useAuth();
+  const { register, handleSubmit } = useForm<{ name: string }>();
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const mutation = useMutation(
-    (file: File) => {
+    (name: string) => {
       const formData = new FormData();
-      formData.append('file', file, file.name);
+      formData.append('file', file!, file!.name); // TODO: assert
+      formData.append('name', name);
       return api.uploadDocuments(formData, token);
     },
     {
       onSuccess(result) {
+        closeModal();
         setUploaded(result);
       },
     }
   );
+
+  function uploadFile(form: { name: string }) {
+    mutation.mutate(form.name);
+  }
 
   return (
     <div>
@@ -70,27 +85,31 @@ function UploadFile({ uploaded, setUploaded }: Props) {
         </Alert>
       )} */}
       {uploaded && (
-        <Alert
-          variant="light"
-          color="gray"
-          className="mb-4"
-          withCloseButton
-          closeButtonLabel="Delete"
-          onClose={() => {
-            setUploaded(null);
-            mutation.reset();
-          }}
-          title={
-            <p>
-              <strong>{uploaded?.originalname}</strong>
-            </p>
-          }>
-          File size {formatBytes(uploaded.size)}
-        </Alert>
+        <div className="flex gap-x-4 items-baseline">
+          <Text>{uploaded.name}: </Text>
+          <Alert
+            variant="light"
+            color="gray"
+            className="mb-4 flex-1"
+            withCloseButton
+            closeButtonLabel="Delete"
+            onClose={() => {
+              setUploaded(null);
+              mutation.reset();
+            }}
+            title={
+              <p>
+                <strong>{uploaded?.originalname}</strong>
+              </p>
+            }>
+            File size {formatBytes(uploaded.size)}
+          </Alert>
+        </div>
       )}
       <Dropzone
         onDrop={(files) => {
-          mutation.mutate(files[0]);
+          setFile(files[0]);
+          setModalOpen(true);
         }}
         onReject={(files) => console.log('rejected files', files)}
         maxSize={3 * 1024 ** 2}
@@ -107,6 +126,33 @@ function UploadFile({ uploaded, setUploaded }: Props) {
         loading={mutation.isLoading}>
         {(status) => dropzoneChildren(status, theme)}
       </Dropzone>
+      <Modal opened={modalOpen} onClose={closeModal} title="Add more info" centered>
+        <form onSubmit={handleSubmit(uploadFile)}>
+          <TextInput
+            required
+            label="What kind of file is this?"
+            placeholder="e.g. Resume, Photo, etc."
+            {...register('name')}
+          />
+          {file && (
+            <Alert className="mt-4" color="gray">
+              {file.name}
+            </Alert>
+          )}
+          <ModalActions>
+            <Button
+              variant="default"
+              color="gray"
+              onClick={closeModal}
+              sx={{
+                opacity: 0.8,
+              }}>
+              Cancel
+            </Button>
+            <Button type="submit">Save</Button>
+          </ModalActions>
+        </form>
+      </Modal>
     </div>
   );
 }

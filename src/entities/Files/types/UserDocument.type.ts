@@ -3,6 +3,8 @@ export type UserDocument = {
   id: number;
   /** Name of the form field associated with this file. */
   fieldname: string;
+  /** Name given by the uploader */
+  name: string;
   /** Name of the file on the uploader's computer. */
   originalname: string;
   /**
