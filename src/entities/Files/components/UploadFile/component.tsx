@@ -1,4 +1,14 @@
-import { Alert, Button, Group, MantineTheme, Modal, Text, TextInput, useMantineTheme } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  Group,
+  LoadingOverlay,
+  MantineTheme,
+  Modal,
+  Text,
+  TextInput,
+  useMantineTheme,
+} from '@mantine/core';
 import { Dropzone, DropzoneStatus } from '@mantine/dropzone';
 import { useAuth } from 'app/providers';
 import { api } from 'entities/Files/api';
@@ -50,12 +60,17 @@ export const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) =>
 function UploadFile({ uploaded, setUploaded }: Props) {
   const theme = useMantineTheme();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [rejected, setRejected] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
   const { token } = useAuth();
   const { register, handleSubmit } = useForm<{ name: string }>();
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const removeRejectedAlert = () => {
+    setRejected(false);
   };
 
   const mutation = useMutation(
@@ -106,12 +121,29 @@ function UploadFile({ uploaded, setUploaded }: Props) {
           </Alert>
         </div>
       )}
+      {rejected && (
+        <Alert
+          variant="light"
+          color="red"
+          className="mb-4"
+          withCloseButton
+          onClose={removeRejectedAlert}
+          title={
+            <p>
+              <strong>File upload rejected</strong>
+            </p>
+          }>
+          The file is too big
+        </Alert>
+      )}
       <Dropzone
         onDrop={(files) => {
           setFile(files[0]);
           setModalOpen(true);
+          removeRejectedAlert();
         }}
-        onReject={(files) => console.log('rejected files', files)}
+        multiple={false}
+        onReject={() => setRejected(true)}
         maxSize={3 * 1024 ** 2}
         accept={[
           'image/png',
@@ -127,7 +159,8 @@ function UploadFile({ uploaded, setUploaded }: Props) {
         {(status) => dropzoneChildren(status, theme)}
       </Dropzone>
       <Modal opened={modalOpen} onClose={closeModal} title="Add more info" centered>
-        <form onSubmit={handleSubmit(uploadFile)}>
+        <form onSubmit={handleSubmit(uploadFile)} className="relative">
+          <LoadingOverlay visible={mutation.isLoading} />
           <TextInput
             required
             label="What kind of file is this?"
