@@ -1,5 +1,6 @@
 import {
   Alert,
+  Anchor,
   Button,
   Group,
   LoadingOverlay,
@@ -114,9 +115,15 @@ function UploadFile({ uploaded, setUploaded }: Props) {
               removeFile(upFile);
             }}
             title={
-              <p>
-                <strong>{upFile?.originalname}</strong>
-              </p>
+              <Anchor
+                size="xs"
+                underline
+                color="gray"
+                target="_blank"
+                rel="noopener"
+                href={`${process.env.REACT_APP_BACKEND_URL}/${upFile.path}`}>
+                {upFile?.originalname}
+              </Anchor>
             }>
             File size {formatBytes(upFile.size)}
           </Alert>
