@@ -2,6 +2,7 @@ import { Button, Card, LoadingOverlay, Text, SegmentedControl, TextInput } from 
 import {
   api,
   CreateEmployeeDTO,
+  DefaultEmployeeFields,
   Employee,
   EmployeeFormFields,
   EmployeeStatus,
@@ -12,31 +13,37 @@ import { UploadFile, UserDocument } from 'entities/Files';
 import { SelectPosition } from 'entities/Position';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
+import { useIdParam } from 'shared/hooks';
 
-export function CreateEmployeeForm(): JSX.Element {
+export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmployeeFields }): JSX.Element {
   const {
     register,
     handleSubmit,
     control,
     setValue,
     formState: { errors },
-  } = useForm<EmployeeFormFields>();
-  const navigate = useNavigate();
+  } = useForm<EmployeeFormFields>({
+    defaultValues: defaultValues.form,
+  });
+  const id = useIdParam();
   const [uploaded, setUploaded] = useState<UserDocument | null>(null);
-  const [supervisor, setSupervisor] = useState<Employee | null>(null);
-  console.log(uploaded);
+  console.log({ defaultValues });
 
-  const creation = useMutation((data: CreateEmployeeDTO) => api.createEmployee(data), {
-    onSuccess: (candidate: Employee) => {
-      navigate(`/employees/${candidate.id}`);
+  const [supervisor, setSupervisor] = useState<Employee | null>(defaultValues.supervisor);
+  console.log(supervisor);
+
+  const queryClient = useQueryClient();
+
+  const updating = useMutation((data: CreateEmployeeDTO) => api.updateEmployee(id, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['employee', id]);
     },
   });
 
   const onSubmit = async (form: EmployeeFormFields) => {
     if (supervisor) {
-      creation.mutate({
+      updating.mutate({
         ...form,
         salary: parseInt(form.salary ?? '', 10),
         phone: form.phone ?? null,
@@ -51,7 +58,7 @@ export function CreateEmployeeForm(): JSX.Element {
 
   return (
     <section className="relative mx-auto">
-      <LoadingOverlay visible={creation.isLoading} />
+      <LoadingOverlay visible={updating.isLoading} />
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
           <h3 className="mb-3 text-xl">Profile</h3>
@@ -145,7 +152,7 @@ export function CreateEmployeeForm(): JSX.Element {
               <Text size="sm" weight={500}>
                 Supervisor
               </Text>
-              <SelectEmployee onChange={setSupervisor} />
+              <SelectEmployee onChange={setSupervisor} defaultValue={supervisor?.id} />
             </div>
             <Controller
               control={control}

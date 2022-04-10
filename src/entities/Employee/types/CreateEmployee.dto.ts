@@ -1,4 +1,4 @@
-import { EmployeeStatus, Role } from './Employee.type';
+import { Employee, EmployeeStatus, Role } from './Employee.type';
 
 export type EmployeeFormFields = {
   email: string;
@@ -26,4 +26,9 @@ export type CreateEmployeeDTO = {
   role: Role;
   status: EmployeeStatus;
   documentId: number | null;
+};
+
+export type DefaultEmployeeFields = {
+  form: EmployeeFormFields;
+  supervisor: Employee | null;
 };

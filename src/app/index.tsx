@@ -3,6 +3,7 @@ import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
 import { EmployeesIndexRoute } from 'pages/employees';
 import { CreateEmployeeRoute } from 'pages/employees/new';
+import { EmployeeDetailsRoute } from 'pages/employees/[id]';
 import { EventsRoute } from 'pages/events';
 import { HomeRoute } from 'pages/home';
 import { InterviewDetailsRoute } from 'pages/interviews/[id]';
@@ -41,6 +42,7 @@ function App() {
                 <Route path="employees">
                   <Route index element={<EmployeesIndexRoute />} />
                   <Route path="new" element={<CreateEmployeeRoute />} />
+                  <Route path=":id" element={<EmployeeDetailsRoute />} />
                   {/* <Route path=":id" element={<RecruitingDetailsRoute />} /> */}
                 </Route>
                 <Route path="interviews">
