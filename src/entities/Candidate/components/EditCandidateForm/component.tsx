@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 import type { CandidateFormFields, DefaultCandidateFields, UpdateCandidateData } from '../../types';
 
-export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandidateFields }): JSX.Element {
+export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCandidateFields }): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -23,17 +23,18 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
     reset,
     getValues,
   } = useForm<CandidateFormFields>({
-    defaultValues: defaultValue,
+    defaultValues: defaultValues.form,
   });
 
   const id = useIdParam();
   const { token } = useAuth();
 
-  const [uploaded, setUploaded] = useState<UserDocument[]>(defaultValue.documents);
+  const [uploaded, setUploaded] = useState<UserDocument[]>(defaultValues.documents);
   const queryClient = useQueryClient();
 
   const mutation = useMutation((data: UpdateCandidateData) => api.updateCandidateForm(id, data, token), {
-    onSuccess: () => {
+    onSuccess: (res) => {
+      setUploaded(res.documents);
       queryClient.invalidateQueries(['candidate', id]);
     },
   });
@@ -48,26 +49,33 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
   );
 
   const areDocumentsChanged = useMemo(
-    () => !dequal(defaultValue.documents, uploaded ? [uploaded] : undefined),
-    [defaultValue.documents, uploaded]
+    () => !dequal(defaultValues.documents, uploaded),
+    [defaultValues.documents, uploaded]
   );
-  const isFormChanged = useMemo(() => !dequal(defaultValue, values), [defaultValue, values]);
+
+  console.log(defaultValues.documents, uploaded);
+
+  const isFormChanged = useMemo(() => !dequal(defaultValues.form, values), [defaultValues.form, values]);
+
+  console.log({ isFormChanged, areDocumentsChanged });
 
   const isChanged = isFormChanged || areDocumentsChanged;
 
   const onSubmit = (form: CandidateFormFields) => {
     if (isChanged) {
       const data: UpdateCandidateData = {};
-      if (isFormChanged || areDocumentsChanged) {
+      if (isFormChanged) {
         data.form = {
           ...form,
           salary: form.salary ? parseInt(form.salary, 10) : null,
           location: form.location || null,
           phone: form.phone || null,
-          documentId: null,
-          // documentId: uploaded?.id ?? null,
         };
       }
+      if (areDocumentsChanged) {
+        data.documents = uploaded.map((doc) => doc.id);
+      }
+
       mutation.mutate(data);
     }
   };
@@ -186,10 +194,6 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
           </div>
           <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
         </Card>
-
-        <Button type="submit" variant="filled" className="mt-4" disabled={!isChanged}>
-          Update changes
-        </Button>
       </form>
 
       <InterviewsTimeline className="col-span-2" />

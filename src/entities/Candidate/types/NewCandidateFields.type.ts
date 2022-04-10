@@ -12,29 +12,22 @@ export type CandidateFormFields = {
   department: string;
 };
 
-export type NewCandidateDTO = {
+export type CreateCandidateDTO = {
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string | null;
-  salary?: number | null;
-  location?: string | null;
-  position?: string | null;
-  department?: string | null;
+  phone: string | null;
+  salary: number | null;
+  location: string | null;
+  position: string;
+  department: string;
   documents: number[] | null;
 };
 
 export type DefaultCandidateFields = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  salary: string;
-  location: string;
-  position: string;
-  department: string;
-  interviews: InterviewState[];
+  form: CandidateFormFields;
   documents: UserDocument[];
+  // interviews: InterviewState[];
 };
 
 export type UpdateCandidateDTO = {
@@ -46,10 +39,10 @@ export type UpdateCandidateDTO = {
   location: string | null;
   position: string | null;
   department: string | null;
-  documentId: number | null;
 };
 
 export type UpdateCandidateData = {
   form?: UpdateCandidateDTO;
   interviews?: CreateInterviewDto[] | null;
+  documents?: number[];
 };

@@ -1,7 +1,7 @@
 import { client } from 'shared/helpers';
-import { Candidate, NewCandidateDTO, UpdateCandidateData } from '../types';
+import { Candidate, CreateCandidateDTO, UpdateCandidateData } from '../types';
 
-export const createCandidate = async (data: NewCandidateDTO, token: string) => {
+export const createCandidate = async (data: CreateCandidateDTO, token: string) => {
   return client<Candidate>('candidate', { data, token });
 };
 
@@ -14,7 +14,7 @@ export const getOneById = (id: number) => async () => {
 };
 
 export const updateCandidateForm = async (id: number, data: UpdateCandidateData, token: string) => {
-  return client(`candidate/${id}`, {
+  return client<Candidate>(`candidate/${id}`, {
     method: 'PUT',
     data,
     token,

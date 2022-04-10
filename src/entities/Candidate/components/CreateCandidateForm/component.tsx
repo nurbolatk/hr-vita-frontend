@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import type { Candidate, CandidateFormFields, NewCandidateDTO } from '../../types';
+import type { Candidate, CandidateFormFields, CreateCandidateDTO } from '../../types';
 
 export function CreateCandidateForm(): JSX.Element {
   const {
@@ -22,7 +22,7 @@ export function CreateCandidateForm(): JSX.Element {
   const navigate = useNavigate();
   const [uploaded, setUploaded] = useState<UserDocument[]>([]);
 
-  const creation = useMutation((data: NewCandidateDTO) => api.createCandidate(data, token), {
+  const creation = useMutation((data: CreateCandidateDTO) => api.createCandidate(data, token), {
     onSuccess: (candidate: Candidate) => {
       navigate(`/recruiting/${candidate.id}`);
     },
@@ -32,7 +32,7 @@ export function CreateCandidateForm(): JSX.Element {
     creation.mutate({
       ...form,
       salary: parseInt(form.salary ?? '', 10),
-      documents: uploaded.length > 0 ? uploaded.map((doc) => doc.id) : null,
+      documents: uploaded.map((doc) => doc.id),
     });
   };
 
