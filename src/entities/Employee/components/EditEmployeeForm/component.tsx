@@ -50,7 +50,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
         phone: form.phone ?? null,
         location: form.location ?? null,
         supervisorId: supervisor.id,
-        documentId: null,
+        documents: uploaded.map((doc) => doc.id),
       });
     }
     console.log(form);

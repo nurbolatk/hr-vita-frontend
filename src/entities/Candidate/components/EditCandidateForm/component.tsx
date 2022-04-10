@@ -53,11 +53,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
     [defaultValues.documents, uploaded]
   );
 
-  console.log(defaultValues.documents, uploaded);
-
   const isFormChanged = useMemo(() => !dequal(defaultValues.form, values), [defaultValues.form, values]);
-
-  console.log({ isFormChanged, areDocumentsChanged });
 
   const isChanged = isFormChanged || areDocumentsChanged;
 

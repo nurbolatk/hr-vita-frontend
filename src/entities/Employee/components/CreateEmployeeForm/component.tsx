@@ -27,7 +27,6 @@ export function CreateEmployeeForm(): JSX.Element {
   const [uploaded, setUploaded] = useState<UserDocument[]>([]);
 
   const [supervisor, setSupervisor] = useState<Employee | null>(null);
-  console.log(uploaded);
 
   const creation = useMutation((data: CreateEmployeeDTO) => api.createEmployee(data), {
     onSuccess: (candidate: Employee) => {
@@ -43,11 +42,9 @@ export function CreateEmployeeForm(): JSX.Element {
         phone: form.phone ?? null,
         location: form.location ?? null,
         supervisorId: supervisor.id,
-        documentId: null,
+        documents: uploaded.map(({ id }) => id),
       });
     }
-    console.log(form);
-    console.log(supervisor);
   };
 
   return (

@@ -26,7 +26,7 @@ export type CreateEmployeeDTO = {
   supervisorId: number;
   role: Role;
   status: EmployeeStatus;
-  documentId: number | null;
+  documents: number[];
 };
 
 export type DefaultEmployeeFields = {
