@@ -1,9 +1,9 @@
 import { client } from 'shared/helpers';
-import { Employee } from '../types';
+import { CreateEmployeeDTO, Employee } from '../types';
 
-// export const createEntity = async (dto: CreateEntityDto) => {
-//   return client<Employee>('', { data: dto });
-// };
+export const createEmployee = async (dto: CreateEmployeeDTO) => {
+  return client<Employee>('users', { data: dto });
+};
 
 export const getAll = async () => {
   return client<Employee[]>('users');

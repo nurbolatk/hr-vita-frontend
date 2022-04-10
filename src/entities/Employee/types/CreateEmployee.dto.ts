@@ -17,11 +17,13 @@ export type CreateEmployeeDTO = {
   email: string;
   firstName: string;
   lastName: string;
-  salary: string;
+  salary: number;
   phone: string | null;
   location: string | null;
   department: string;
   position: string;
+  supervisorId: number;
   role: Role;
   status: EmployeeStatus;
+  documentId: number | null;
 };

@@ -1,8 +1,14 @@
 import { Button, Card, LoadingOverlay, Text, SegmentedControl, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
-import { api } from 'entities/Candidate';
+import {
+  api,
+  CreateEmployeeDTO,
+  Employee,
+  EmployeeFormFields,
+  EmployeeStatus,
+  SelectEmployee,
+} from 'entities/Employee';
 import { SelectDepartment } from 'entities/Department';
-import { Employee, EmployeeFormFields, EmployeeStatus, SelectEmployee } from 'entities/Employee';
 import { UploadFile, UserDocument } from 'entities/Files';
 import { SelectPosition } from 'entities/Position';
 import React, { useState } from 'react';
@@ -24,21 +30,25 @@ export function CreateEmployeeForm(): JSX.Element {
   const [supervisor, setSupervisor] = useState<Employee | null>(null);
   console.log(uploaded);
 
-  // const creation = useMutation((data: NewCandidateDTO) => api.createCandidate(data, token), {
-  //   onSuccess: (candidate: Candidate) => {
-  //     navigate(`/recruiting/${candidate.id}`);
-  //   },
-  // });
+  const creation = useMutation((data: CreateEmployeeDTO) => api.createEmployee(data), {
+    onSuccess: (candidate: Employee) => {
+      navigate(`/employees/${candidate.id}`);
+    },
+  });
 
   const onSubmit = async (form: EmployeeFormFields) => {
+    if (supervisor) {
+      creation.mutate({
+        ...form,
+        salary: parseInt(form.salary ?? '', 10),
+        phone: form.phone ?? null,
+        location: form.location ?? null,
+        supervisorId: supervisor.id,
+        documentId: null,
+      });
+    }
     console.log(form);
     console.log(supervisor);
-
-    // creation.mutate({
-    //   ...form,
-    //   salary: parseInt(form.salary ?? '', 10),
-    //   documentId: uploaded?.id,
-    // });
   };
 
   return (
