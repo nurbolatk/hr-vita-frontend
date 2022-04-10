@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { ApprovalDetailsRoute } from 'pages/approvals/[id]';
 import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
 import { EmployeesIndexRoute } from 'pages/employees';
@@ -47,6 +48,9 @@ function App() {
                 </Route>
                 <Route path="interviews">
                   <Route path=":id" element={<InterviewDetailsRoute />} />
+                </Route>
+                <Route path="approvals">
+                  <Route path=":id" element={<ApprovalDetailsRoute />} />
                 </Route>
                 <Route path="candidates">
                   <Route path="new" element={<NewCandidateRoute />} />
