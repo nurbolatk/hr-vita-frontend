@@ -7,9 +7,14 @@ import type { Department } from '../../types';
 import { useCreateElement } from './hooks';
 import type { Props } from './props';
 
-export function SelectDepartment({ error, setValue, ...props }: Props): JSX.Element {
+export function SelectDepartment<T extends { department: string }>({
+  error,
+  setValue,
+  ...props
+}: Props<T>): JSX.Element {
   const { data } = useQuery('departments', api.getEntities<Department>('departments'));
 
+  // @ts-ignore i have to
   const mutation = useCreateElement('departments', 'departments', () => setValue?.('department', ''));
 
   return (

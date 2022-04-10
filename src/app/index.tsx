@@ -1,6 +1,8 @@
 import { MantineProvider } from '@mantine/core';
 import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
+import { EmployeesIndexRoute } from 'pages/employees';
+import { CreateEmployeeRoute } from 'pages/employees/new';
 import { EventsRoute } from 'pages/events';
 import { HomeRoute } from 'pages/home';
 import { InterviewDetailsRoute } from 'pages/interviews/[id]';
@@ -35,6 +37,11 @@ function App() {
                 <Route path="recruiting">
                   <Route index element={<RecruitingIndexRoute />} />
                   <Route path=":id" element={<RecruitingDetailsRoute />} />
+                </Route>
+                <Route path="employees">
+                  <Route index element={<EmployeesIndexRoute />} />
+                  <Route path="new" element={<CreateEmployeeRoute />} />
+                  {/* <Route path=":id" element={<RecruitingDetailsRoute />} /> */}
                 </Route>
                 <Route path="interviews">
                   <Route path=":id" element={<InterviewDetailsRoute />} />

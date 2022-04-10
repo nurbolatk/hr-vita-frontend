@@ -1,4 +1,4 @@
-import { Button, Card, LoadingOverlay, Table, Title } from '@mantine/core';
+import { Button, Card, LoadingOverlay, Table, Text, Title } from '@mantine/core';
 import { api, Candidate } from 'entities/Candidate';
 import { parseCandidateStatus } from 'entities/Candidate/helpers';
 import React from 'react';
@@ -13,12 +13,7 @@ export function RecruitingIndexRoute() {
       <tr key={candidate.id}>
         <td>
           <Link className="block" to={`/recruiting/${candidate.id}`}>
-            {candidate.firstName}
-          </Link>
-        </td>
-        <td>
-          <Link className="block" to={`/recruiting/${candidate.id}`}>
-            {candidate.lastName}
+            {candidate.firstName} {candidate.lastName}
           </Link>
         </td>
         <td>
@@ -61,11 +56,10 @@ export function RecruitingIndexRoute() {
       </div>
       <Card withBorder shadow="sm" className="relative p-0">
         <LoadingOverlay visible={isLoading} />
-        <Table striped highlightOnHover verticalSpacing={16} horizontalSpacing={16}>
+        <Table highlightOnHover verticalSpacing={16} horizontalSpacing={16}>
           <thead>
             <tr>
-              <th>First Name</th>
-              <th>Second Name</th>
+              <th>Name</th>
               <th>Position</th>
               <th>Department</th>
               <th>Salary</th>
