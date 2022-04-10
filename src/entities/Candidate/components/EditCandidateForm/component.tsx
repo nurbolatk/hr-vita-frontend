@@ -40,21 +40,12 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
   });
 
   // edit form
-  const formValues = getValues();
-  const values = useMemo(
-    () => ({
-      ...formValues,
-    }),
-    [formValues]
-  );
-
+  const values = getValues();
   const areDocumentsChanged = useMemo(
     () => !dequal(defaultValues.documents, uploaded),
     [defaultValues.documents, uploaded]
   );
-
   const isFormChanged = useMemo(() => !dequal(defaultValues.form, values), [defaultValues.form, values]);
-
   const isChanged = isFormChanged || areDocumentsChanged;
 
   const onSubmit = (form: CandidateFormFields) => {
@@ -76,6 +67,11 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
     }
   };
 
+  const cancelChanges = () => {
+    reset();
+    setUploaded(defaultValues.documents);
+  };
+
   return (
     <section className="mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 relative col-span-3">
@@ -85,7 +81,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
             Profile
             {isChanged && (
               <div>
-                <Button type="button" className="mr-2" variant="default" compact onClick={() => reset()}>
+                <Button type="button" className="mr-2" variant="default" compact onClick={cancelChanges}>
                   Cancel
                 </Button>
                 <Button type="submit" compact>

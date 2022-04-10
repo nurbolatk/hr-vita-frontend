@@ -11,50 +11,67 @@ import {
 import { SelectDepartment } from 'entities/Department';
 import { UploadFile, UserDocument } from 'entities/Files';
 import { SelectPosition } from 'entities/Position';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 import { ApprovalsTimeline } from 'entities/Approval';
+import { dequal } from 'dequal';
 
 export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmployeeFields }): JSX.Element {
   const {
     register,
     handleSubmit,
     control,
+    reset,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<EmployeeFormFields>({
     defaultValues: defaultValues.form,
   });
   const id = useIdParam();
   const [uploaded, setUploaded] = useState<UserDocument[]>(defaultValues.documents);
-  console.log({ defaultValues });
 
   const [supervisor, setSupervisor] = useState<Employee | null>(defaultValues.supervisor);
-  console.log(supervisor);
 
   const queryClient = useQueryClient();
 
   const updating = useMutation((data: CreateEmployeeDTO) => api.updateEmployee(id, data), {
-    onSuccess: () => {
+    onSuccess: (res) => {
       queryClient.invalidateQueries(['employee', id]);
+      setUploaded(res.documents);
     },
   });
 
+  const areDocumentsChanged = useMemo(
+    () => !dequal(defaultValues.documents, uploaded),
+    [defaultValues.documents, uploaded]
+  );
+
+  const values = getValues();
+  const isFormChanged = useMemo(() => !dequal(defaultValues.form, values), [defaultValues.form, values]);
+  console.log({ values, '1': defaultValues.form });
+  const isChanged = isFormChanged || areDocumentsChanged;
+
+  const cancelChanges = () => {
+    reset();
+    setUploaded(defaultValues.documents);
+  };
+
   const onSubmit = async (form: EmployeeFormFields) => {
-    if (supervisor) {
-      updating.mutate({
-        ...form,
-        salary: parseInt(form.salary ?? '', 10),
-        phone: form.phone ?? null,
-        location: form.location ?? null,
-        supervisorId: supervisor.id,
-        documents: uploaded.map((doc) => doc.id),
-      });
+    if (isChanged) {
+      if (supervisor) {
+        updating.mutate({
+          ...form,
+          salary: parseInt(form.salary ?? '', 10),
+          phone: form.phone ?? null,
+          location: form.location ?? null,
+          supervisorId: supervisor.id,
+          documents: uploaded.map((doc) => doc.id),
+        });
+      }
     }
-    console.log(form);
-    console.log(supervisor);
   };
 
   return (
@@ -62,7 +79,19 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
       <LoadingOverlay visible={updating.isLoading} />
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 col-span-3">
         <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
-          <h3 className="mb-3 text-xl">Profile</h3>
+          <h3 className="mb-3 text-xl flex items-baseline justify-between">
+            Profile
+            {isChanged && (
+              <div>
+                <Button type="button" className="mr-2" variant="default" compact onClick={cancelChanges}>
+                  Cancel
+                </Button>
+                <Button type="submit" compact>
+                  Save
+                </Button>
+              </div>
+            )}
+          </h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput
               label="Имя"
@@ -114,9 +143,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
               label="Зарплата"
               className="font-medium block"
               type="number"
-              {...register('salary', {
-                valueAsNumber: true,
-              })}
+              {...register('salary')}
               error={errors.salary?.message}
             />
             <TextInput
@@ -191,10 +218,6 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
           </div>
           <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
         </Card>
-
-        <Button type="submit" variant="filled" className="mt-4">
-          Submit
-        </Button>
       </form>
 
       <ApprovalsTimeline className="col-span-2" />
