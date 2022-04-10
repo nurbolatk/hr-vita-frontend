@@ -19,6 +19,7 @@ export type Employee = {
   position: Position;
   interviews: Interview[];
   documents: UserDocument[];
+  supervisor: Employee | null;
 };
 
 export enum Role {
