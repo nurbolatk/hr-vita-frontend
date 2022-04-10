@@ -20,7 +20,8 @@ export function CreateCandidateForm(): JSX.Element {
   } = useForm<CandidateFormFields>();
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [uploaded, setUploaded] = useState<UserDocument | null>(null);
+  const [uploaded, setUploaded] = useState<UserDocument[]>([]);
+
   console.log(uploaded);
 
   const creation = useMutation((data: NewCandidateDTO) => api.createCandidate(data, token), {
@@ -33,7 +34,7 @@ export function CreateCandidateForm(): JSX.Element {
     creation.mutate({
       ...form,
       salary: parseInt(form.salary ?? '', 10),
-      documentId: uploaded?.id,
+      // documentId: uploaded?.id,
     });
   };
 

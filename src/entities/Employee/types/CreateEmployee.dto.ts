@@ -1,3 +1,4 @@
+import { UserDocument } from 'entities/Files';
 import { Employee, EmployeeStatus, Role } from './Employee.type';
 
 export type EmployeeFormFields = {
@@ -31,4 +32,5 @@ export type CreateEmployeeDTO = {
 export type DefaultEmployeeFields = {
   form: EmployeeFormFields;
   supervisor: Employee | null;
+  documents: UserDocument[];
 };

@@ -11,11 +11,12 @@ import {
 } from '@mantine/core';
 import { Dropzone, DropzoneStatus } from '@mantine/dropzone';
 import { useAuth } from 'app/providers';
+import { UserDocument } from 'entities/Files';
 import { api } from 'entities/Files/api';
 import React, { SVGAttributes, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { CheckCircleIcon, CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
+import { CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
 import { ModalActions } from 'shared/components/organisms/Modal/libs/ModalActions';
 import { formatBytes } from 'shared/helpers';
 import { Props } from './props';
@@ -83,7 +84,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
     {
       onSuccess(result) {
         closeModal();
-        setUploaded(result);
+        setUploaded([...uploaded, result]);
       },
     }
   );
@@ -92,16 +93,15 @@ function UploadFile({ uploaded, setUploaded }: Props) {
     mutation.mutate(form.name);
   }
 
+  const removeFile = (upFile: UserDocument) => {
+    setUploaded(uploaded.filter((doc) => doc.id !== upFile.id));
+  };
+
   return (
     <div>
-      {/* {mutation.isSuccess && (
-        <Alert color="green" title="Success!" className="mb-4" icon={<CheckCircleIcon />}>
-          File <strong>{uploaded?.originalname}</strong> was uploaded successfully
-        </Alert>
-      )} */}
-      {uploaded && (
+      {uploaded.map((upFile) => (
         <div className="flex gap-x-4 items-baseline">
-          <Text>{uploaded.name}: </Text>
+          <Text>{upFile.name}: </Text>
           <Alert
             variant="light"
             color="gray"
@@ -109,18 +109,17 @@ function UploadFile({ uploaded, setUploaded }: Props) {
             withCloseButton
             closeButtonLabel="Delete"
             onClose={() => {
-              setUploaded(null);
-              mutation.reset();
+              removeFile(upFile);
             }}
             title={
               <p>
-                <strong>{uploaded?.originalname}</strong>
+                <strong>{upFile?.originalname}</strong>
               </p>
             }>
-            File size {formatBytes(uploaded.size)}
+            File size {formatBytes(upFile.size)}
           </Alert>
         </div>
-      )}
+      ))}
       {rejected && (
         <Alert
           variant="light"
@@ -133,7 +132,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
               <strong>File upload rejected</strong>
             </p>
           }>
-          The file is too big
+          The file is too big. It should not exceed 5mb
         </Alert>
       )}
       <Dropzone

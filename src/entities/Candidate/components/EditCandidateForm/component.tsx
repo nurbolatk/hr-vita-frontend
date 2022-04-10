@@ -29,7 +29,7 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
   const id = useIdParam();
   const { token } = useAuth();
 
-  const [uploaded, setUploaded] = useState<UserDocument | null>(defaultValue.documents?.[0] ?? null);
+  const [uploaded, setUploaded] = useState<UserDocument[]>(defaultValue.documents);
   const queryClient = useQueryClient();
 
   const mutation = useMutation((data: UpdateCandidateData) => api.updateCandidateForm(id, data, token), {
@@ -64,7 +64,8 @@ export function EditCandidateForm({ defaultValue }: { defaultValue: DefaultCandi
           salary: form.salary ? parseInt(form.salary, 10) : null,
           location: form.location || null,
           phone: form.phone || null,
-          documentId: uploaded?.id ?? null,
+          documentId: null,
+          // documentId: uploaded?.id ?? null,
         };
       }
       mutation.mutate(data);

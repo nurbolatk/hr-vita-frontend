@@ -1,6 +1,7 @@
 import { UserDocument } from 'entities/Files';
+import { Dispatch, SetStateAction } from 'react';
 
 export type Props = {
-  uploaded?: UserDocument | null;
-  setUploaded: (newFile: UserDocument | null) => void;
+  uploaded: UserDocument[];
+  setUploaded: (up: UserDocument[]) => void;
 };

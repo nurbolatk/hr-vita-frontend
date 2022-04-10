@@ -28,7 +28,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
     defaultValues: defaultValues.form,
   });
   const id = useIdParam();
-  const [uploaded, setUploaded] = useState<UserDocument | null>(null);
+  const [uploaded, setUploaded] = useState<UserDocument[]>(defaultValues.documents);
   console.log({ defaultValues });
 
   const [supervisor, setSupervisor] = useState<Employee | null>(defaultValues.supervisor);

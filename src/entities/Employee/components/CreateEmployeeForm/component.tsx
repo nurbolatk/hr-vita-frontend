@@ -24,7 +24,8 @@ export function CreateEmployeeForm(): JSX.Element {
     formState: { errors },
   } = useForm<EmployeeFormFields>();
   const navigate = useNavigate();
-  const [uploaded, setUploaded] = useState<UserDocument | null>(null);
+  const [uploaded, setUploaded] = useState<UserDocument[]>([]);
+
   const [supervisor, setSupervisor] = useState<Employee | null>(null);
   console.log(uploaded);
 

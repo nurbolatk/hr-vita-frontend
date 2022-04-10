@@ -16,6 +16,7 @@ export function EmployeeDetailsRoute() {
           defaultValues={{
             form: employeeToForm(employee),
             supervisor: employee.supervisor,
+            documents: employee.documents,
           }}
         />
       )}
