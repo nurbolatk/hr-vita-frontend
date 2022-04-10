@@ -13,7 +13,7 @@ import { Dropzone, DropzoneStatus } from '@mantine/dropzone';
 import { useAuth } from 'app/providers';
 import { UserDocument } from 'entities/Files';
 import { api } from 'entities/Files/api';
-import React, { SVGAttributes, useState } from 'react';
+import React, { SVGAttributes, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
@@ -64,7 +64,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
   const [rejected, setRejected] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
   const { token } = useAuth();
-  const { register, handleSubmit } = useForm<{ name: string }>();
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -89,9 +89,11 @@ function UploadFile({ uploaded, setUploaded }: Props) {
     }
   );
 
-  function uploadFile(form: { name: string }) {
-    mutation.mutate(form.name);
-  }
+  const uploadFile = () => {
+    if (nameInputRef.current) {
+      mutation.mutate(nameInputRef.current.value);
+    }
+  };
 
   const removeFile = (upFile: UserDocument) => {
     setUploaded(uploaded.filter((doc) => doc.id !== upFile.id));
@@ -100,7 +102,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
   return (
     <div>
       {uploaded.map((upFile) => (
-        <div className="flex gap-x-4 items-baseline">
+        <div key={upFile.id} className="flex gap-x-4 items-baseline">
           <Text>{upFile.name}: </Text>
           <Alert
             variant="light"
@@ -158,13 +160,14 @@ function UploadFile({ uploaded, setUploaded }: Props) {
         {(status) => dropzoneChildren(status, theme)}
       </Dropzone>
       <Modal opened={modalOpen} onClose={closeModal} title="Add more info" centered>
-        <form onSubmit={handleSubmit(uploadFile)} className="relative">
+        <div className="relative">
           <LoadingOverlay visible={mutation.isLoading} />
           <TextInput
             required
             label="What kind of file is this?"
             placeholder="e.g. Resume, Photo, etc."
-            {...register('name')}
+            name="name"
+            ref={nameInputRef}
           />
           {file && (
             <Alert className="mt-4" color="gray">
@@ -181,9 +184,11 @@ function UploadFile({ uploaded, setUploaded }: Props) {
               }}>
               Cancel
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="button" onClick={uploadFile}>
+              Save
+            </Button>
           </ModalActions>
-        </form>
+        </div>
       </Modal>
     </div>
   );

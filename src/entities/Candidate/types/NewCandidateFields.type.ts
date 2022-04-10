@@ -21,7 +21,7 @@ export type NewCandidateDTO = {
   location?: string | null;
   position?: string | null;
   department?: string | null;
-  documentId?: number | null;
+  documents: number[] | null;
 };
 
 export type DefaultCandidateFields = {

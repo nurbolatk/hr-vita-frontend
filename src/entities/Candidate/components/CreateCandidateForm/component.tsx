@@ -22,8 +22,6 @@ export function CreateCandidateForm(): JSX.Element {
   const navigate = useNavigate();
   const [uploaded, setUploaded] = useState<UserDocument[]>([]);
 
-  console.log(uploaded);
-
   const creation = useMutation((data: NewCandidateDTO) => api.createCandidate(data, token), {
     onSuccess: (candidate: Candidate) => {
       navigate(`/recruiting/${candidate.id}`);
@@ -34,7 +32,7 @@ export function CreateCandidateForm(): JSX.Element {
     creation.mutate({
       ...form,
       salary: parseInt(form.salary ?? '', 10),
-      // documentId: uploaded?.id,
+      documents: uploaded.length > 0 ? uploaded.map((doc) => doc.id) : null,
     });
   };
 
