@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
+import { ApprovalsTimeline } from 'entities/Approval';
 
 export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmployeeFields }): JSX.Element {
   const {
@@ -57,9 +58,9 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
   };
 
   return (
-    <section className="relative mx-auto">
+    <section className="relative mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
       <LoadingOverlay visible={updating.isLoading} />
-      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 col-span-3">
         <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
           <h3 className="mb-3 text-xl">Profile</h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
@@ -195,6 +196,8 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
           Submit
         </Button>
       </form>
+
+      <ApprovalsTimeline className="col-span-2" />
     </section>
   );
 }
