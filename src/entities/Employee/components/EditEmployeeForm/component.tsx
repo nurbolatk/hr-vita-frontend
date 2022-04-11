@@ -51,7 +51,6 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
 
   const values = getValues();
   const isFormChanged = useMemo(() => !dequal(defaultValues.form, values), [defaultValues.form, values]);
-  console.log({ values, '1': defaultValues.form });
   const isChanged = isFormChanged || areDocumentsChanged;
 
   const cancelChanges = () => {
