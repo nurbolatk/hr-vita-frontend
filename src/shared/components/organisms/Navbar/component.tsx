@@ -99,10 +99,9 @@ export function Navbar(): JSX.Element {
     enabled: !!user?.id && !!token,
   });
 
-  const unreadCount =
-    notifications.data?.reduce((acc, cur) => {
-      return cur.unread ? acc + 1 : acc;
-    }, 0) ?? 2;
+  const unreadCount = notifications.data?.reduce((acc, cur) => {
+    return cur.unread ? acc + 1 : acc;
+  }, 0);
 
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   return (
