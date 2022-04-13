@@ -91,7 +91,6 @@ const useStyles = createStyles((theme) => ({
 }));
 export function Navbar(): JSX.Element {
   const { user, token, isAuthLoading, logout, isAuthSuccess } = useAuth();
-  const isHr = user?.role === 'HR';
   const { classes, theme, cx } = useStyles();
   const navigate = useNavigate();
 
@@ -115,7 +114,7 @@ export function Navbar(): JSX.Element {
         <li>
           <Link to="/">Главная</Link>
         </li>
-        {isHr && (
+        {user?.isHR && (
           <>
             <li>
               <Link to="/recruiting">Recruiting</Link>
@@ -165,7 +164,7 @@ export function Navbar(): JSX.Element {
                 <Menu.Item onClick={() => navigate('/')} icon={<HomeIcon width={14} height={14} />}>
                   Главная
                 </Menu.Item>
-                {isHr && (
+                {user.isHR && (
                   <>
                     <Menu.Item onClick={() => navigate('/recruiting')} icon={<UserPlusIcon width={14} height={14} />}>
                       Recruiting

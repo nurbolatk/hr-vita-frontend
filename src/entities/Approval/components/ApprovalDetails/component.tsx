@@ -52,7 +52,7 @@ export function ApprovalDetails(): JSX.Element {
             {approval.status.toLowerCase()}
           </Text>
 
-          {user && (user.id === approval.master?.id || user.role === 'HR') && (
+          {user && (user.id === approval.master?.id || user.isHR) && (
             <div className="mt-4 flex gap-x-4">
               <Button
                 variant="default"

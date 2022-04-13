@@ -2,6 +2,7 @@ import { Department } from 'entities/Department/types';
 import { UserDocument } from 'entities/Files';
 import { Interview } from 'entities/Interview';
 import { Position } from 'entities/Position/types';
+import { Role } from 'entities/Session';
 
 export type Employee = {
   id: number;
@@ -21,12 +22,6 @@ export type Employee = {
   documents: UserDocument[];
   supervisor: Employee | null;
 };
-
-export enum Role {
-  HR = 'HR',
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-}
 
 export enum EmployeeStatus {
   NOT_ACCEPTED = 'NOT_ACCEPTED',
