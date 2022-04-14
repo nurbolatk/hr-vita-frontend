@@ -4,7 +4,7 @@ import { Interview } from 'entities/Interview';
 import { Position } from 'entities/Position/types';
 import { Role } from 'entities/Session';
 
-export type Employee = {
+export type EmployeeResponse = {
   id: number;
   createdAt: Date;
   updatedAt: Date;
@@ -20,6 +20,11 @@ export type Employee = {
   position: Position;
   interviews: Interview[];
   documents: UserDocument[];
+  supervisor: EmployeeResponse | null;
+};
+
+export type Employee = Omit<EmployeeResponse, 'supervisor'> & {
+  fullName: string;
   supervisor: Employee | null;
 };
 
