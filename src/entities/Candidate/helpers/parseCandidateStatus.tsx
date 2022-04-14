@@ -3,15 +3,15 @@ import React from 'react';
 import { Candidate, CandidateResponse, CandidateStatus } from '..';
 
 export function parseCandidateStatus(candidate: CandidateResponse | Candidate): CandidateStatus {
-  return candidate.interviews.length === 0
+  return candidate.status === CandidateStatus.HIRED || candidate.status === CandidateStatus.FAILED
+    ? candidate.status
+    : candidate.interviews.length === 0
     ? CandidateStatus.NOT_STARTED
-    : candidate.status !== CandidateStatus.HIRED && candidate.status !== CandidateStatus.FAILED
-    ? CandidateStatus.ONGOING
-    : candidate.status;
+    : CandidateStatus.ONGOING;
 }
 
-export function parseCandidateStatusJSX(candidate: Candidate): JSX.Element {
-  switch (candidate.status) {
+export function parseCandidateStatusJSX(status: CandidateStatus): JSX.Element {
+  switch (status) {
     case CandidateStatus.ONGOING:
       return <Badge className="cursor-pointer">Ongoing</Badge>;
     case CandidateStatus.FAILED:

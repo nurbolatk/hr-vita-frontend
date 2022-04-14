@@ -34,7 +34,7 @@ export function RecruitingIndexRoute() {
 
         <td>
           <Link className="block" to={`/recruiting/${candidate.id}`}>
-            {parseCandidateStatusJSX(candidate)}
+            {parseCandidateStatusJSX(candidate.status)}
           </Link>
         </td>
         {/* <td>
