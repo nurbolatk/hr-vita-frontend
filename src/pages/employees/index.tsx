@@ -1,10 +1,13 @@
 import { Button, Card, LoadingOverlay, Table, Title } from '@mantine/core';
+import { useAuth } from 'app/providers';
 import { api, Employee } from 'entities/Employee';
 import { parseEmployeeStatus } from 'entities/Employee/helpers';
+import { Role } from 'entities/Session';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { CellProps, Column, useTable } from 'react-table';
+import { isAllowedTo } from 'shared/helpers';
 
 function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
   return <Link to={`/employees/${row.original.id}`}>{value}</Link>;
@@ -18,7 +21,7 @@ function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
   if (row.original.supervisor) {
     return <Link to={`/employees/${row.original.supervisor.id}`}>{value}</Link>;
   }
-  return <p>No supervisor</p>;
+  return <Link to={`/employees/${row.original.id}`}>No supervisor</Link>;
 }
 
 export function EmployeesIndexRoute() {
@@ -68,13 +71,17 @@ export function EmployeesIndexRoute() {
     },
   });
 
+  const { user } = useAuth();
+
   return (
     <div>
       <div className="flex items-center gap-x-4 mb-6">
         <Title order={2}>Employees</Title>
-        <Button<typeof Link> component={Link} to="/employees/new">
-          Add employee
-        </Button>
+        {user && isAllowedTo(user, [Role.HR, Role.ADMIN]) && (
+          <Button<typeof Link> compact component={Link} to="/employees/new">
+            Add employee
+          </Button>
+        )}
       </div>
       <Card withBorder shadow="sm" className="relative p-0">
         <LoadingOverlay visible={isLoading} />
