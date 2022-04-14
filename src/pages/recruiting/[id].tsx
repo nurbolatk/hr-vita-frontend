@@ -1,5 +1,5 @@
 import { LoadingOverlay } from '@mantine/core';
-import { api, Candidate, EditCandidateForm } from 'entities/Candidate';
+import { api, Candidate, CandidateStatus, EditCandidateForm } from 'entities/Candidate';
 // import { interviewToInterviewState } from 'entities/Interview/helper';
 import React from 'react';
 import { useQuery } from 'react-query';
@@ -9,7 +9,6 @@ export function RecruitingDetailsRoute() {
   const id = useIdParam();
 
   const { data: candidate, isLoading } = useQuery<Candidate>(['candidate', id], api.getOneById(id));
-  console.log({ candidate });
 
   return (
     <div>
@@ -28,6 +27,7 @@ export function RecruitingDetailsRoute() {
               location: candidate.location ?? '',
             },
             documents: candidate.documents,
+            status: candidate.status,
             // interviews: interviewToInterviewState(candidate.interviews),
           }}
         />

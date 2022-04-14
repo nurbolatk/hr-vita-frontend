@@ -1,8 +1,16 @@
 import { Badge } from '@mantine/core';
 import React from 'react';
-import { Candidate, CandidateStatus } from '..';
+import { Candidate, CandidateResponse, CandidateStatus } from '..';
 
-export function parseCandidateStatus(candidate: Candidate): JSX.Element {
+export function parseCandidateStatus(candidate: CandidateResponse | Candidate): CandidateStatus {
+  return candidate.interviews.length === 0
+    ? CandidateStatus.NOT_STARTED
+    : candidate.status !== CandidateStatus.HIRED && candidate.status !== CandidateStatus.FAILED
+    ? CandidateStatus.ONGOING
+    : candidate.status;
+}
+
+export function parseCandidateStatusJSX(candidate: Candidate): JSX.Element {
   switch (candidate.status) {
     case CandidateStatus.ONGOING:
       return <Badge className="cursor-pointer">Ongoing</Badge>;
@@ -24,5 +32,18 @@ export function parseCandidateStatus(candidate: Candidate): JSX.Element {
           Not Started
         </Badge>
       );
+  }
+}
+
+export function parseCandidateStatusLabel(status: CandidateStatus): string {
+  switch (status) {
+    case CandidateStatus.ONGOING:
+      return 'Ongoing';
+    case CandidateStatus.FAILED:
+      return 'Failed';
+    case CandidateStatus.HIRED:
+      return 'Hired';
+    default:
+      return 'Not Started';
   }
 }

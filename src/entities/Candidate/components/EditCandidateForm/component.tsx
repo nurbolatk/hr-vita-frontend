@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { Button, Card, LoadingOverlay, TextInput } from '@mantine/core';
+import { Button, Text, Card, LoadingOverlay, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';
@@ -11,6 +11,7 @@ import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
+import { CandidateStatus } from 'entities/Candidate/types';
 import type { CandidateFormFields, DefaultCandidateFields, UpdateCandidateData } from '../../types';
 
 export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCandidateFields }): JSX.Element {
@@ -38,6 +39,15 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
       queryClient.invalidateQueries(['candidate', id]);
     },
   });
+
+  const statusMutation = useMutation(
+    (data: { status: CandidateStatus }) => api.updateCandidateStatus(id, data, token),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['candidate', id]);
+      },
+    }
+  );
 
   // edit form
   const values = getValues();
@@ -173,6 +183,10 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
               }}
             />
           </div>
+          <div>
+            <Text>Status</Text>
+            <Text>{defaultValues.status}</Text>
+          </div>
         </Card>
         <Card
           withBorder
@@ -188,7 +202,31 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
         </Card>
       </form>
 
-      <InterviewsTimeline className="col-span-2" />
+      <div className="grid col-span-3 md:col-span-2 gap-4">
+        <InterviewsTimeline />
+        <Card
+          withBorder
+          shadow="sm"
+          p="lg"
+          style={{
+            overflow: 'visible',
+          }}>
+          <h3 className="text-xl mb-3">Update candidate status</h3>
+          <div className="flex items-center gap-x-4">
+            <Button
+              onClick={() => {
+                statusMutation.mutate({
+                  status: CandidateStatus.HIRED,
+                });
+              }}>
+              Hire candidate
+            </Button>
+            <Button variant="light" color="red">
+              Reject candidate
+            </Button>
+          </div>
+        </Card>
+      </div>
     </section>
   );
 }
