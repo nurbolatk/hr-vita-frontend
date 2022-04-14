@@ -5,7 +5,7 @@ export type User = {
   email: string;
   firstName: string;
   lastName: string;
-  role: string;
+  role: Role;
   isHR: boolean;
 };
 
@@ -16,7 +16,7 @@ export type UserResponse = {
   email: string;
   firstName: string;
   lastName: string;
-  role: string;
+  role: Role;
 };
 
 export enum Role {
