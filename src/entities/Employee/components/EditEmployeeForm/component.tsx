@@ -26,7 +26,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
     reset,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<EmployeeFormFields>({
     defaultValues: defaultValues.form,
   });
@@ -52,6 +52,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
   const values = getValues();
   const isFormChanged = useMemo(() => !dequal(defaultValues.form, values), [defaultValues.form, values]);
   const isChanged = isFormChanged || areDocumentsChanged;
+  console.log(isFormChanged);
 
   const cancelChanges = () => {
     reset();
@@ -191,10 +192,14 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
                     Status
                   </Text>
                   <SegmentedControl
+                    fullWidth
                     value={value}
+                    color={
+                      value === EmployeeStatus.NOT_ACCEPTED ? 'gray' : value === EmployeeStatus.FIRED ? 'red' : 'teal'
+                    }
                     onChange={onChange}
                     data={[
-                      { label: 'Ongoing', value: EmployeeStatus.NOT_ACCEPTED },
+                      { label: 'Onboarding', value: EmployeeStatus.NOT_ACCEPTED },
                       { label: 'Working', value: EmployeeStatus.WORKING },
                       { label: 'Fired', value: EmployeeStatus.FIRED },
                     ]}

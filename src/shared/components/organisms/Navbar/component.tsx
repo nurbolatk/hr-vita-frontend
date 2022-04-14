@@ -101,6 +101,7 @@ export function Navbar(): JSX.Element {
   const unreadCount = notifications.data?.reduce((acc, cur) => {
     return cur.unread ? acc + 1 : acc;
   }, 0);
+  console.log({ user });
 
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   return (

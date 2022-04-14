@@ -1,7 +1,7 @@
 import { client } from 'shared/helpers';
 import { LoginArguments, RegisterArguments } from 'shared/types';
 import { parseUser } from '../helper';
-import { Session, SessionResponse, User } from '../types';
+import { Session, SessionResponse, User, UserResponse } from '../types';
 
 const localStorageKey = '__auth_provider_token__';
 
@@ -27,11 +27,11 @@ async function register(credentials: RegisterArguments): Promise<Session> {
   return handleUserResponse(session);
 }
 
-async function getUserByToken(token: string) {
-  const user = await client<User>('users/me', { token });
+async function getUserByToken(token: string): Promise<Session> {
+  const user = await client<UserResponse>('users/me', { token });
   return {
     token,
-    user,
+    user: parseUser(user),
   };
 }
 
