@@ -1,7 +1,7 @@
 import { Button, Card, LoadingOverlay, Table, Title } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { api, Employee } from 'entities/Employee';
-import { parseEmployeeStatus } from 'entities/Employee/helpers';
+import { parseEmployeeStatusJSX } from 'entities/Employee/helpers';
 import { Role } from 'entities/Session';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
@@ -14,7 +14,7 @@ function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
 }
 
 function BadgeCell({ value, row }: CellProps<Employee>): JSX.Element {
-  return <Link to={`/employees/${row.original.id}`}>{parseEmployeeStatus(undefined, value)}</Link>;
+  return <Link to={`/employees/${row.original.id}`}>{parseEmployeeStatusJSX(undefined, value)}</Link>;
 }
 
 function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {

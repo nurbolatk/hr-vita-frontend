@@ -2,7 +2,7 @@ import { Badge } from '@mantine/core';
 import React from 'react';
 import { Employee, EmployeeStatus } from '..';
 
-export function parseEmployeeStatus(candidate?: Employee, status?: EmployeeStatus): JSX.Element | null {
+export function parseEmployeeStatusJSX(candidate?: Employee, status?: EmployeeStatus): JSX.Element | null {
   if (candidate) {
     switch (candidate.status) {
       case EmployeeStatus.FIRED:
@@ -19,7 +19,7 @@ export function parseEmployeeStatus(candidate?: Employee, status?: EmployeeStatu
         );
       default:
         return (
-          <Badge className="cursor-pointer" color="gray">
+          <Badge className="cursor-pointer" color="blue">
             Onboarding
           </Badge>
         );
@@ -41,7 +41,7 @@ export function parseEmployeeStatus(candidate?: Employee, status?: EmployeeStatu
         );
       default:
         return (
-          <Badge className="cursor-pointer" color="gray">
+          <Badge className="cursor-pointer" color="blue">
             Onboarding
           </Badge>
         );

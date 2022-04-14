@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { Button, Text, Card, LoadingOverlay, TextInput } from '@mantine/core';
+import { Button, Card, LoadingOverlay, TextInput } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';

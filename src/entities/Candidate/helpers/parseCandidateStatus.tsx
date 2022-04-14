@@ -13,7 +13,11 @@ export function parseCandidateStatus(candidate: CandidateResponse | Candidate): 
 export function parseCandidateStatusJSX(status: CandidateStatus): JSX.Element {
   switch (status) {
     case CandidateStatus.ONGOING:
-      return <Badge className="cursor-pointer">Ongoing</Badge>;
+      return (
+        <Badge className="cursor-pointer" color="blue">
+          Ongoing
+        </Badge>
+      );
     case CandidateStatus.FAILED:
       return (
         <Badge className="cursor-pointer" color="red">
