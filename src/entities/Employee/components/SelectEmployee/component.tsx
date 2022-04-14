@@ -63,6 +63,11 @@ export function SelectEmployee({
         Option,
       }}
       styles={{
+        container: (base) => ({
+          ...base,
+          fontSize: '0.9rem',
+          padding: '0',
+        }),
         menu: (base) => ({
           ...base,
           padding: '0',
@@ -74,6 +79,13 @@ export function SelectEmployee({
           padding: '5px',
         }),
       }}
+      theme={(theme) => ({
+        ...theme,
+        colors: {
+          ...theme.colors,
+          primary: '#20C997',
+        },
+      })}
     />
   );
 }
