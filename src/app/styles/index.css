@@ -396,5 +396,5 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 body {
-  @apply bg-gray-50;
+  @apply bg-gray-50 text-slate-800;
 }
