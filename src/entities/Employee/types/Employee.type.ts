@@ -2,8 +2,9 @@ import { Department } from 'entities/Department/types';
 import { UserDocument } from 'entities/Files';
 import { Interview } from 'entities/Interview';
 import { Position } from 'entities/Position/types';
+import { Role } from 'entities/Session';
 
-export type Employee = {
+export type EmployeeResponse = {
   id: number;
   createdAt: Date;
   updatedAt: Date;
@@ -19,14 +20,13 @@ export type Employee = {
   position: Position;
   interviews: Interview[];
   documents: UserDocument[];
-  supervisor: Employee | null;
+  supervisor: EmployeeResponse | null;
 };
 
-export enum Role {
-  HR = 'HR',
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-}
+export type Employee = Omit<EmployeeResponse, 'supervisor'> & {
+  fullName: string;
+  supervisor: Employee | null;
+};
 
 export enum EmployeeStatus {
   NOT_ACCEPTED = 'NOT_ACCEPTED',

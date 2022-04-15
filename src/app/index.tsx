@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { Role } from 'entities/Session';
 import { ApprovalDetailsRoute } from 'pages/approvals/[id]';
 import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
@@ -14,7 +15,7 @@ import { ChangePasswordRoute } from 'pages/users/change-password';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Navbar } from 'shared/components/organisms';
+import { Navbar, ProtectedRoute } from 'shared/components/organisms';
 // Import Swiper styles
 import 'swiper/css';
 import { AuthProvider } from './providers';
@@ -36,15 +37,16 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomeRoute />} />
                 <Route path="cabinet" element={<CabinateRoute />} />
-                <Route path="recruiting">
+                <Route path="recruiting" element={<ProtectedRoute allowed={[Role.HR, Role.ADMIN]} />}>
                   <Route index element={<RecruitingIndexRoute />} />
                   <Route path=":id" element={<RecruitingDetailsRoute />} />
                 </Route>
                 <Route path="employees">
                   <Route index element={<EmployeesIndexRoute />} />
-                  <Route path="new" element={<CreateEmployeeRoute />} />
-                  <Route path=":id" element={<EmployeeDetailsRoute />} />
-                  {/* <Route path=":id" element={<RecruitingDetailsRoute />} /> */}
+                  <Route element={<ProtectedRoute allowed={[Role.HR, Role.ADMIN]} />}>
+                    <Route path="new" element={<CreateEmployeeRoute />} />
+                    <Route path=":id" element={<EmployeeDetailsRoute />} />
+                  </Route>
                 </Route>
                 <Route path="interviews">
                   <Route path=":id" element={<InterviewDetailsRoute />} />

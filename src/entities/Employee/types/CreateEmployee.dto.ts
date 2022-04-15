@@ -1,5 +1,6 @@
 import { UserDocument } from 'entities/Files';
-import { Employee, EmployeeStatus, Role } from './Employee.type';
+import { Role } from 'entities/Session';
+import { Employee, EmployeeStatus } from './Employee.type';
 
 export type EmployeeFormFields = {
   email: string;

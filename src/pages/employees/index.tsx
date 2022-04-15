@@ -1,79 +1,117 @@
 import { Button, Card, LoadingOverlay, Table, Title } from '@mantine/core';
+import { useAuth } from 'app/providers';
 import { api, Employee } from 'entities/Employee';
-import { parseEmployeeStatus } from 'entities/Employee/helpers';
-import React from 'react';
+import { parseEmployeeStatusJSX } from 'entities/Employee/helpers';
+import { Role } from 'entities/Session';
+import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import { CellProps, Column, useTable } from 'react-table';
+import { isAllowedTo } from 'shared/helpers';
+
+function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
+  return <Link to={`/employees/${row.original.id}`}>{value}</Link>;
+}
+
+function BadgeCell({ value, row }: CellProps<Employee>): JSX.Element {
+  return <Link to={`/employees/${row.original.id}`}>{parseEmployeeStatusJSX(undefined, value)}</Link>;
+}
+
+function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
+  if (row.original.supervisor) {
+    return <Link to={`/employees/${row.original.supervisor.id}`}>{value}</Link>;
+  }
+  return <Link to={`/employees/${row.original.id}`}>No supervisor</Link>;
+}
 
 export function EmployeesIndexRoute() {
   const { data: employees, isLoading } = useQuery<Employee[]>('employees', api.getAll);
 
-  const rows = employees?.map((employee: Employee) => {
-    return (
-      <tr key={employee.id}>
-        <td>
-          <Link className="block" to={`/employees/${employee.id}`}>
-            {employee.firstName} {employee.lastName}
-          </Link>
-        </td>
-        <td>
-          <Link className="block" to={`/employees/${employee.id}`}>
-            {employee.position.name}
-          </Link>
-        </td>
-        <td>
-          <Link className="block" to={`/employees/${employee.id}`}>
-            {employee.department.name}
-          </Link>
-        </td>
-        <td>
-          <Link className="block" to={`/employees/${employee.supervisor?.id}`}>
-            {employee.supervisor?.firstName} {employee.supervisor?.lastName}
-          </Link>
-        </td>
-        <td>
-          <Link className="block" to={`/employees/${employee.id}`}>
-            {employee.salary}
-          </Link>
-        </td>
-        <td>
-          <Link className="block" to={`/employees/${employee.id}`}>
-            {parseEmployeeStatus(employee)}
-          </Link>
-        </td>
-      </tr>
-    );
+  const columns = useMemo<Column<Employee>[]>(
+    () => [
+      {
+        Header: 'Full Name',
+        accessor: 'fullName',
+      },
+      {
+        Header: 'Position',
+        accessor: (row) => row.position.name,
+        // id: 'id',
+      },
+      {
+        Header: 'Department',
+        accessor: (row) => row.department.name,
+        // // id: 'id',
+      },
+      {
+        Header: 'Supervisor',
+        accessor: (row) => row.supervisor?.fullName,
+        Cell: SupervisorCell,
+      },
+      {
+        Header: 'Salary',
+        accessor: 'salary',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: BadgeCell,
+      },
+    ],
+    []
+  );
+
+  const data = useMemo<Employee[]>(() => employees ?? [], [employees]);
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+    columns,
+    data,
+    defaultColumn: {
+      Cell: DefaultCell,
+    },
   });
+
+  const { user } = useAuth();
 
   return (
     <div>
       <div className="flex items-center gap-x-4 mb-6">
         <Title order={2}>Employees</Title>
-        <Button<typeof Link> component={Link} to="/employees/new">
-          Add employee
-        </Button>
+        {user && isAllowedTo(user, [Role.HR, Role.ADMIN]) && (
+          <Button<typeof Link> compact component={Link} to="/employees/new">
+            Add employee
+          </Button>
+        )}
       </div>
       <Card withBorder shadow="sm" className="relative p-0">
         <LoadingOverlay visible={isLoading} />
-        <Table highlightOnHover verticalSpacing={16} horizontalSpacing={16}>
+        <Table highlightOnHover verticalSpacing={16} horizontalSpacing={16} {...getTableProps}>
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Department</th>
-              <th>Supervisor</th>
-              <th>Salary</th>
-              <th>Status</th>
-              {/* <th>Action</th> */}
-            </tr>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                ))}
+              </tr>
+            ))}
           </thead>
 
           {!isLoading && (!rows || rows.length < 1) && <tbody>No employees</tbody>}
-          {rows && <tbody>{rows}</tbody>}
+
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
         </Table>
       </Card>
     </div>
   );
-
-  return <div>EmployeesIndexRoute</div>;
 }

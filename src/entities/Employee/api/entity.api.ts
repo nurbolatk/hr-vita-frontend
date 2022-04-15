@@ -1,18 +1,23 @@
 import { client } from 'shared/helpers';
-import { CreateEmployeeDTO, Employee } from '../types';
+import { responseToEmployee } from 'entities/Employee/helpers';
+import { CreateEmployeeDTO, Employee, EmployeeResponse } from '../types';
 
-export const createEmployee = async (dto: CreateEmployeeDTO) => {
-  return client<Employee>('users', { data: dto });
+export const createEmployee = async (dto: CreateEmployeeDTO): Promise<Employee> => {
+  const response = await client<EmployeeResponse>('users', { data: dto });
+  return responseToEmployee(response);
 };
 
-export const updateEmployee = async (id: number, dto: CreateEmployeeDTO) => {
-  return client<Employee>(`users/${id}`, { data: dto, method: 'PUT' });
+export const updateEmployee = async (id: number, dto: CreateEmployeeDTO): Promise<Employee> => {
+  const response = await client<EmployeeResponse>(`users/${id}`, { data: dto, method: 'PUT' });
+  return responseToEmployee(response);
 };
 
-export const getAll = async () => {
-  return client<Employee[]>('users');
+export const getAll = async (): Promise<Employee[]> => {
+  const response = await client<EmployeeResponse[]>('users');
+  return response.map((res) => responseToEmployee(res));
 };
 
-export const getOneById = async (id: number) => {
-  return client<Employee>(`users/${id}`);
+export const getOneById = async (id: number): Promise<Employee> => {
+  const response = await client<EmployeeResponse>(`users/${id}`);
+  return responseToEmployee(response);
 };

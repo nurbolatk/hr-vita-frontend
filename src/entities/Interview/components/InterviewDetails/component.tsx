@@ -45,7 +45,7 @@ export function InterviewDetails(): JSX.Element {
             {interview.statusText}
           </Text>
 
-          {user && (user.id === interview.interviewer.id || user.role === 'HR') && (
+          {user && (user.id === interview.interviewer.id || user.isHR) && (
             <div className="mt-4 flex gap-x-4">
               <Button
                 variant="default"

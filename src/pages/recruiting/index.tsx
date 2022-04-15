@@ -1,6 +1,6 @@
 import { Button, Card, LoadingOverlay, Table, Text, Title } from '@mantine/core';
 import { api, Candidate } from 'entities/Candidate';
-import { parseCandidateStatus } from 'entities/Candidate/helpers';
+import { parseCandidateStatusJSX } from 'entities/Candidate/helpers';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -34,14 +34,9 @@ export function RecruitingIndexRoute() {
 
         <td>
           <Link className="block" to={`/recruiting/${candidate.id}`}>
-            {parseCandidateStatus(candidate)}
+            {parseCandidateStatusJSX(candidate.status)}
           </Link>
         </td>
-        {/* <td>
-          <Button compact size="xs" color="red">
-            Approve
-          </Button>
-        </td> */}
       </tr>
     );
   });
@@ -50,7 +45,7 @@ export function RecruitingIndexRoute() {
     <div>
       <div className="flex items-center gap-x-4 mb-6">
         <Title order={2}>Candidates</Title>
-        <Button<typeof Link> component={Link} to="/candidates/new">
+        <Button<typeof Link> compact component={Link} to="/candidates/new">
           Add candidate
         </Button>
       </div>
@@ -64,7 +59,6 @@ export function RecruitingIndexRoute() {
               <th>Department</th>
               <th>Salary</th>
               <th>Status</th>
-              {/* <th>Action</th> */}
             </tr>
           </thead>
 
