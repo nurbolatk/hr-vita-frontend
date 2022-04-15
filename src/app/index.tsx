@@ -1,5 +1,6 @@
 import { MantineProvider } from '@mantine/core';
 import { Role } from 'entities/Session';
+import { LandingRoute } from 'pages';
 import { ApprovalDetailsRoute } from 'pages/approvals/[id]';
 import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
@@ -35,7 +36,8 @@ function App() {
             <Navbar />
             <main className="container my-6">
               <Routes>
-                <Route path="/" element={<HomeRoute />} />
+                <Route path="/" element={<LandingRoute />} />
+                <Route path="/home" element={<HomeRoute />} />
                 <Route path="cabinet" element={<CabinateRoute />} />
                 <Route path="recruiting" element={<ProtectedRoute allowed={[Role.HR, Role.ADMIN]} />}>
                   <Route index element={<RecruitingIndexRoute />} />

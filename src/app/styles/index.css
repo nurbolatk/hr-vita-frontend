@@ -381,7 +381,20 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 
 @layer utilities {
-  .container {
-    @apply max-w-7xl p-4 md:p-6 mx-auto;
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
   }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .container {
+    @apply max-w-7xl p-4 md:p-6 mx-auto ;
+  }
+}
+
+body {
+  @apply bg-gray-50 text-slate-800;
 }

@@ -1,4 +1,4 @@
-import { createStyles, Avatar, Badge, Button, Group, Menu, Skeleton, Text, UnstyledButton } from '@mantine/core';
+import { createStyles, Avatar, Badge, Button, Menu, Skeleton, Text, UnstyledButton, Anchor } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { api, Notification } from 'entities/Notifications';
 import { LoginForm } from 'entities/Session';
@@ -9,6 +9,7 @@ import {
   BriefcaseIcon,
   ChevronDownIcon,
   HomeIcon,
+  LogoIcon,
   LogOutIcon,
   MailIcon,
   UserIcon,
@@ -107,9 +108,12 @@ export function Navbar(): JSX.Element {
   return (
     <header className="container flex justify-between md:justify-start items-center">
       <div className="md:w-0 md:flex-1">
-        <Text component="h1" color="teal" weight={500}>
-          <Link to="/">HR Vita</Link>
-        </Text>
+        <Anchor<typeof Link> underline={false} component={Link} to="/" className="flex items-center gap-1">
+          <LogoIcon width={24} height={24} />
+          <Text component="h1" color="teal" weight={600}>
+            HR Vita
+          </Text>
+        </Anchor>
       </div>
       <ul className="sm:flex items-center gap-x-4 hidden">
         <li>
@@ -144,9 +148,10 @@ export function Navbar(): JSX.Element {
                       {user.firstName} {user.lastName}
                     </Text>
                     {unreadCount ? (
-                      <Badge variant="filled" color="red" size="xs" radius="xl" className="-mx-1">
-                        {unreadCount}
-                      </Badge>
+                      <span className="flex h-2 w-2 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
+                      </span>
                     ) : null}
                     <ChevronDownIcon width={14} height={14} />
                   </div>
@@ -182,7 +187,7 @@ export function Navbar(): JSX.Element {
                 <div className="flex items-center gap-x-2">
                   <p>Notifications </p>
                   {unreadCount ? (
-                    <Badge variant="filled" color="red" size="xs" radius="xl">
+                    <Badge variant="filled" color="teal" size="xs" radius="xl">
                       {unreadCount}
                     </Badge>
                   ) : null}
