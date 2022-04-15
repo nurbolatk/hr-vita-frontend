@@ -18,3 +18,4 @@ export { ReactComponent as MailIcon } from './MailIcon.svg';
 export { ReactComponent as HomeIcon } from './HomeIcon.svg';
 export { ReactComponent as UserPlusIcon } from './UserPlusIcon.svg';
 export { ReactComponent as BriefcaseIcon } from './BriefcaseIcon.svg';
+export { ReactComponent as LogoIcon } from './LogoIcon.svg';
