@@ -391,6 +391,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   }
 
   .container {
-    @apply max-w-7xl p-4 md:p-6 mx-auto;
+    @apply max-w-7xl p-4 md:p-6 mx-auto ;
   }
+}
+
+body {
+  @apply bg-gray-50;
 }
