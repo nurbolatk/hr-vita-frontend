@@ -1,31 +1,9 @@
 import { api } from 'entities/Employee/api';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import Select, { OnChangeValue, OptionProps } from 'react-select';
-import cn from 'classnames';
+import Select, { OnChangeValue } from 'react-select';
 import type { Employee } from '../../types';
-
-function Option({
-  data /** Whether the option is disabled. */,
-  isDisabled,
-  /** Whether the option is focused. */
-  isFocused,
-  innerRef,
-  innerProps,
-}: OptionProps<Employee, false>) {
-  if (isDisabled) return null;
-  return (
-    <div
-      ref={innerRef}
-      {...innerProps}
-      className={cn('p-2.5 rounded text-sm transition-colors', {
-        'bg-stone-100': isFocused,
-      })}>
-      <p>{data.fullName}</p>
-      <p className="text-xs text-stone-400">{data.position.name}</p>
-    </div>
-  );
-}
+import { EmployeeOption } from '../EmployeeOption';
 
 export function SelectEmployee({
   onChange,
@@ -60,7 +38,7 @@ export function SelectEmployee({
       options={data}
       value={value}
       components={{
-        Option,
+        Option: EmployeeOption,
       }}
       styles={{
         container: (base) => ({

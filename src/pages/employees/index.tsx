@@ -1,6 +1,6 @@
 import { Button, Card, LoadingOverlay, Table, Title } from '@mantine/core';
 import { useAuth } from 'app/providers';
-import { api, Employee } from 'entities/Employee';
+import { api, Employee, SearchEmployees } from 'entities/Employee';
 import { parseEmployeeStatusJSX } from 'entities/Employee/helpers';
 import { Role } from 'entities/Session';
 import React, { useMemo } from 'react';
@@ -83,7 +83,8 @@ export function EmployeesIndexRoute() {
           </Button>
         )}
       </div>
-      <Card withBorder shadow="sm" className="relative p-0">
+      <SearchEmployees />
+      <Card withBorder shadow="sm" className="relative p-0 mt-6">
         <LoadingOverlay visible={isLoading} />
         <Table highlightOnHover verticalSpacing={16} horizontalSpacing={16} {...getTableProps}>
           <thead>
