@@ -5,12 +5,15 @@ import { useCombobox } from 'downshift';
 import { api, Employee } from 'entities/Employee';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 export function SearchEmployees(): JSX.Element {
   const [query, setQuery] = useState<string>('');
   const { data, isLoading } = useQuery<Employee[]>(['employees', query], () => api.searchEmployee(query), {
     enabled: !!query,
   });
+
+  const navigate = useNavigate();
 
   const items: Employee[] = data ?? [];
 
@@ -29,6 +32,11 @@ export function SearchEmployees(): JSX.Element {
     itemToString: (item) => (item ? item.fullName : ''),
     onInputValueChange: ({ inputValue: newValue }) => {
       setQuery(newValue?.replace(/\s/g, '') ?? '');
+    },
+    onSelectedItemChange: (changes) => {
+      if (changes.selectedItem) {
+        navigate(`/profile/${changes.selectedItem.id}`);
+      }
     },
   });
 
@@ -57,7 +65,7 @@ export function SearchEmployees(): JSX.Element {
           <Paper shadow="sm" p="xs" withBorder className="z-20 text-sm top-2 absolute inset-x-0">
             {items.map((employee, index) => (
               <div
-                className={cn('p-2.5 rounded transition-colors', {
+                className={cn('block p-2.5 rounded transition-colors', {
                   'bg-stone-100': highlightedIndex === index,
                 })}
                 {...getItemProps({
