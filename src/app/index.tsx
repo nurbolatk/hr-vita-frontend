@@ -2,7 +2,6 @@ import { MantineProvider } from '@mantine/core';
 import { Role } from 'entities/Session';
 import { LandingRoute } from 'pages';
 import { ApprovalDetailsRoute } from 'pages/approvals/[id]';
-import { CabinateRoute } from 'pages/cabinet';
 import { NewCandidateRoute } from 'pages/candidates/new';
 import { EmployeesIndexRoute } from 'pages/employees';
 import { CreateEmployeeRoute } from 'pages/employees/new';
@@ -10,6 +9,7 @@ import { EmployeeDetailsRoute } from 'pages/employees/[id]';
 import { EventsRoute } from 'pages/events';
 import { HomeRoute } from 'pages/home';
 import { InterviewDetailsRoute } from 'pages/interviews/[id]';
+import { ProfileRoute } from 'pages/profile/[id]';
 import { RecruitingIndexRoute } from 'pages/recruiting';
 import { RecruitingDetailsRoute } from 'pages/recruiting/[id]';
 import { ChangePasswordRoute } from 'pages/users/change-password';
@@ -38,7 +38,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<LandingRoute />} />
                 <Route path="/home" element={<HomeRoute />} />
-                <Route path="cabinet" element={<CabinateRoute />} />
+                <Route path="profile/:id" element={<ProfileRoute />} />
                 <Route path="recruiting" element={<ProtectedRoute allowed={[Role.HR, Role.ADMIN]} />}>
                   <Route index element={<RecruitingIndexRoute />} />
                   <Route path=":id" element={<RecruitingDetailsRoute />} />

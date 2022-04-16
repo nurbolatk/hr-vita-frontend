@@ -21,3 +21,13 @@ export const getOneById = async (id: number): Promise<Employee> => {
   const response = await client<EmployeeResponse>(`users/${id}`);
   return responseToEmployee(response);
 };
+
+export const searchEmployee = async (name: string) => {
+  const queryParams = new URLSearchParams({
+    query: name,
+  });
+  const response = await client<EmployeeResponse[]>('users/search', {
+    queryParams,
+  });
+  return response.map((res) => responseToEmployee(res));
+};
