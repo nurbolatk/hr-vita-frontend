@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import { InterivewStatus, Interview, InterviewNIO } from 'entities/Interview';
+
+dayjs.locale('ru');
 
 export function parseInterviewStatus(status: InterivewStatus): string {
   switch (status) {

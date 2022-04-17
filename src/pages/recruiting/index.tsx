@@ -1,4 +1,4 @@
-import { Button, Card, LoadingOverlay, Table, Text, Title } from '@mantine/core';
+import { Button, Card, LoadingOverlay, Table, Title } from '@mantine/core';
 import { api, Candidate } from 'entities/Candidate';
 import { parseCandidateStatusJSX } from 'entities/Candidate/helpers';
 import React from 'react';

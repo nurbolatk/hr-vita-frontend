@@ -4,6 +4,7 @@ import { Select } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { api } from 'shared/helpers';
 import type { Position } from 'entities/Position/types';
+import { useTranslation } from 'react-i18next';
 import { useCreateElement } from './hooks';
 import type { Props } from './props';
 
@@ -12,10 +13,10 @@ export function SelectPosition<T extends { position: string }>({ error, setValue
 
   // @ts-ignore
   const mutation = useCreateElement('positions', 'positions', () => setValue?.('position', ''));
-
+  const { t } = useTranslation();
   return (
     <Select
-      label="Select position"
+      label={t('Select position')}
       data={data?.map((position) => position.name) ?? []}
       placeholder="Position name"
       nothingFound="Nothing found"

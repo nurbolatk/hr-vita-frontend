@@ -7,6 +7,7 @@ import { Modal } from 'shared/components/organisms';
 import { ModalOpenButton } from 'shared/components/organisms/Modal/libs/ModalOpenButton';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
+import { useTranslation } from 'react-i18next';
 import { InterviewDetailsModal } from '../InterviewDetailsModal';
 
 export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'children'>): JSX.Element {
@@ -22,6 +23,8 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
     },
   });
 
+  const { t } = useTranslation();
+
   return (
     <Card
       withBorder
@@ -33,13 +36,13 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
       }}
       {...props}>
       <div className="flex mb-3 items-center gap-x-4">
-        <h3 className="text-xl">Interviews</h3>
+        <h3 className="text-xl">{t('Interviews')}</h3>
       </div>
 
       <LoadingOverlay visible={isLoading} />
       {!isLoading && interviews && (
         <>
-          {interviews.length === 0 && <Alert color="gray">No interviews are appointed</Alert>}
+          {interviews.length === 0 && <Alert color="gray">{t('No interviews are appointed')}</Alert>}
           <Modal>
             <Timeline bulletSize={24} lineWidth={2} className="mb-4">
               {interviews.map((interview) => (
@@ -67,10 +70,10 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
                   <div className="flex justify-between">
                     <div>
                       <Text size="sm">
-                        Interviewer: {interview.interviewer.firstName} {interview.interviewer.lastName}
+                        {t('Interviewer')}: {interview.interviewer.firstName} {interview.interviewer.lastName}
                       </Text>
                       <Text color="blue" size="sm">
-                        Location: {interview.location}
+                        {t('Location')}: {interview.location}
                       </Text>
                       <Text size="xs" weight={500} color="gray" mt={4}>
                         {interview.datetime}
@@ -90,7 +93,7 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
                         </Modal.OpenButton>
                         <Modal.Content title="Confirm action">
                           <Alert icon={<AlertCircleIcon />} color="red">
-                            Are you sure you want to delete this interview?
+                            {t('Are you sure you want to delete this interview?')}
                           </Alert>
                           <Modal.Actions>
                             <Modal.CloseButton>
@@ -101,11 +104,11 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
                                 }}
                                 variant="default"
                                 color="gray">
-                                Cancel
+                                {t('Cancel')}
                               </Button>
                             </Modal.CloseButton>
                             <Button size="sm" color="red" onClick={() => deletion.mutate(interview.id)}>
-                              Delete
+                              {t('Delete')}
                             </Button>
                           </Modal.Actions>
                         </Modal.Content>

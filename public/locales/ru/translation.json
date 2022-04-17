@@ -45,7 +45,28 @@
   "No candidates": "Нет кандидатов",
 
   "Ongoing": "В процессе",
-  "Failed": "Отказ",
+  "Failed": "Отказано",
   "Hired": "Нанят",
-  "Not Started": "Не начато"
+  "Not Started": "Не начато",
+
+  "Cancel": "Отмена",
+  "Save": "Сохранить",
+  "Documents": "Документы",
+  "Update candidate status": "Обновить статус кандидата",
+  "Hire candidate": "Нанять кандидата",
+  "Reject candidate": "Отклонить кандидата",
+  "Select position": "Выберите должность",
+
+  "Drag file here or click to select files": "Перетащите файл сюда или нажмите, чтобы выбрать файл",
+  "Image/PDF/Word file should not exceed 5mb": "Размер файла не должен превышать 5 МБ.",
+  "File size": "Размер файла",
+  "File upload rejected": "Загрузка файла отклонена",
+  "The file is too big. It should not exceed 5mb": "Файл слишком большой. Он не должен превышать 5 мб",
+
+  "Interviews": "Интервью",
+  "No interviews are appointed": "Собеседования не назначены",
+  "Interviewer": "Интервьюер",
+  "Location": "Место проведения",
+  "Are you sure you want to delete this interview?": "Вы уверены, что хотите удалить это интервью?",
+  "Delete": "Удалить"
 }
