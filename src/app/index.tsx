@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { MantineProvider } from '@mantine/core';
 import { Role } from 'entities/Session';
 import { LandingRoute } from 'pages';
@@ -34,7 +35,7 @@ function App() {
           }}>
           <AuthProvider>
             <Navbar />
-            <main className="container my-6">
+            <main className="container my-6 flex-1">
               <Routes>
                 <Route path="/" element={<LandingRoute />} />
                 <Route path="/home" element={<HomeRoute />} />
@@ -67,6 +68,46 @@ function App() {
                 </Route>
               </Routes>
             </main>
+
+            <footer
+              id="footer"
+              className="bg-gray-100 text-slate-500 pt-16 pb-10 px-4 flex flex-col items-center gap-y-4">
+              <nav className="flex flex-wrap gap-x-4">
+                <a className="text-slate-500" href="#footer">
+                  About us
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Guides
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Pricing
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Careers
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Partners
+                </a>
+              </nav>
+              <nav>
+                <a className="text-slate-500" href="#footer">
+                  About us
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Guides
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Pricing
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Careers
+                </a>
+                <a className="text-slate-500" href="#footer">
+                  Partners
+                </a>
+              </nav>
+              <p>@ {new Date().getFullYear()} HR Vita, Inc. All rights reserved.</p>
+            </footer>
           </AuthProvider>
         </MantineProvider>
       </QueryClientProvider>

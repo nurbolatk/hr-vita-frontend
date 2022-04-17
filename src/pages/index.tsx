@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button } from '@mantine/core';
 import React from 'react';
 import {
@@ -8,7 +9,15 @@ import {
   NewsCircleIcon,
 } from 'shared/components/icons';
 import heroImage from 'assets/images/hero-image.png';
-import employeesImage from 'assets/images/employees.png';
+import JB from 'assets/images/brands/jusanbank-logo.png';
+import { ReactComponent as Halyk } from 'assets/images/brands/halyk.svg';
+import { ReactComponent as Kaspi } from 'assets/images/brands/kaspi.svg';
+import { ReactComponent as AirAstana } from 'assets/images/brands/air-astana.svg';
+import { ReactComponent as Technodom } from 'assets/images/brands/technodom.svg';
+import { ReactComponent as FF } from 'assets/images/brands/ff.svg';
+import { ReactComponent as Eubank } from 'assets/images/brands/eubank.svg';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
 
 export function LandingRoute() {
   return (
@@ -88,29 +97,97 @@ export function LandingRoute() {
         </div>
       </section>
 
-      <section className="py-12 mt-6 px-3 bg-gradient-to-b from-gray-50 to-emerald-50 w-screen relative ml-[-50vw] left-1/2">
-        <div className="grid grid-cols-2">
-          <div className="rounded-lg overflow-hidden">
-            <img src={employeesImage} alt="Employees" />
-          </div>
-          <h2 className="text-xl">Fully featured database for all your emplyees and candidates</h2>
-        </div>
-      </section>
-      <section className="py-12 px-3 bg-gradient-to-b from-gray-50 to-emerald-50 w-screen relative ml-[-50vw] left-1/2">
-        <div className="grid grid-cols-2">
-          <h2 className="text-xl">Appoint interviews</h2>
-          <div className="rounded-lg overflow-hidden">
-            <img src={employeesImage} alt="Employees" />
-          </div>
-        </div>
-      </section>
-      <section className="py-12 px-3 bg-gradient-to-b from-gray-50 to-emerald-50 w-screen relative ml-[-50vw] left-1/2">
-        <div className="grid grid-cols-2">
-          <div className="rounded-lg overflow-hidden">
-            <img src={employeesImage} alt="Employees" />
-          </div>
-          <h2 className="text-xl">Organize company&apos;s life here</h2>
-        </div>
+      <section className="my-24">
+        <h2 className="text-2xl mb-10 text-center">Our partners</h2>
+        <Swiper
+          slidesPerView="auto"
+          spaceBetween={40}
+          speed={3000}
+          loop
+          autoplay={{
+            delay: 0,
+            disableOnInteraction: false,
+          }}
+          grabCursor
+          modules={[Autoplay]}
+          className="brands">
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 220,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Halyk width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Kaspi width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AirAstana width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Technodom width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <div
+              style={{
+                width: 200,
+                marginTop: 10,
+              }}>
+              <img src={JB} alt="Jusan bank" />
+            </div>
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Eubank width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 220,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <FF width={200} height={60} />
+          </SwiperSlide>
+        </Swiper>
       </section>
     </div>
   );
