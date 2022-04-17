@@ -23,3 +23,7 @@ export { ReactComponent as DocumentsCircleIcon } from './DocumentsCircleIcon.svg
 export { ReactComponent as FemaleUserCircleIcon } from './FemaleUserCircleIcon.svg';
 export { ReactComponent as NewsCircleIcon } from './NewsCircleIcon.svg';
 export { ReactComponent as MyspaceCircleIcon } from './MyspaceCircleIcon.svg';
+export { ReactComponent as InstagramIcon } from './InstagramIcon.svg';
+export { ReactComponent as FacebookIcon } from './FacebookIcon.svg';
+export { ReactComponent as LinkedinIcon } from './LinkedinIcon.svg';
+export { ReactComponent as TwitterIcon } from './TwitterIcon.svg';
