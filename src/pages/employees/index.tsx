@@ -10,18 +10,30 @@ import { CellProps, Column, useTable } from 'react-table';
 import { isAllowedTo } from 'shared/helpers';
 
 function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
-  return <Link to={`/employees/${row.original.id}`}>{value}</Link>;
+  const { user } = useAuth();
+
+  return <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>{value}</Link>;
 }
 
 function BadgeCell({ value, row }: CellProps<Employee>): JSX.Element {
-  return <Link to={`/employees/${row.original.id}`}>{parseEmployeeStatusJSX(undefined, value)}</Link>;
+  const { user } = useAuth();
+
+  return (
+    <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>
+      {parseEmployeeStatusJSX(undefined, value)}
+    </Link>
+  );
 }
 
 function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
+  const { user } = useAuth();
+
   if (row.original.supervisor) {
-    return <Link to={`/employees/${row.original.supervisor.id}`}>{value}</Link>;
+    return (
+      <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.supervisor.id}`}>{value}</Link>
+    );
   }
-  return <Link to={`/employees/${row.original.id}`}>No supervisor</Link>;
+  return <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>No supervisor</Link>;
 }
 
 export function EmployeesIndexRoute() {

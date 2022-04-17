@@ -171,18 +171,18 @@ export function Navbar(): JSX.Element {
                   Главная
                 </Menu.Item>
                 {user.isHR && (
-                  <>
-                    <Menu.Item onClick={() => navigate('/recruiting')} icon={<UserPlusIcon width={14} height={14} />}>
-                      Recruiting
-                    </Menu.Item>
-                    <Menu.Item onClick={() => navigate('/employees')} icon={<BriefcaseIcon width={12} height={14} />}>
-                      Employees
-                    </Menu.Item>
-                  </>
+                  <Menu.Item onClick={() => navigate('/recruiting')} icon={<UserPlusIcon width={14} height={14} />}>
+                    Recruiting
+                  </Menu.Item>
                 )}
+                <Menu.Item onClick={() => navigate('/employees')} icon={<BriefcaseIcon width={12} height={14} />}>
+                  Employees
+                </Menu.Item>
               </div>
               <Menu.Label>Account</Menu.Label>
-              <Menu.Item icon={<UserIcon width={14} height={14} />}>Profile</Menu.Item>
+              <Menu.Item onClick={() => navigate(`/profile/${user.id}`)} icon={<UserIcon width={14} height={14} />}>
+                Profile
+              </Menu.Item>
               <Menu.Item onClick={() => navigate('/events')} icon={<MailIcon width={14} height={14} />}>
                 <div className="flex items-center gap-x-2">
                   <p>Notifications </p>
