@@ -10,35 +10,6 @@ export function parseCandidateStatus(candidate: CandidateResponse | Candidate): 
     : CandidateStatus.ONGOING;
 }
 
-export function parseCandidateStatusJSX(status: CandidateStatus): JSX.Element {
-  switch (status) {
-    case CandidateStatus.ONGOING:
-      return (
-        <Badge className="cursor-pointer" color="blue">
-          Ongoing
-        </Badge>
-      );
-    case CandidateStatus.FAILED:
-      return (
-        <Badge className="cursor-pointer" color="red">
-          Failed
-        </Badge>
-      );
-    case CandidateStatus.HIRED:
-      return (
-        <Badge className="cursor-pointer" color="teal">
-          Hired
-        </Badge>
-      );
-    default:
-      return (
-        <Badge className="cursor-pointer" color="gray">
-          Not Started
-        </Badge>
-      );
-  }
-}
-
 export function parseCandidateStatusLabel(status: CandidateStatus): string {
   switch (status) {
     case CandidateStatus.ONGOING:
@@ -49,5 +20,34 @@ export function parseCandidateStatusLabel(status: CandidateStatus): string {
       return 'Hired';
     default:
       return 'Not Started';
+  }
+}
+
+export function parseCandidateStatusJSX(status: CandidateStatus, t: any): JSX.Element {
+  switch (status) {
+    case CandidateStatus.ONGOING:
+      return (
+        <Badge className="cursor-pointer" color="blue">
+          {t(parseCandidateStatusLabel(status))}
+        </Badge>
+      );
+    case CandidateStatus.FAILED:
+      return (
+        <Badge className="cursor-pointer" color="red">
+          {t(parseCandidateStatusLabel(status))}
+        </Badge>
+      );
+    case CandidateStatus.HIRED:
+      return (
+        <Badge className="cursor-pointer" color="teal">
+          {t(parseCandidateStatusLabel(status))}
+        </Badge>
+      );
+    default:
+      return (
+        <Badge className="cursor-pointer" color="gray">
+          {t(parseCandidateStatusLabel(status))}
+        </Badge>
+      );
   }
 }

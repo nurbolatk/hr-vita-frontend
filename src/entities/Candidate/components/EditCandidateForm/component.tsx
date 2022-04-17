@@ -14,6 +14,7 @@ import { useIdParam } from 'shared/hooks';
 import { CandidateStatus } from 'entities/Candidate/types';
 import { parseCandidateStatusJSX } from 'entities/Candidate/helpers';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { CandidateFormFields, DefaultCandidateFields, UpdateCandidateData } from '../../types';
 
 export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCandidateFields }): JSX.Element {
@@ -84,6 +85,8 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
     setUploaded(defaultValues.documents);
   };
 
+  const { t } = useTranslation();
+
   return (
     <section className="mx-auto">
       <Breadcrumbs className="mb-4">
@@ -116,7 +119,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
             </h3>
             <div className="space-y-2">
               <div className="flex items-baseline gap-2 text-sm">
-                Status: {parseCandidateStatusJSX(defaultValues.status)}
+                Status: {parseCandidateStatusJSX(defaultValues.status, t)}
               </div>
               <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
                 <TextInput

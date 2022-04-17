@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api, Notification } from 'entities/Notifications';
 import { Accordion, Alert, Anchor, Badge, Card, Title } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function EventsRoute() {
   // 1. fetch interviews assigned to this person
@@ -20,13 +21,15 @@ export function EventsRoute() {
     },
   });
 
+  const { t } = useTranslation();
+
   return (
     <section>
       <Title order={2} className="mb-4">
-        Notifications
+        {t('Notifications')}
       </Title>
       <Card withBorder p={0} shadow="sm">
-        {!notifications.data?.length && <Alert color="gray">No notifications </Alert>}
+        {!notifications.data?.length && <Alert color="gray">{t('No notifications')}</Alert>}
         <Accordion
           multiple
           iconPosition="right"
@@ -47,7 +50,7 @@ export function EventsRoute() {
               key={notification.id}
               label={
                 <div className="flex items-center gap-x-2">
-                  {notification.unread && <Badge color="blue">Unread</Badge>}
+                  {notification.unread && <Badge color="blue">{t('Unread')}</Badge>}
                   {notification.title}
                 </div>
               }>

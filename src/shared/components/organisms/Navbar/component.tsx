@@ -3,6 +3,7 @@ import { useAuth } from 'app/providers';
 import { api, Notification } from 'entities/Notifications';
 import { LoginForm } from 'entities/Session';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -91,6 +92,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 export function Navbar(): JSX.Element {
+  const { t } = useTranslation();
   const { user, token, isAuthLoading, logout, isAuthSuccess } = useAuth();
   const { classes, theme, cx } = useStyles();
   const navigate = useNavigate();
@@ -117,15 +119,15 @@ export function Navbar(): JSX.Element {
       </div>
       <ul className="sm:flex items-center gap-x-4 hidden">
         <li>
-          <Link to="/">Главная</Link>
+          <Link to="/">{t('Home')}</Link>
         </li>
         {user?.isHR && (
           <>
             <li>
-              <Link to="/recruiting">Recruiting</Link>
+              <Link to="/recruiting">{t('Recruiting')}</Link>
             </li>
             <li>
-              <Link to="/employees">Employees</Link>
+              <Link to="/employees">{t('Employees')}</Link>
             </li>
           </>
         )}
@@ -166,26 +168,26 @@ export function Navbar(): JSX.Element {
                 </UnstyledButton>
               }>
               <div className={cx(classes.hideOnDesktop)}>
-                <Menu.Label>Work</Menu.Label>
+                <Menu.Label>{t('Work')}</Menu.Label>
                 <Menu.Item onClick={() => navigate('/')} icon={<HomeIcon width={14} height={14} />}>
-                  Главная
+                  {t('Home')}
                 </Menu.Item>
                 {user.isHR && (
                   <Menu.Item onClick={() => navigate('/recruiting')} icon={<UserPlusIcon width={14} height={14} />}>
-                    Recruiting
+                    {t('Recruiting')}
                   </Menu.Item>
                 )}
                 <Menu.Item onClick={() => navigate('/employees')} icon={<BriefcaseIcon width={12} height={14} />}>
-                  Employees
+                  {t('Employees')}
                 </Menu.Item>
               </div>
-              <Menu.Label>Account</Menu.Label>
+              <Menu.Label>{t('Account')}</Menu.Label>
               <Menu.Item onClick={() => navigate(`/profile/${user.id}`)} icon={<UserIcon width={14} height={14} />}>
-                Profile
+                {t('Profile')}
               </Menu.Item>
               <Menu.Item onClick={() => navigate('/events')} icon={<MailIcon width={14} height={14} />}>
                 <div className="flex items-center gap-x-2">
-                  <p>Notifications </p>
+                  <p>{t('Notifications')} </p>
                   {unreadCount ? (
                     <Badge variant="filled" color="teal" size="xs" radius="xl">
                       {unreadCount}
@@ -194,7 +196,7 @@ export function Navbar(): JSX.Element {
                 </div>
               </Menu.Item>
               <Menu.Item onClick={logout} icon={<LogOutIcon width={14} height={14} />}>
-                Logout
+                {t('Logout')}
               </Menu.Item>
             </Menu>
           ) : (
@@ -212,7 +214,7 @@ export function Navbar(): JSX.Element {
               </li>
             )
           )}
-          <Modal.Content title="Log in" className="max-w-md">
+          <Modal.Content title={t('Log in')} className="max-w-md">
             <LoginForm />
           </Modal.Content>
           <Modal.CloseOn condition={isAuthSuccess} />
