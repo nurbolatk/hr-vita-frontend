@@ -22,6 +22,7 @@ import { ReactComponent as Eubank } from 'assets/images/brands/eubank.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import { useTranslation } from 'react-i18next';
+import { Parallax } from 'shared/components/organisms';
 
 export function LandingRoute() {
   const { t } = useTranslation();
@@ -199,35 +200,239 @@ export function LandingRoute() {
 
       <section>
         <h2 className="text-2xl text-center mb-12">Наша команда</h2>
-        <div className="flex gap-12 justify-center pt-12">
-          <div>
+        <div className="flex flex-wrap relative gap-12 justify-center pt-12">
+          <div
+            className="absolute animate-blob top-2 left-1/4 w-32 h-32 bg-orange-300 rounded-full mix-blend-multiply opacity-70"
+            style={{
+              filter: 'blur(1.5rem)',
+            }}
+          />
+          <div
+            className="absolute animate-blob animation-delay-2000 top-2 right-1/4 w-32 h-32 bg-sky-300 rounded-full mix-blend-multiply opacity-70"
+            style={{
+              filter: 'blur(1.5rem)',
+            }}
+          />
+          <div
+            className="absolute animate-blob animation-delay-4000 -bottom-4 left-1/2 w-32 h-32 bg-green-300 rounded-full mix-blend-multiply opacity-70"
+            style={{
+              filter: 'blur(1.5rem)',
+            }}
+          />
+          <Parallax offset={20}>
             <img src={Almat} alt="Ержанов Алмат" className="rounded-md object-cover w-64 h-64" />
             <div className="mt-2 text-center">
               <Title className="font-normal" order={4}>
                 Ержанов Алмат
               </Title>
-              <p className="text-sm text-green-400 font-bold">SEO</p>
+              <p className="text-sm text-slate-500">SEO</p>
             </div>
-          </div>
-          <div>
+          </Parallax>
+          <Parallax offset={40}>
             <img src={Aibek} alt="Айбек Альжан" className="rounded-md object-cover w-64 h-64" />
             <div className="mt-2 text-center">
               <Title className="font-normal" order={4}>
                 Айбек Альжан
               </Title>
-              <p className="text-sm text-green-400 font-bold">SEO</p>
+              <p className="text-sm text-slate-500">SEO</p>
             </div>
-          </div>
-          <div>
+          </Parallax>
+          <Parallax offset={20}>
             <img src={Jan} alt="Жандаулет Камалов" className="rounded-md object-cover w-64 h-64" />
             <div className="mt-2 text-center">
               <Title className="font-normal" order={4}>
                 Жандаулет Камалов
               </Title>
-              <p className="text-sm text-green-400 font-bold">SEO</p>
+              <p className="text-sm text-slate-500">SEO</p>
             </div>
-          </div>
+          </Parallax>
         </div>
+      </section>
+
+      <section className="my-24">
+        <h2 className="text-2xl mb-10 text-center">{t('Our partners')}</h2>
+        <Swiper
+          slidesPerView="auto"
+          spaceBetween={40}
+          speed={3000}
+          loop
+          autoplay={{
+            delay: 0,
+            disableOnInteraction: false,
+          }}
+          grabCursor
+          modules={[Autoplay]}
+          className="brands">
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 220,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Halyk width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Kaspi width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AirAstana width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Technodom width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <div
+              style={{
+                width: 200,
+                marginTop: 10,
+              }}>
+              <img src={JB} alt="Jusan bank" />
+            </div>
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Eubank width={200} height={45} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 220,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <FF width={200} height={60} />
+          </SwiperSlide>
+        </Swiper>
+      </section>
+
+      <section className="my-24">
+        <h2 className="text-2xl mb-10 text-center">{t('Our partners')}</h2>
+        <Swiper
+          slidesPerView="auto"
+          spaceBetween={40}
+          speed={3000}
+          loop
+          autoplay={{
+            delay: 0,
+            disableOnInteraction: false,
+          }}
+          grabCursor
+          modules={[Autoplay]}
+          className="brands">
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 220,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Halyk width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Kaspi width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AirAstana width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Technodom width={200} height={60} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <div
+              style={{
+                width: 200,
+                marginTop: 10,
+              }}>
+              <img src={JB} alt="Jusan bank" />
+            </div>
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 210,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Eubank width={200} height={45} />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              height: 100,
+              width: 220,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <FF width={200} height={60} />
+          </SwiperSlide>
+        </Swiper>
       </section>
     </div>
   );
