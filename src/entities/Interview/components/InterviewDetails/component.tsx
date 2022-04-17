@@ -2,6 +2,7 @@ import { Button, Card, LoadingOverlay, Text } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { api, InterivewStatus, UpdateInterviewNOO } from 'entities/Interview';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 
@@ -15,6 +16,7 @@ export function InterviewDetails(): JSX.Element {
     },
   });
   const { user } = useAuth();
+  const { t } = useTranslation();
   return (
     <div>
       {interview && (
@@ -22,27 +24,27 @@ export function InterviewDetails(): JSX.Element {
           <Text>{interview.name}</Text>
           <Text>
             <Text component="span" color="gray">
-              Candidate:{' '}
+              {t('Candidate')}:{' '}
             </Text>
             {interview.interviewee.firstName} {interview.interviewee.lastName}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Time:{' '}
+              {t('Time')}:{' '}
             </Text>
             {interview.datetime}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Location:{' '}
+              {t('Location')}:{' '}
             </Text>
             {interview.location}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Status:{' '}
+              {t('Status')}:{' '}
             </Text>
-            {interview.statusText}
+            {t(interview.statusText)}
           </Text>
 
           {user && (user.id === interview.interviewer.id || user.isHR) && (
@@ -58,7 +60,7 @@ export function InterviewDetails(): JSX.Element {
                     status: InterivewStatus.NOT_STARTED,
                   });
                 }}>
-                Interview Not Started
+                {t('Interview Not Started')}
               </Button>
               <Button
                 variant="light"
@@ -71,7 +73,7 @@ export function InterviewDetails(): JSX.Element {
                     status: InterivewStatus.FAILED,
                   });
                 }}>
-                Candidate failed
+                {t('Candidate failed')}
               </Button>
               <Button
                 onClick={() => {
@@ -82,7 +84,7 @@ export function InterviewDetails(): JSX.Element {
                     status: InterivewStatus.PASSED,
                   });
                 }}>
-                Candidate passed
+                {t('Candidate passed')}
               </Button>
             </div>
           )}

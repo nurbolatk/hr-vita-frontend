@@ -4,6 +4,7 @@ import { api, Employee, SearchEmployees } from 'entities/Employee';
 import { parseEmployeeStatusJSX } from 'entities/Employee/helpers';
 import { Role } from 'entities/Session';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { CellProps, Column, useTable } from 'react-table';
@@ -38,39 +39,39 @@ function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
 
 export function EmployeesIndexRoute() {
   const { data: employees, isLoading } = useQuery<Employee[]>('employees', api.getAll);
-
+  const { t } = useTranslation();
   const columns = useMemo<Column<Employee>[]>(
     () => [
       {
-        Header: 'Full Name',
+        Header: t('Full Name'),
         accessor: 'fullName',
       },
       {
-        Header: 'Position',
+        Header: 'Должность',
         accessor: (row) => row.position.name,
         // id: 'id',
       },
       {
-        Header: 'Department',
+        Header: 'Отделение',
         accessor: (row) => row.department.name,
         // // id: 'id',
       },
       {
-        Header: 'Supervisor',
+        Header: 'Руководитель',
         accessor: (row) => row.supervisor?.fullName,
         Cell: SupervisorCell,
       },
       {
-        Header: 'Salary',
+        Header: t('Salary'),
         accessor: 'salary',
       },
       {
-        Header: 'Status',
+        Header: t('Status'),
         accessor: 'status',
         Cell: BadgeCell,
       },
     ],
-    []
+    [t]
   );
 
   const data = useMemo<Employee[]>(() => employees ?? [], [employees]);
@@ -88,10 +89,10 @@ export function EmployeesIndexRoute() {
   return (
     <div>
       <div className="flex items-center gap-x-4 mb-6">
-        <Title order={2}>Employees</Title>
+        <Title order={2}>{t('Employees')}</Title>
         {user && isAllowedTo(user, [Role.HR, Role.ADMIN]) && (
           <Button<typeof Link> compact component={Link} to="/employees/new">
-            Add employee
+            {t('Add employee')}
           </Button>
         )}
       </div>
@@ -109,7 +110,7 @@ export function EmployeesIndexRoute() {
             ))}
           </thead>
 
-          {!isLoading && (!rows || rows.length < 1) && <tbody>No employees</tbody>}
+          {!isLoading && (!rows || rows.length < 1) && <tbody>{t('No employees')}</tbody>}
 
           <tbody {...getTableBodyProps()}>
             {rows.map((row, i) => {

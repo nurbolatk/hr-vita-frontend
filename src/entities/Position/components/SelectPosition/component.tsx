@@ -18,8 +18,8 @@ export function SelectPosition<T extends { position: string }>({ error, setValue
     <Select
       label={t('Select position')}
       data={data?.map((position) => position.name) ?? []}
-      placeholder="Position name"
-      nothingFound="Nothing found"
+      placeholder={t('Position name')}
+      nothingFound={t('Nothing found')}
       searchable
       creatable
       clearable

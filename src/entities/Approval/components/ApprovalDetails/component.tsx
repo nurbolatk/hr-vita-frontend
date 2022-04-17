@@ -2,6 +2,7 @@ import { Button, Card, LoadingOverlay, Text } from '@mantine/core';
 import { useAuth } from 'app/providers';
 import { api, ApprovalStatus, UpdateApprovalDTO } from 'entities/Approval';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useIdParam } from 'shared/hooks';
 
@@ -17,37 +18,38 @@ export function ApprovalDetails(): JSX.Element {
   });
 
   const { user } = useAuth();
+  const { t } = useTranslation();
   return (
     <div>
       {approval && (
         <Card withBorder shadow="sm">
           <Text>
             <Text component="span" color="gray">
-              Candidate:{' '}
+              {t('Candidate')}:{' '}
             </Text>
             {approval.candidate.firstName} {approval.candidate.lastName}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Position:{' '}
+              {t('Position')}:{' '}
             </Text>
             {approval.candidate.position.name}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Department:{' '}
+              {t('Department')}:{' '}
             </Text>
             {approval.candidate.department.name}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Salary:{' '}
+              {t('Salary')}:{' '}
             </Text>
             {approval.candidate.salary}
           </Text>
           <Text>
             <Text component="span" color="gray">
-              Status:{' '}
+              {t('Status')}:{' '}
             </Text>
             {approval.status.toLowerCase()}
           </Text>
@@ -63,7 +65,7 @@ export function ApprovalDetails(): JSX.Element {
                     status: ApprovalStatus.PENDING,
                   });
                 }}>
-                Reset
+                {t('Reset')}
               </Button>
               <Button
                 variant="light"
@@ -74,7 +76,7 @@ export function ApprovalDetails(): JSX.Element {
                     status: ApprovalStatus.REJECTED,
                   });
                 }}>
-                Reject
+                {t('Reject')}
               </Button>
               <Button
                 onClick={() => {
@@ -83,7 +85,7 @@ export function ApprovalDetails(): JSX.Element {
                     status: ApprovalStatus.APPROVED,
                   });
                 }}>
-                Approve
+                {t('Approve')}
               </Button>
             </div>
           )}

@@ -18,6 +18,7 @@ import { useIdParam } from 'shared/hooks';
 import { ApprovalsTimeline } from 'entities/Approval';
 import { dequal } from 'dequal';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmployeeFields }): JSX.Element {
   const {
@@ -74,11 +75,13 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <section className="mx-auto">
       <Breadcrumbs className="mb-4">
         {[
-          { title: 'Employees', href: '/employees' },
+          { title: t('Employees'), href: '/employees' },
           { title: `${defaultValues.form.firstName} ${defaultValues.form.lastName}`, href: `/employees/${id}` },
         ].map((item) => (
           <Anchor<typeof Link> component={Link} to={item.href} key={item.href}>
@@ -91,14 +94,14 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 col-span-3">
           <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
             <h3 className="mb-3 text-xl flex items-baseline justify-between">
-              Profile
+              {t('Profile')}
               {isChanged && (
                 <div>
                   <Button type="button" className="mr-2" variant="default" compact onClick={cancelChanges}>
-                    Cancel
+                    {t('Cancel')}
                   </Button>
                   <Button type="submit" compact>
-                    Save
+                    {t('Save')}
                   </Button>
                 </div>
               )}
@@ -191,7 +194,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
             <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
               <div>
                 <Text size="sm" weight={500}>
-                  Supervisor
+                  {t('Supervisor')}
                 </Text>
                 <SelectEmployee onChange={setSupervisor} defaultValue={supervisor?.id} />
               </div>
@@ -202,7 +205,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
                 render={({ field: { value, onChange }, fieldState: { error } }) => (
                   <div>
                     <Text size="sm" weight={500}>
-                      Status
+                      {t('Status')}
                     </Text>
                     <SegmentedControl
                       fullWidth
@@ -212,9 +215,9 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
                       }
                       onChange={onChange}
                       data={[
-                        { label: 'Onboarding', value: EmployeeStatus.NOT_ACCEPTED },
-                        { label: 'Working', value: EmployeeStatus.WORKING },
-                        { label: 'Fired', value: EmployeeStatus.FIRED },
+                        { label: t('Onboarding'), value: EmployeeStatus.NOT_ACCEPTED },
+                        { label: t('Working'), value: EmployeeStatus.WORKING },
+                        { label: t('Fired'), value: EmployeeStatus.FIRED },
                       ]}
                     />
                   </div>
@@ -231,7 +234,7 @@ export function EditEmployeeForm({ defaultValues }: { defaultValues: DefaultEmpl
               overflow: 'visible',
             }}>
             <div className="flex mb-3 items-center gap-x-4">
-              <h3 className="text-xl">Documents</h3>
+              <h3 className="text-xl">{t('Documents')}</h3>
             </div>
             <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
           </Card>

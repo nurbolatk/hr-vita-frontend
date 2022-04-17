@@ -29,7 +29,7 @@
   "Guides": "Справочник",
   "Pricing": "Цены",
   "Careers": "Вакансии",
-  "Partners": "Партнеты",
+  "Partners": "Партнеры",
   "HR Vita, Inc. All rights reserved.": "HR Vita, Inc. Все права защищены.",
 
   "No notifications": "Нет уведомлений",
@@ -45,7 +45,7 @@
   "No candidates": "Нет кандидатов",
 
   "Ongoing": "В процессе",
-  "Failed": "Отказано",
+  "Failed": "Не прошел",
   "Hired": "Нанят",
   "Not Started": "Не начато",
 
@@ -56,6 +56,8 @@
   "Hire candidate": "Нанять кандидата",
   "Reject candidate": "Отклонить кандидата",
   "Select position": "Выберите должность",
+  "Position name": "Название должности",
+  "Nothing found": "Ничего не найдено",
 
   "Drag file here or click to select files": "Перетащите файл сюда или нажмите, чтобы выбрать файл",
   "Image/PDF/Word file should not exceed 5mb": "Размер файла не должен превышать 5 МБ.",
@@ -68,5 +70,37 @@
   "Interviewer": "Интервьюер",
   "Location": "Место проведения",
   "Are you sure you want to delete this interview?": "Вы уверены, что хотите удалить это интервью?",
-  "Delete": "Удалить"
+  "Delete": "Удалить",
+  "Submit": "Отправить",
+
+  "Candidate": "Кандидат",
+  "Time": "Время",
+  "Interview Not Started": "Интервью не начато",
+  "Candidate failed": "Кандидат не прошел",
+  "Candidate passed": "Кандидат прошел",
+
+  "Passed": "Прошел",
+  "Not started": "Не начато",
+
+  "Full Name": "ФИО",
+  "Supervisor": "Руководитель",
+  "Add employee": "Добавить",
+  "No employees": "Нет сотрудников",
+
+  "Search employees": "Поиск сотрудников",
+  "Start typing name...": "Начните вводить имя...",
+  "No results": "Нет результатов",
+
+  "Reset": "Сбросить",
+  "Reject": "Отклонить",
+  "Approve": "Утвердить",
+
+  "Onboarding": "Онбординг",
+  "Working": "Работает",
+  "Fired": "Уволен",
+
+  "Approvals": "Согласования",
+  "No approvals are appointed": "Согласования не назначены",
+  "Approver": "Утверждающий",
+  "Select approver": "Выберите утверждающего"
 }

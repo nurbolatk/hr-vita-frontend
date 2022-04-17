@@ -1,12 +1,12 @@
-import { Alert, Button, Card, Timeline, Text, ActionIcon, LoadingOverlay, CardProps } from '@mantine/core';
-import React, { useState } from 'react';
-import { CheckIcon, CircleIcon, CrossIcon, EditIcon } from 'shared/components/icons';
-
-import { Modal } from 'shared/components/organisms';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useIdParam } from 'shared/hooks';
+import { Alert, Button, Card, CardProps, LoadingOverlay, Text, Timeline } from '@mantine/core';
 import { api, Approval, ApprovalStatus, UpdateApprovalDTO } from 'entities/Approval';
 import { Employee, SelectEmployee } from 'entities/Employee';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { CheckIcon, CircleIcon, CrossIcon } from 'shared/components/icons';
+import { Modal } from 'shared/components/organisms';
+import { useIdParam } from 'shared/hooks';
 
 export function ApprovalsTimeline({ ...props }: Omit<CardProps<'div'>, 'children'>): JSX.Element {
   const id = useIdParam();
@@ -19,6 +19,7 @@ export function ApprovalsTimeline({ ...props }: Omit<CardProps<'div'>, 'children
       queryClient.invalidateQueries(queryKey);
     },
   });
+  const { t } = useTranslation();
 
   return (
     <Card
@@ -31,13 +32,13 @@ export function ApprovalsTimeline({ ...props }: Omit<CardProps<'div'>, 'children
       }}
       {...props}>
       <div className="flex mb-3 items-center gap-x-4">
-        <h3 className="text-xl">Approvals</h3>
+        <h3 className="text-xl">{t('Approvals')}</h3>
       </div>
 
       <LoadingOverlay visible={isLoading} />
       {!isLoading && approvals && (
         <>
-          {approvals.length === 0 && <Alert color="gray">No approvals are appointed</Alert>}
+          {approvals.length === 0 && <Alert color="gray">{t('No approvals are appointed')}</Alert>}
           <Modal>
             <Timeline bulletSize={24} lineWidth={2} className="mb-4">
               {approvals.map((approval) => (
@@ -65,7 +66,7 @@ export function ApprovalsTimeline({ ...props }: Omit<CardProps<'div'>, 'children
                   <div>
                     {approval.master ? (
                       <Text size="sm">
-                        Approver: {approval.master?.firstName} {approval.master?.lastName}
+                        {t('Approver')}: {approval.master?.firstName} {approval.master?.lastName}
                       </Text>
                     ) : editing ? (
                       <SelectEmployee
@@ -80,7 +81,7 @@ export function ApprovalsTimeline({ ...props }: Omit<CardProps<'div'>, 'children
                       />
                     ) : (
                       <Button variant="subtle" compact onClick={() => setEditing(true)}>
-                        Select approver
+                        {t('Select approver')}
                       </Button>
                     )}
                   </div>

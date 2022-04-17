@@ -6,6 +6,7 @@ import { UploadFile, UserDocument } from 'entities/Files';
 import { SelectPosition } from 'entities/Position';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import type { Candidate, CandidateFormFields, CreateCandidateDTO } from '../../types';
@@ -36,12 +37,14 @@ export function CreateCandidateForm(): JSX.Element {
     });
   };
 
+  const { t } = useTranslation();
+
   return (
     <section className="relative mx-auto">
       <LoadingOverlay visible={creation.isLoading} />
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg">
-          <h3 className="mb-3 text-xl">Profile</h3>
+          <h3 className="mb-3 text-xl">{t('Profile')}</h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput
               label="Имя"
@@ -137,13 +140,13 @@ export function CreateCandidateForm(): JSX.Element {
             overflow: 'visible',
           }}>
           <div className="flex mb-3 items-center gap-x-4">
-            <h3 className="text-xl">Documents</h3>
+            <h3 className="text-xl">{t('Documents')}</h3>
           </div>
           <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
         </Card>
 
         <Button type="submit" variant="filled" className="mt-4">
-          Submit
+          {t('Submit')}
         </Button>
       </form>
     </section>
