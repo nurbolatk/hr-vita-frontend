@@ -237,7 +237,7 @@ export function LandingRoute() {
               <Title className="font-normal" order={4}>
                 Ержанов Алмат
               </Title>
-              <p className="text-sm text-slate-500">SEO</p>
+              <p className="text-sm text-slate-500">Операционный директор</p>
             </div>
           </Parallax>
           <Parallax offset={40}>
@@ -246,7 +246,7 @@ export function LandingRoute() {
               <Title className="font-normal" order={4}>
                 Айбек Альжан
               </Title>
-              <p className="text-sm text-slate-500">SEO</p>
+              <p className="text-sm text-slate-500">CEO</p>
             </div>
           </Parallax>
           <Parallax offset={20}>
@@ -255,7 +255,7 @@ export function LandingRoute() {
               <Title className="font-normal" order={4}>
                 Жандаулет Камалов
               </Title>
-              <p className="text-sm text-slate-500">SEO</p>
+              <p className="text-sm text-slate-500">Технический директор</p>
             </div>
           </Parallax>
         </div>

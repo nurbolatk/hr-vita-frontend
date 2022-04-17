@@ -20,22 +20,25 @@ function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
 function BadgeCell({ value, row }: CellProps<Employee>): JSX.Element {
   const { user } = useAuth();
 
+  const { t } = useTranslation();
   return (
     <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>
-      {parseEmployeeStatusJSX(undefined, value)}
+      {parseEmployeeStatusJSX(t, undefined, value)}
     </Link>
   );
 }
 
 function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
   const { user } = useAuth();
-
+  const { t } = useTranslation();
   if (row.original.supervisor) {
     return (
       <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.supervisor.id}`}>{value}</Link>
     );
   }
-  return <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>No supervisor</Link>;
+  return (
+    <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>{t('No supervisor')}</Link>
+  );
 }
 
 export function EmployeesIndexRoute() {

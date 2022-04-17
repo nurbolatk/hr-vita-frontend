@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'app/providers';
 import { AlertCircleIcon } from 'shared/components/icons';
+import { useTranslation } from 'react-i18next';
 import { VisibilityToggleIcon } from './VisibilityToggleIcon';
 
 type LoginFormInputs = {
@@ -24,6 +25,7 @@ export function LoginForm(): JSX.Element {
   const onSubmit = (data: LoginFormInputs) => {
     login(data);
   };
+  const { t } = useTranslation();
 
   return (
     <form className="space-y-4 relative" onSubmit={handleSubmit(onSubmit)}>
@@ -34,8 +36,8 @@ export function LoginForm(): JSX.Element {
       )}
       <LoadingOverlay visible={isAuthLoading} />
       <TextInput
-        label="Email"
-        placeholder="Email"
+        label={t('Email')}
+        placeholder={t('Email')}
         className="mb-1 font-medium block"
         type="email"
         {...register('email', { required: 'Необходимо заполнить' })}
@@ -44,9 +46,9 @@ export function LoginForm(): JSX.Element {
       <div>
         <div className="flex justify-between mb-1">
           <Text component="label" htmlFor="your-password" size="sm" weight={500}>
-            Your password
+            {t('Your password')}
           </Text>
-          <Anchor<typeof Link>
+          {/* <Anchor<typeof Link>
             component={Link}
             to="/restore-password"
             sx={(theme) => ({
@@ -56,10 +58,10 @@ export function LoginForm(): JSX.Element {
               fontSize: theme.fontSizes.xs,
             })}>
             Forgot your password?
-          </Anchor>
+          </Anchor> */}
         </div>
         <PasswordInput
-          placeholder="Your password"
+          placeholder={t('Your password')}
           id="your-password"
           type="password"
           visibilityToggleIcon={VisibilityToggleIcon}
@@ -68,7 +70,7 @@ export function LoginForm(): JSX.Element {
         />
       </div>
       <Button type="submit" className="ml-auto block">
-        Log in
+        {t('Log in')}
       </Button>
     </form>
   );
