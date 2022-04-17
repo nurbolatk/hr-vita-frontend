@@ -4,6 +4,7 @@ import { dequal } from 'dequal';
 import { api, Employee } from 'entities/Employee';
 import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { client } from 'shared/helpers';
 import { useIdParam } from 'shared/hooks';
@@ -65,6 +66,7 @@ export function ProfileRoute() {
 
   const loading: boolean = isLoading || isAuthLoading || updating.isLoading;
 
+  const { t } = useTranslation();
   return (
     <section className="mx-auto">
       <div className="relative ">
@@ -72,14 +74,14 @@ export function ProfileRoute() {
         <form onSubmit={handleSubmit(updateMe)} className="grid gap-4 max-w-xl mx-auto">
           <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
             <h3 className="mb-3 text-xl flex items-baseline justify-between">
-              Profile
+              {t('Profile')}
               {isChanged && (
                 <div>
                   <Button type="button" className="mr-2" variant="default" compact onClick={cancelChanges}>
-                    Cancel
+                    {t('Cancel')}
                   </Button>
                   <Button type="submit" compact>
-                    Save
+                    {t('Save')}
                   </Button>
                 </div>
               )}

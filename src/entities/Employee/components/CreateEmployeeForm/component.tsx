@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function CreateEmployeeForm(): JSX.Element {
   const {
@@ -46,13 +47,14 @@ export function CreateEmployeeForm(): JSX.Element {
       });
     }
   };
+  const { t } = useTranslation();
 
   return (
     <section className="relative mx-auto">
       <LoadingOverlay visible={creation.isLoading} />
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
-          <h3 className="mb-3 text-xl">Profile</h3>
+          <h3 className="mb-3 text-xl">{t('Profile')}</h3>
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <TextInput
               label="Имя"
@@ -141,7 +143,7 @@ export function CreateEmployeeForm(): JSX.Element {
           <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
             <div>
               <Text size="sm" weight={500}>
-                Supervisor
+                {t('Supervisor')}
               </Text>
               <SelectEmployee onChange={setSupervisor} />
             </div>
@@ -152,15 +154,15 @@ export function CreateEmployeeForm(): JSX.Element {
               render={({ field: { value, onChange }, fieldState: { error } }) => (
                 <div>
                   <Text size="sm" weight={500}>
-                    Status
+                    {t('Status')}
                   </Text>
                   <SegmentedControl
                     value={value}
                     onChange={onChange}
                     data={[
-                      { label: 'Ongoing', value: EmployeeStatus.NOT_ACCEPTED },
-                      { label: 'Working', value: EmployeeStatus.WORKING },
-                      { label: 'Fired', value: EmployeeStatus.FIRED },
+                      { label: t('Ongoing'), value: EmployeeStatus.NOT_ACCEPTED },
+                      { label: t('Working'), value: EmployeeStatus.WORKING },
+                      { label: t('Fired'), value: EmployeeStatus.FIRED },
                     ]}
                   />
                 </div>
@@ -177,13 +179,13 @@ export function CreateEmployeeForm(): JSX.Element {
             overflow: 'visible',
           }}>
           <div className="flex mb-3 items-center gap-x-4">
-            <h3 className="text-xl">Documents</h3>
+            <h3 className="text-xl">{t('Documents')}</h3>
           </div>
           <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
         </Card>
 
         <Button type="submit" variant="filled" className="mt-4">
-          Submit
+          {t('Submit')}
         </Button>
       </form>
     </section>

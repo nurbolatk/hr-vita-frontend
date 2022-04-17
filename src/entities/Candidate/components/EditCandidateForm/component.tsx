@@ -3,17 +3,18 @@ import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, TextInput } from '@m
 import { useAuth } from 'app/providers';
 import { dequal } from 'dequal';
 import { api } from 'entities/Candidate';
+import { parseCandidateStatusJSX } from 'entities/Candidate/helpers';
+import { CandidateStatus } from 'entities/Candidate/types';
 import { SelectDepartment } from 'entities/Department';
 import { UploadFile, UserDocument } from 'entities/Files';
 import { InterviewsTimeline } from 'entities/Interview';
 import { SelectPosition } from 'entities/Position';
 import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
-import { useIdParam } from 'shared/hooks';
-import { CandidateStatus } from 'entities/Candidate/types';
-import { parseCandidateStatusJSX } from 'entities/Candidate/helpers';
 import { Link } from 'react-router-dom';
+import { useIdParam } from 'shared/hooks';
 import type { CandidateFormFields, DefaultCandidateFields, UpdateCandidateData } from '../../types';
 
 export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCandidateFields }): JSX.Element {
@@ -84,11 +85,13 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
     setUploaded(defaultValues.documents);
   };
 
+  const { t } = useTranslation();
+
   return (
     <section className="mx-auto">
       <Breadcrumbs className="mb-4">
         {[
-          { title: 'Recruiting', href: '/recruiting' },
+          { title: t('Recruiting'), href: '/recruiting' },
           { title: `${defaultValues.form.firstName} ${defaultValues.form.lastName}`, href: `/recruiting/${id}` },
         ].map((item) => (
           <Anchor<typeof Link> component={Link} to={item.href} key={item.href}>
@@ -102,21 +105,21 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
           <LoadingOverlay visible={mutation.isLoading || statusMutation.isLoading} />
           <Card withBorder shadow="md" p="lg">
             <h3 className="mb-3 text-xl flex items-baseline justify-between">
-              Profile
+              {t('Profile')}
               {isChanged && (
                 <div>
                   <Button type="button" className="mr-2" variant="default" compact onClick={cancelChanges}>
-                    Cancel
+                    {t('Cancel')}
                   </Button>
                   <Button type="submit" compact>
-                    Save
+                    {t('Save')}
                   </Button>
                 </div>
               )}
             </h3>
             <div className="space-y-2">
               <div className="flex items-baseline gap-2 text-sm">
-                Status: {parseCandidateStatusJSX(defaultValues.status)}
+                {t('Status')}: {parseCandidateStatusJSX(defaultValues.status, t)}
               </div>
               <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
                 <TextInput
@@ -213,7 +216,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
               overflow: 'visible',
             }}>
             <div className="flex mb-3 items-center gap-x-4">
-              <h3 className="text-xl">Documents</h3>
+              <h3 className="text-xl">{t('Documents')}</h3>
             </div>
             <UploadFile uploaded={uploaded} setUploaded={setUploaded} />
           </Card>
@@ -229,7 +232,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
               style={{
                 overflow: 'visible',
               }}>
-              <h3 className="text-xl mb-3">Update candidate status</h3>
+              <h3 className="text-xl mb-3">{t('Update candidate status')}</h3>
               <div className="flex items-center gap-x-4">
                 <Button
                   variant="light"
@@ -238,7 +241,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
                       status: CandidateStatus.HIRED,
                     });
                   }}>
-                  Hire candidate
+                  {t('Hire candidate')}
                 </Button>
                 <Button
                   variant="light"
@@ -248,7 +251,7 @@ export function EditCandidateForm({ defaultValues }: { defaultValues: DefaultCan
                       status: CandidateStatus.FAILED,
                     });
                   }}>
-                  Reject candidate
+                  {t('Reject candidate')}
                 </Button>
               </div>
             </Card>

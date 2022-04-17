@@ -18,20 +18,22 @@ import { ReactComponent as FF } from 'assets/images/brands/ff.svg';
 import { ReactComponent as Eubank } from 'assets/images/brands/eubank.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
+import { useTranslation } from 'react-i18next';
 
 export function LandingRoute() {
+  const { t } = useTranslation();
   return (
     <div>
       <section className="grid md:grid-cols-7 gap-x-4 mb-12">
         <div className="flex flex-col justify-center items-start gap-y-6 md:col-span-2">
           <h2 className="text-4xl">
             <span className="inline-block relative z-[1] before:bottom-0 before:left-0 before:right-0 before:-z-10 before:absolute before:bg-emerald-300 before:w-full before:h-1/3">
-              Advanced
+              {t('Advanced')}
             </span>{' '}
-            HR Management
+            {t('HR Management')}
           </h2>
-          <h3>Chosen by the Kazakhstan&apos;s top companies</h3>
-          <Button variant="filled">Get Started Free</Button>
+          <h3>{t('Chosen by the Kazakhstan&apos;s top companies')}</h3>
+          <Button variant="filled">{t('Get Started')}</Button>
         </div>
         <div className="relative h-full py-6 md:col-start-4 md:col-span-4">
           <img src={heroImage} alt="hero" />
@@ -61,44 +63,46 @@ export function LandingRoute() {
           <div className="rounded py-2 pl-0.5 border border-gray-300 w-10 h-10 bg-zinc-50">
             <LogoIcon height="100%" />
           </div>
-          <h2 className="text-xl mt-3">All-In-One Human Resources Management</h2>
+          <h2 className="text-xl mt-3">{t('All-In-One Human Resources Management')}</h2>
           <p className="text-gray-500 mt-2">
-            Everything you need to manage incoming and current employees and their data
+            {t('Everything you need to manage incoming and current employees and their data')}
           </p>
         </div>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-12 px-3">
           <div className="flex flex-col items-center text-center gap-y-1">
             <DocumentsCircleIcon />
-            <h3 className="font-bold">Manage any data</h3>
+            <h3 className="font-bold">{t('Manage any data')}</h3>
             <p className="text-sm text-slate-700">
-              Manage and get detailed insights about all your employees and candidates
+              {t('Manage and get detailed insights about all your employees and candidates')}
             </p>
           </div>
           <div className="flex flex-col items-center text-center gap-y-1">
             <FemaleUserCircleIcon />
-            <h3 className="font-bold">Recruite with ease</h3>
-            <p className="text-sm text-slate-700">Handle recruitment process from the first interview until hiring</p>
+            <h3 className="font-bold">{t('Recruite with ease')}</h3>
+            <p className="text-sm text-slate-700">
+              {t('Handle recruitment process from the first interview until hiring')}
+            </p>
           </div>
           <div className="flex flex-col items-center text-center gap-y-1">
             <NewsCircleIcon />
-            <h3 className="font-bold">Reach everyone</h3>
+            <h3 className="font-bold">{t('Reach everyone')}</h3>
             <p className="text-sm text-slate-700">
-              Share your important organization-wide announcements to the whole company
+              {t('Share your important organization-wide announcements to the whole company')}
             </p>
           </div>
           <div className="flex flex-col items-center text-center gap-y-1">
             <MyspaceCircleIcon />
-            <h3 className="font-bold">Grow the company</h3>
+            <h3 className="font-bold">{t('Grow the company')}</h3>
             <p className="text-sm text-slate-700">
-              HR Vita is a central hub for digitizing your company&apos;s organizational life
+              {t('HR Vita is a central hub for digitizing your company&apos;s organizational life')}
             </p>
           </div>
         </div>
       </section>
 
       <section className="my-24">
-        <h2 className="text-2xl mb-10 text-center">Our partners</h2>
+        <h2 className="text-2xl mb-10 text-center">{t('Our partners')}</h2>
         <Swiper
           slidesPerView="auto"
           spaceBetween={40}

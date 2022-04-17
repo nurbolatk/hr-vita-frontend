@@ -1,6 +1,5 @@
 import { LoadingOverlay } from '@mantine/core';
-import { api, Candidate, CandidateStatus, EditCandidateForm } from 'entities/Candidate';
-// import { interviewToInterviewState } from 'entities/Interview/helper';
+import { api, Candidate, EditCandidateForm } from 'entities/Candidate';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { useIdParam } from 'shared/hooks';
@@ -28,7 +27,6 @@ export function RecruitingDetailsRoute() {
             },
             documents: candidate.documents,
             status: candidate.status,
-            // interviews: interviewToInterviewState(candidate.interviews),
           }}
         />
       )}

@@ -15,7 +15,7 @@ import { useAuth } from 'app/providers';
 import { UserDocument } from 'entities/Files';
 import { api } from 'entities/Files/api';
 import React, { SVGAttributes, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { CrossIcon, ImageIcon, UploadIcon } from 'shared/components/icons';
 import { ModalActions } from 'shared/components/organisms/Modal/libs/ModalActions';
@@ -44,16 +44,16 @@ function ImageUploadIcon({ status, ...props }: SVGAttributes<SVGElement> & { sta
   return <ImageIcon {...props} />;
 }
 
-export const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) => (
+export const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme, t: any) => (
   <Group position="center" spacing="xl" style={{ minHeight: 120, pointerEvents: 'none' }}>
     <ImageUploadIcon status={status} style={{ color: getIconColor(status, theme) }} width={80} height={80} />
 
     <div>
       <Text size="xl" inline>
-        Drag file here or click to select files
+        {t('Drag file here or click to select files')}
       </Text>
       <Text size="sm" color="dimmed" inline mt={7}>
-        Image/PDF/Word file should not exceed 5mb
+        {t('Image/PDF/Word file should not exceed 5mb')}
       </Text>
     </div>
   </Group>
@@ -99,7 +99,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
   const removeFile = (upFile: UserDocument) => {
     setUploaded(uploaded.filter((doc) => doc.id !== upFile.id));
   };
-
+  const { t } = useTranslation();
   return (
     <div>
       {uploaded.map((upFile) => (
@@ -125,7 +125,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
                 {upFile?.originalname}
               </Anchor>
             }>
-            File size {formatBytes(upFile.size)}
+            {t('File size')} {formatBytes(upFile.size)}
           </Alert>
         </div>
       ))}
@@ -138,10 +138,10 @@ function UploadFile({ uploaded, setUploaded }: Props) {
           onClose={removeRejectedAlert}
           title={
             <p>
-              <strong>File upload rejected</strong>
+              <strong>{t('File upload rejected')}</strong>
             </p>
           }>
-          The file is too big. It should not exceed 5mb
+          {t('The file is too big. It should not exceed 5mb')}
         </Alert>
       )}
       <Dropzone
@@ -164,7 +164,7 @@ function UploadFile({ uploaded, setUploaded }: Props) {
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ]}
         loading={mutation.isLoading}>
-        {(status) => dropzoneChildren(status, theme)}
+        {(status) => dropzoneChildren(status, theme, t)}
       </Dropzone>
       <Modal opened={modalOpen} onClose={closeModal} title="Add more info" centered>
         <div className="relative">
@@ -189,10 +189,10 @@ function UploadFile({ uploaded, setUploaded }: Props) {
               sx={{
                 opacity: 0.8,
               }}>
-              Cancel
+              {t('Cancel')}
             </Button>
             <Button type="button" onClick={uploadFile}>
-              Save
+              {t('Save')}
             </Button>
           </ModalActions>
         </div>

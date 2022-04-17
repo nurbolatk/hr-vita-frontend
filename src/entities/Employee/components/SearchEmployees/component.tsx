@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { CloseButton, Input, Loader, Paper } from '@mantine/core';
+import { useAuth } from 'app/providers';
 import cn from 'classnames';
 import { useCombobox } from 'downshift';
 import { api, Employee } from 'entities/Employee';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +16,7 @@ export function SearchEmployees(): JSX.Element {
   });
 
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const items: Employee[] = data ?? [];
 
@@ -35,7 +38,7 @@ export function SearchEmployees(): JSX.Element {
     },
     onSelectedItemChange: (changes) => {
       if (changes.selectedItem) {
-        navigate(`/profile/${changes.selectedItem.id}`);
+        navigate(user?.isHR ? `/employees/${changes.selectedItem.id}` : `/profile/${changes.selectedItem.id}`);
       }
     },
   });
@@ -44,13 +47,14 @@ export function SearchEmployees(): JSX.Element {
     setInputValue('');
     closeMenu();
   };
+  const { t } = useTranslation();
 
   return (
     <div>
       <div {...getComboboxProps()}>
         <Input
           {...getInputProps()}
-          placeholder="Search employees"
+          placeholder={t('Search employees')}
           rightSection={
             isLoading ? (
               <Loader size="xs" color="gray" />
@@ -76,8 +80,8 @@ export function SearchEmployees(): JSX.Element {
                 <p className="text-xs text-stone-400">{employee.position.name}</p>
               </div>
             ))}
-            {!query && <p>Start typing name...</p>}
-            {query && items.length === 0 && <p>No results</p>}
+            {!query && <p>{t('Start typing name...')}</p>}
+            {query && items.length === 0 && <p>{t('No results')}</p>}
           </Paper>
         )}
       </div>
