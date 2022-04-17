@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button } from '@mantine/core';
+import { Button, Image, Title } from '@mantine/core';
 import React from 'react';
 import {
   DocumentsCircleIcon,
@@ -10,6 +10,9 @@ import {
 } from 'shared/components/icons';
 import heroImage from 'assets/images/hero-image.png';
 import JB from 'assets/images/brands/jusanbank-logo.png';
+import Jan from 'assets/images/team/Jan.jpeg';
+import Aibek from 'assets/images/team/Aibek.jpeg';
+import Almat from 'assets/images/team/Almat.jpeg';
 import { ReactComponent as Halyk } from 'assets/images/brands/halyk.svg';
 import { ReactComponent as Kaspi } from 'assets/images/brands/kaspi.svg';
 import { ReactComponent as AirAstana } from 'assets/images/brands/air-astana.svg';
@@ -179,7 +182,7 @@ export function LandingRoute() {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Eubank width={200} height={60} />
+            <Eubank width={200} height={45} />
           </SwiperSlide>
           <SwiperSlide
             style={{
@@ -192,6 +195,39 @@ export function LandingRoute() {
             <FF width={200} height={60} />
           </SwiperSlide>
         </Swiper>
+      </section>
+
+      <section>
+        <h2 className="text-2xl text-center mb-12">Наша команда</h2>
+        <div className="flex gap-12 justify-center pt-12">
+          <div>
+            <img src={Almat} alt="Ержанов Алмат" className="rounded-md object-cover w-64 h-64" />
+            <div className="mt-2 text-center">
+              <Title className="font-normal" order={4}>
+                Ержанов Алмат
+              </Title>
+              <p className="text-sm text-green-400 font-bold">SEO</p>
+            </div>
+          </div>
+          <div>
+            <img src={Aibek} alt="Айбек Альжан" className="rounded-md object-cover w-64 h-64" />
+            <div className="mt-2 text-center">
+              <Title className="font-normal" order={4}>
+                Айбек Альжан
+              </Title>
+              <p className="text-sm text-green-400 font-bold">SEO</p>
+            </div>
+          </div>
+          <div>
+            <img src={Jan} alt="Жандаулет Камалов" className="rounded-md object-cover w-64 h-64" />
+            <div className="mt-2 text-center">
+              <Title className="font-normal" order={4}>
+                Жандаулет Камалов
+              </Title>
+              <p className="text-sm text-green-400 font-bold">SEO</p>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
