@@ -105,7 +105,7 @@ export function LandingRoute() {
         </div>
       </section>
 
-      <section className="my-24">
+      <section className="mt-24 mb-12">
         <h2 className="text-2xl mb-10 text-center">{t('Our partners')}</h2>
         <Swiper
           slidesPerView="auto"
@@ -197,8 +197,8 @@ export function LandingRoute() {
           </SwiperSlide>
         </Swiper>
       </section>
-
-      <section>
+      <hr />
+      <section className="mt-20 mb-24">
         <h2 className="text-2xl text-center mb-12">Наша команда</h2>
         <div className="flex flex-wrap relative gap-12 justify-center pt-12">
           <div
@@ -215,6 +215,18 @@ export function LandingRoute() {
           />
           <div
             className="absolute animate-blob animation-delay-4000 -bottom-4 left-1/2 w-32 h-32 bg-green-300 rounded-full mix-blend-multiply opacity-70"
+            style={{
+              filter: 'blur(1.5rem)',
+            }}
+          />
+          <div
+            className="absolute animate-blob animation-delay-2000 bottom-4 right-[10%] w-32 h-32 bg-rose-300 rounded-full mix-blend-multiply opacity-70"
+            style={{
+              filter: 'blur(1.5rem)',
+            }}
+          />
+          <div
+            className="absolute animate-blob bottom-12 left-12 w-32 h-32 bg-purple-300 rounded-full mix-blend-multiply opacity-70"
             style={{
               filter: 'blur(1.5rem)',
             }}
@@ -249,190 +261,32 @@ export function LandingRoute() {
         </div>
       </section>
 
-      <section className="my-24">
-        <h2 className="text-2xl mb-10 text-center">{t('Our partners')}</h2>
-        <Swiper
-          slidesPerView="auto"
-          spaceBetween={40}
-          speed={3000}
-          loop
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
-          }}
-          grabCursor
-          modules={[Autoplay]}
-          className="brands">
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 220,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Halyk width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Kaspi width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <AirAstana width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Technodom width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <div
-              style={{
-                width: 200,
-                marginTop: 10,
-              }}>
-              <img src={JB} alt="Jusan bank" />
+      <hr />
+      <section className="mt-24 mb-20">
+        <h2 className="text-2xl mb-16 text-center">Достижения</h2>
+        <div className="flex flex-wrap gap-10 justify-center">
+          <div className="md:ml-[5%] md:w-[15%] relative">
+            <div className="absolute w-16 h-16 -left-2 -top-1 rounded-full bg-red-400 z-0" />
+            <div className="relative z-[1]">
+              <h3 className="text-7xl">18</h3>
+              <p className="text-slate-500">партнеров</p>
             </div>
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Eubank width={200} height={45} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 220,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <FF width={200} height={60} />
-          </SwiperSlide>
-        </Swiper>
-      </section>
-
-      <section className="my-24">
-        <h2 className="text-2xl mb-10 text-center">{t('Our partners')}</h2>
-        <Swiper
-          slidesPerView="auto"
-          spaceBetween={40}
-          speed={3000}
-          loop
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
-          }}
-          grabCursor
-          modules={[Autoplay]}
-          className="brands">
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 220,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Halyk width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Kaspi width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <AirAstana width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Technodom width={200} height={60} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <div
-              style={{
-                width: 200,
-                marginTop: 10,
-              }}>
-              <img src={JB} alt="Jusan bank" />
+          </div>
+          <div className="md:w-[20%] relative">
+            <div className="absolute w-16 h-16 left-12 md:-left-2 -top-1 rounded-full bg-green-400 z-0" />
+            <div className="relative z-[1]">
+              <h3 className="text-7xl text-center md:text-left">100 000</h3>
+              <p className="text-slate-500">Максимальное количество сотрудников в одной компании</p>
             </div>
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 210,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Eubank width={200} height={45} />
-          </SwiperSlide>
-          <SwiperSlide
-            style={{
-              height: 100,
-              width: 220,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <FF width={200} height={60} />
-          </SwiperSlide>
-        </Swiper>
+          </div>
+          <div className="md:w-[20%] relative">
+            <div className="absolute w-16 h-16 left-10 md:-left-4 -top-1 rounded-full bg-cyan-400 z-0" />
+            <div className="relative z-[1]">
+              <h3 className="text-7xl text-center md:text-left">5 000</h3>
+              <p className="text-slate-500">Интервью назначено на нашем портале</p>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
