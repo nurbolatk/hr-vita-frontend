@@ -10,18 +10,18 @@ import { CellProps, Column, useTable } from 'react-table';
 import { isAllowedTo } from 'shared/helpers';
 
 function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
-  return <Link to={`/employees/${row.original.id}`}>{value}</Link>;
+  return <Link to={`/profile/${row.original.id}`}>{value}</Link>;
 }
 
 function BadgeCell({ value, row }: CellProps<Employee>): JSX.Element {
-  return <Link to={`/employees/${row.original.id}`}>{parseEmployeeStatusJSX(undefined, value)}</Link>;
+  return <Link to={`/profile/${row.original.id}`}>{parseEmployeeStatusJSX(undefined, value)}</Link>;
 }
 
 function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
   if (row.original.supervisor) {
-    return <Link to={`/employees/${row.original.supervisor.id}`}>{value}</Link>;
+    return <Link to={`/profile/${row.original.supervisor.id}`}>{value}</Link>;
   }
-  return <Link to={`/employees/${row.original.id}`}>No supervisor</Link>;
+  return <Link to={`/profile/${row.original.id}`}>No supervisor</Link>;
 }
 
 export function EmployeesIndexRoute() {

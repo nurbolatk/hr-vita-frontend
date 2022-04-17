@@ -1,48 +1,182 @@
-import { Card, TextInput, Text } from '@mantine/core';
-import { SelectDepartment } from 'entities/Department';
-import { api, SelectEmployee } from 'entities/Employee';
-import { SelectPosition } from 'entities/Position';
-import React from 'react';
-import { useQuery } from 'react-query';
+import { Card, TextInput, Text, Button, LoadingOverlay } from '@mantine/core';
+import { useAuth } from 'app/providers';
+import { dequal } from 'dequal';
+import { api, Employee } from 'entities/Employee';
+import React, { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { client } from 'shared/helpers';
 import { useIdParam } from 'shared/hooks';
+
+type UpdateMeForm = {
+  location: string;
+  phone: string;
+};
 
 export function ProfileRoute() {
   const id = useIdParam();
   const { data: employee, isLoading } = useQuery(['employee', id], () => api.getOneById(id));
+  const { user, isAuthLoading, token } = useAuth();
+  const isOwner = employee !== undefined && user !== null && employee?.id === user?.id;
+
+  const queryClient = useQueryClient();
+  const updating = useMutation(
+    (values: UpdateMeForm) => {
+      return client<Employee>(`users/me`, {
+        method: 'PUT',
+        data: {
+          phone: values.phone || null,
+          location: values.location || null,
+        },
+        token,
+      });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['employee', id]);
+      },
+    }
+  );
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    getValues,
+    formState: { isDirty },
+  } = useForm<UpdateMeForm>();
+
+  const defaultValues: UpdateMeForm = useMemo(
+    () => ({
+      location: employee?.location ?? '',
+      phone: employee?.phone ?? '',
+    }),
+    [employee?.location, employee?.phone]
+  );
+  const values = getValues();
+  const isChanged = useMemo(() => !dequal(defaultValues, values), [defaultValues, values]);
+
+  const updateMe = (form: UpdateMeForm) => {
+    updating.mutate(form);
+  };
+  const cancelChanges = () => {
+    reset();
+  };
+
+  const loading: boolean = isLoading || isAuthLoading || updating.isLoading;
 
   return (
     <section className="mx-auto">
-      <div className="relative grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
-        <form className="grid gap-4 col-span-3">
+      <div className="relative ">
+        <LoadingOverlay visible={loading} />
+        <form onSubmit={handleSubmit(updateMe)} className="grid gap-4 max-w-xl mx-auto">
           <Card withBorder shadow="md" p="lg" className="space-y-2 overflow-visible">
-            <h3 className="mb-3 text-xl">Profile</h3>
+            <h3 className="mb-3 text-xl flex items-baseline justify-between">
+              Profile
+              {isChanged && (
+                <div>
+                  <Button type="button" className="mr-2" variant="default" compact onClick={cancelChanges}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" compact>
+                    Save
+                  </Button>
+                </div>
+              )}
+            </h3>
             <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
-              <TextInput label="Имя" className="font-medium block" type="text" />
-              <TextInput label="Фамилия" className="font-medium block" type="text" />
+              <TextInput
+                defaultValue={employee?.firstName}
+                variant="unstyled"
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                label="Имя"
+                className="font-medium block"
+                type="text"
+              />
+              <TextInput
+                defaultValue={employee?.lastName}
+                variant="unstyled"
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                label="Фамилия"
+                className="font-medium block"
+                type="text"
+              />
             </div>
 
             <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
-              <TextInput label="Эл. почта" className="font-medium block" type="email" />
-              <TextInput label="Номер телефона" className="font-medium block" type="tel" />
+              <TextInput
+                defaultValue={employee?.email}
+                variant="unstyled"
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                label="Эл. почта"
+                className="font-medium block"
+                type="text"
+              />
+              <TextInput
+                defaultValue={employee?.supervisor?.fullName}
+                variant="unstyled"
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                label="Руководитель"
+                className="font-medium block"
+                type="text"
+              />
             </div>
 
             <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
-              <TextInput label="Зарплата" className="font-medium block" type="number" />
-              <TextInput label="Место жительства" className="font-medium block" type="text" />
+              <TextInput
+                variant={isOwner ? 'default' : 'unstyled'}
+                sx={{
+                  pointerEvents: isOwner ? 'all' : 'none',
+                }}
+                label="Номер телефона"
+                className="font-medium block"
+                type="tel"
+                {...register('phone')}
+                defaultValue={employee?.phone ?? ''}
+              />
+              <TextInput
+                defaultValue={employee?.location ?? ''}
+                variant={isOwner ? 'default' : 'unstyled'}
+                sx={{
+                  pointerEvents: isOwner ? 'all' : 'none',
+                }}
+                label="Место жительства"
+                className="font-medium block"
+                type="text"
+                {...register('location')}
+              />
             </div>
 
             <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
-              <SelectPosition value={employee?.position.name} />
-              <SelectDepartment value={employee?.department.name} />
-            </div>
-            <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
-              <div>
-                <Text size="sm" weight={500}>
-                  Supervisor
-                </Text>
-                <SelectEmployee defaultValue={employee?.supervisor?.id} />
-              </div>
-              status
+              <TextInput
+                defaultValue={employee?.position.name}
+                variant="unstyled"
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                label="Должность"
+                className="font-medium block"
+                type="text"
+              />
+
+              <TextInput
+                defaultValue={employee?.department.name}
+                variant="unstyled"
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                label="Отдел"
+                className="font-medium block"
+                type="text"
+              />
             </div>
           </Card>
         </form>
