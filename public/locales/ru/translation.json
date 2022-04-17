@@ -8,6 +8,8 @@
   "Work":"Компания",
   "Account": "Аккаунт",
   "Log in": "Войти",
+  "Email": "Эл. почта",
+  "Your password": "Пароль",
 
   "Advanced": "Прогрессивное",
   "HR Management": "управление персоналом",
@@ -84,6 +86,7 @@
 
   "Full Name": "ФИО",
   "Supervisor": "Руководитель",
+  "No supervisor": "Нет руководителя",
   "Add employee": "Добавить",
   "No employees": "Нет сотрудников",
 

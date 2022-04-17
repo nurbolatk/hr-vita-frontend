@@ -7,7 +7,8 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { CellProps, Column, useTable } from 'react-table';
+import { CellProps, Column, useTable, useSortBy } from 'react-table';
+import { ArrowDownIcon } from 'shared/components/icons';
 import { isAllowedTo } from 'shared/helpers';
 
 function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
@@ -19,22 +20,25 @@ function DefaultCell({ value, row }: CellProps<Employee>): JSX.Element {
 function BadgeCell({ value, row }: CellProps<Employee>): JSX.Element {
   const { user } = useAuth();
 
+  const { t } = useTranslation();
   return (
     <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>
-      {parseEmployeeStatusJSX(undefined, value)}
+      {parseEmployeeStatusJSX(t, undefined, value)}
     </Link>
   );
 }
 
 function SupervisorCell({ value, row }: CellProps<Employee>): JSX.Element {
   const { user } = useAuth();
-
+  const { t } = useTranslation();
   if (row.original.supervisor) {
     return (
       <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.supervisor.id}`}>{value}</Link>
     );
   }
-  return <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>No supervisor</Link>;
+  return (
+    <Link to={user?.isHR ? `/employees/${row.original.id}` : `/profile/${row.original.id}`}>{t('No supervisor')}</Link>
+  );
 }
 
 export function EmployeesIndexRoute() {
@@ -49,12 +53,10 @@ export function EmployeesIndexRoute() {
       {
         Header: 'Должность',
         accessor: (row) => row.position.name,
-        // id: 'id',
       },
       {
         Header: 'Отделение',
         accessor: (row) => row.department.name,
-        // // id: 'id',
       },
       {
         Header: 'Руководитель',
@@ -76,13 +78,16 @@ export function EmployeesIndexRoute() {
 
   const data = useMemo<Employee[]>(() => employees ?? [], [employees]);
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
-    data,
-    defaultColumn: {
-      Cell: DefaultCell,
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn: {
+        Cell: DefaultCell,
+      },
     },
-  });
+    useSortBy
+  );
 
   const { user } = useAuth();
 
@@ -103,8 +108,23 @@ export function EmployeesIndexRoute() {
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                {headerGroup.headers.map((column: any) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <div className="flex items-center gap-x-1">
+                      {column.render('Header')}{' '}
+                      {column.isSorted ? (
+                        <ArrowDownIcon
+                          width={12}
+                          height={12}
+                          style={{
+                            transform: column.isSortedDesc ? 'rotateZ(0deg)' : 'rotateZ(180deg)',
+                          }}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  </th>
                 ))}
               </tr>
             ))}

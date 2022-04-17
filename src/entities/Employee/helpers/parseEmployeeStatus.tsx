@@ -2,25 +2,25 @@ import { Badge } from '@mantine/core';
 import React from 'react';
 import { Employee, EmployeeStatus } from '..';
 
-export function parseEmployeeStatusJSX(candidate?: Employee, status?: EmployeeStatus): JSX.Element | null {
+export function parseEmployeeStatusJSX(t: any, candidate?: Employee, status?: EmployeeStatus): JSX.Element | null {
   if (candidate) {
     switch (candidate.status) {
       case EmployeeStatus.FIRED:
         return (
           <Badge className="cursor-pointer" color="red">
-            Fired
+            {t('Fired')}
           </Badge>
         );
       case EmployeeStatus.WORKING:
         return (
           <Badge className="cursor-pointer" color="teal">
-            Working
+            {t('Working')}
           </Badge>
         );
       default:
         return (
           <Badge className="cursor-pointer" color="blue">
-            Onboarding
+            {t('Onboarding')}
           </Badge>
         );
     }
@@ -30,19 +30,19 @@ export function parseEmployeeStatusJSX(candidate?: Employee, status?: EmployeeSt
       case EmployeeStatus.FIRED:
         return (
           <Badge className="cursor-pointer" color="red">
-            Fired
+            {t('Fired')}
           </Badge>
         );
       case EmployeeStatus.WORKING:
         return (
           <Badge className="cursor-pointer" color="teal">
-            Working
+            {t('Working')}
           </Badge>
         );
       default:
         return (
           <Badge className="cursor-pointer" color="blue">
-            Onboarding
+            {t('Onboarding')}
           </Badge>
         );
     }
