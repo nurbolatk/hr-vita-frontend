@@ -1,7 +1,7 @@
 import { client } from 'shared/helpers';
 import { LoginArguments, RegisterArguments } from 'shared/types';
 import { parseUser } from '../helper';
-import { Session, SessionResponse, User, UserResponse } from '../types';
+import { Session, SessionResponse, UserResponse } from '../types';
 
 const localStorageKey = '__auth_provider_token__';
 
@@ -39,4 +39,13 @@ async function logout() {
   await window.localStorage.removeItem(localStorageKey);
 }
 
-export { login, register, logout, getToken, getUserByToken };
+async function changePassword(email: string, password: string) {
+  return client('users/change-password', {
+    data: {
+      email,
+      password,
+    },
+  });
+}
+
+export { login, register, logout, getToken, getUserByToken, changePassword };

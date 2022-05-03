@@ -94,7 +94,7 @@ const useStyles = createStyles((theme) => ({
 export function Navbar(): JSX.Element {
   const { t } = useTranslation();
   const { user, token, isAuthLoading, logout, isAuthSuccess } = useAuth();
-  const { classes, theme, cx } = useStyles();
+  const { classes, cx } = useStyles();
   const navigate = useNavigate();
 
   const notifications = useQuery<Notification[]>(['notifications', user?.id], () => api.getAll(token), {
@@ -104,7 +104,6 @@ export function Navbar(): JSX.Element {
   const unreadCount = notifications.data?.reduce((acc, cur) => {
     return cur.unread ? acc + 1 : acc;
   }, 0);
-  console.log({ user });
 
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   return (

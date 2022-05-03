@@ -8,7 +8,6 @@ export const createCandidate = async (data: CreateCandidateDTO, token: string) =
 
 export const getAll = async (): Promise<Candidate[]> => {
   const raw = await client<CandidateResponse[]>('candidate');
-  console.log({ raw });
 
   return raw.map((candidate) => {
     const status: CandidateStatus = parseCandidateStatus(candidate);

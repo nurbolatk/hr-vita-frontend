@@ -10,6 +10,11 @@
   "Log in": "Войти",
   "Email": "Эл. почта",
   "Your password": "Пароль",
+  "Forgot your password?": "Забыли пароль?",
+  "Enter email address of your account": "Введите эл.почту от аккаунта",
+  "Change password": "Восстановить пароль",
+  "New password": "Новый пароль",
+  "Minimum 6 symbols": "Минимум 6 символов",
 
   "Advanced": "Прогрессивное",
   "HR Management": "управление персоналом",
@@ -60,6 +65,8 @@
   "Select position": "Выберите должность",
   "Position name": "Название должности",
   "Nothing found": "Ничего не найдено",
+  "Add more interviews": "Добавить интервью",
+  "No more interviews allowed":"Превышен лимит интервью (5)",
 
   "Drag file here or click to select files": "Перетащите файл сюда или нажмите, чтобы выбрать файл",
   "Image/PDF/Word file should not exceed 5mb": "Размер файла не должен превышать 5 МБ.",
@@ -67,10 +74,13 @@
   "File upload rejected": "Загрузка файла отклонена",
   "The file is too big. It should not exceed 5mb": "Файл слишком большой. Он не должен превышать 5 мб",
 
+  "Please, fill all the values": "Заполните все поля",
+  "E.g. First techincal interview": "Первое техническое интервью",
   "Interviews": "Интервью",
   "No interviews are appointed": "Собеседования не назначены",
   "Interviewer": "Интервьюер",
   "Location": "Место проведения",
+  "Are you sure you want to delete this?": "Вы уверены, что хотите удалить это?",
   "Are you sure you want to delete this interview?": "Вы уверены, что хотите удалить это интервью?",
   "Delete": "Удалить",
   "Submit": "Отправить",
@@ -81,6 +91,7 @@
   "Candidate failed": "Кандидат не прошел",
   "Candidate passed": "Кандидат прошел",
 
+  "Select...": "Выбрать...",
   "Passed": "Прошел",
   "Not started": "Не начато",
 
@@ -102,6 +113,10 @@
   "Working": "Работает",
   "Fired": "Уволен",
 
+  "Confirmation": "Подтверждение",
+
+  "Error creating approval": "Ошибка при создании согласования",
+  "Add approval": "Добавить",
   "Approvals": "Согласования",
   "No approvals are appointed": "Согласования не назначены",
   "Approver": "Утверждающий",

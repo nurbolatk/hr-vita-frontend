@@ -5,3 +5,5 @@ export type UpdateApprovalDTO = {
   masterId?: number | null;
   status?: ApprovalStatus;
 };
+
+export type CreateApprovalDTO = { department: string; masterId: number; candidateId: number };

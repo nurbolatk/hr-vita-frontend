@@ -28,3 +28,4 @@ export { ReactComponent as FacebookIcon } from './FacebookIcon.svg';
 export { ReactComponent as LinkedinIcon } from './LinkedinIcon.svg';
 export { ReactComponent as TwitterIcon } from './TwitterIcon.svg';
 export { ReactComponent as ArrowDownIcon } from './ArrowDownIcon.svg';
+export { ReactComponent as TrashIcon } from './TrashIcon.svg';

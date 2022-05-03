@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Modal } from 'shared/components/organisms';
 import { useIdParam } from 'shared/hooks';
 import { useInterviewQueries } from 'entities/Interview/hooks';
+import { useTranslation } from 'react-i18next';
 
 type InterviewFormFields = {
   name: string;
@@ -62,6 +63,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
       interviewer,
     });
   };
+  const { t } = useTranslation();
 
   function sendInterview(form: InterviewFormFields) {
     if (state.date && state.start && state.end && state.interviewer) {
@@ -100,7 +102,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
   return (
     <Modal.Content title="Interview details">
       <form className="space-y-3 relative" onSubmit={handleSubmit(sendInterview)}>
-        {error && <Alert color="red">Please, fill all the values</Alert>}
+        {error && <Alert color="red">{t('Please, fill all the values')}</Alert>}
         <TextInput
           label="Interview name"
           placeholder="E.g. First techincal interview"
@@ -108,7 +110,7 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
           {...register('name')}
         />
         <Text component="label" size="sm" weight={500}>
-          <span className="block mb-1 mt-3">Interviewer</span>
+          <span className="block mb-1 mt-3">{t('Interviewer')}</span>
           <SelectEmployee onChange={handleInterviewerChange} defaultValue={state.interviewer?.id} />
         </Text>
         <div className="grid grid-cols-5 gap-x-4">
@@ -138,11 +140,11 @@ export function InterviewDetailsModal({ defaultValue }: { defaultValue?: Intervi
               }}
               variant="default"
               color="gray">
-              Cancel
+              {t('Cancel')}
             </Button>
           </Modal.CloseButton>
           <Button size="sm" type="submit">
-            Save
+            {t('Save')}
           </Button>
         </Modal.Actions>
       </form>
