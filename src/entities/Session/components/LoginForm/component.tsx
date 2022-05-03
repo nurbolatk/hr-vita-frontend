@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from 'app/providers';
 import { AlertCircleIcon } from 'shared/components/icons';
 import { useTranslation } from 'react-i18next';
+import { useModalState } from 'shared/components/organisms/Modal/context';
 import { VisibilityToggleIcon } from './VisibilityToggleIcon';
 
 type LoginFormInputs = {
@@ -25,6 +26,9 @@ export function LoginForm(): JSX.Element {
   const onSubmit = (data: LoginFormInputs) => {
     login(data);
   };
+
+  const { closeModal } = useModalState();
+
   const { t } = useTranslation();
 
   return (
@@ -48,22 +52,22 @@ export function LoginForm(): JSX.Element {
           <Text component="label" htmlFor="your-password" size="sm" weight={500}>
             {t('Your password')}
           </Text>
-          {/* <Anchor<typeof Link>
+          <Anchor<typeof Link>
             component={Link}
-            to="/restore-password"
+            to="/users/change-password"
+            onClick={closeModal}
             sx={(theme) => ({
               paddingTop: 2,
               color: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
               fontWeight: 500,
               fontSize: theme.fontSizes.xs,
             })}>
-            Forgot your password?
-          </Anchor> */}
+            {t('Forgot your password?')}
+          </Anchor>
         </div>
         <PasswordInput
           placeholder={t('Your password')}
           id="your-password"
-          type="password"
           visibilityToggleIcon={VisibilityToggleIcon}
           {...register('password', { required: 'Необходимо заполнить' })}
           error={errors.password?.message}

@@ -10,6 +10,11 @@
   "Log in": "Войти",
   "Email": "Эл. почта",
   "Your password": "Пароль",
+  "Forgot your password?": "Забыли пароль?",
+  "Enter email address of your account": "Введите эл.почту от аккаунта",
+  "Change password": "Восстановить пароль",
+  "New password": "Новый пароль",
+  "Minimum 6 symbols": "Минимум 6 символов",
 
   "Advanced": "Прогрессивное",
   "HR Management": "управление персоналом",

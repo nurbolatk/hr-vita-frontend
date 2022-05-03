@@ -65,7 +65,7 @@ function App() {
                     <Route path="new" element={<NewCandidateRoute />} />
                   </Route>
                   <Route path="users">
-                    <Route path="generate-hash" element={<ChangePasswordRoute />} />
+                    <Route path="change-password" element={<ChangePasswordRoute />} />
                   </Route>
                   <Route path="events">
                     <Route index element={<EventsRoute />} />
