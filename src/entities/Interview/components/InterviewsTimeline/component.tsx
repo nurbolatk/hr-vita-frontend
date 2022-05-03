@@ -2,7 +2,7 @@ import { Alert, Button, Card, Timeline, Text, ActionIcon, LoadingOverlay, CardPr
 import React, { useState } from 'react';
 
 import { api, InterivewStatus, Interview } from 'entities/Interview';
-import { AlertCircleIcon, CheckIcon, CircleIcon, CrossIcon, EditIcon } from 'shared/components/icons';
+import { AlertCircleIcon, CheckIcon, CircleIcon, CrossIcon, EditIcon, TrashIcon } from 'shared/components/icons';
 import { Modal } from 'shared/components/organisms';
 import { ModalOpenButton } from 'shared/components/organisms/Modal/libs/ModalOpenButton';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -88,7 +88,7 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
                       <Modal>
                         <Modal.OpenButton>
                           <ActionIcon size={20} color="red">
-                            <CrossIcon />
+                            <TrashIcon />
                           </ActionIcon>
                         </Modal.OpenButton>
                         <Modal.Content title="Confirm action">
@@ -121,7 +121,7 @@ export function InterviewsTimeline({ ...props }: Omit<CardProps<'div'>, 'childre
 
             <Modal.OpenButton>
               <Button fullWidth type="button" disabled={interviews.length > 4}>
-                {interviews.length < 5 ? 'Add more interviews' : 'No more interviews allowed'}
+                {interviews.length < 5 ? t('Add more interviews') : t('No more interviews allowed')}
               </Button>
             </Modal.OpenButton>
 

@@ -1,7 +1,7 @@
 import { client } from 'shared/helpers';
 import { LoginArguments, RegisterArguments } from 'shared/types';
 import { parseUser } from '../helper';
-import { Session, SessionResponse, User, UserResponse } from '../types';
+import { Session, SessionResponse, UserResponse } from '../types';
 
 const localStorageKey = '__auth_provider_token__';
 

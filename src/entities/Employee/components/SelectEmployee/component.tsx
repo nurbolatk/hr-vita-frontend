@@ -1,5 +1,6 @@
 import { api } from 'entities/Employee/api';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import Select, { OnChangeValue } from 'react-select';
 import type { Employee } from '../../types';
@@ -13,7 +14,7 @@ export function SelectEmployee({
   defaultValue?: number | null;
 }): JSX.Element {
   const { data, isLoading } = useQuery<Employee[]>('employees', api.getAll);
-
+  const { t } = useTranslation();
   const [value, setValue] = useState<Employee | null | undefined>();
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export function SelectEmployee({
     <Select<Employee, false>
       className="w-full"
       isClearable
+      placeholder={t('Select...')}
       isDisabled={isLoading}
       isLoading={isLoading}
       onChange={handleChange}
